@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "Menu.h"
 #include <iostream>
 #include <string>
 #include <memory>
@@ -21,25 +21,25 @@ void menu(std::unique_ptr<Account>& account)
 
         switch (choice)
         {
-        case AccountInfo:
+        case account_info:
             handle_account_info(account);
             break;
-        case AddCard:
+        case add_card:
             handle_add_card(account);
             break;
-        case DeleteCard:
+        case delete_card:
             handle_delete_card(account);
             break;
-        case GetBalance:
+        case get_balance:
             handle_get_balance(account);
             break;
-        case SetName:
+        case set_name:
             handle_set_name(account);
             break;
-        case SetBalance:
+        case set_balance:
             handle_set_balance(account);
             break;
-        case End:
+        case exit_program:
             std::cout << "Exit" << std::endl;
             return;
         default:
@@ -53,7 +53,7 @@ void handle_account_info(const std::unique_ptr<Account>& account)
     account->display_account_info();
 }
 
-void handle_add_card(std::unique_ptr<Account>& account)
+void handle_add_card(const std::unique_ptr<Account>& account)
 {
     std::string card_number;
     std::string expire_date;
@@ -69,7 +69,7 @@ void handle_add_card(std::unique_ptr<Account>& account)
     account->add_bank_card(std::make_unique<BankCard>(card_number, expire_date, card_balance));
 }
 
-void handle_delete_card(std::unique_ptr<Account>& account)
+void handle_delete_card(const std::unique_ptr<Account>& account)
 {
     std::string card_number;
     std::cout << "Enter card number to delete: ";
@@ -90,7 +90,7 @@ void handle_get_balance(const std::unique_ptr<Account>& account)
     std::cout << "Available account balance: " << account->get_account_available_balance() << std::endl;
 }
 
-void handle_set_name(std::unique_ptr<Account>& account)
+void handle_set_name(const std::unique_ptr<Account>& account)
 {
     std::string new_name;
     std::cout << "Enter new account name: ";
@@ -98,7 +98,7 @@ void handle_set_name(std::unique_ptr<Account>& account)
     account->set_client_name(new_name);
 }
 
-void handle_set_balance(std::unique_ptr<Account>& account)
+void handle_set_balance(const std::unique_ptr<Account>& account)
 {
     int new_balance;
     std::cout << "Enter new account balance: ";
