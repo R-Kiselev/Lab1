@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <string_view>
 
 class BankCard
 {
@@ -21,12 +22,12 @@ public:
         std::cout << "Card balance: " << card_balance_ << std::endl;
     }
 
-    void set_card_number(const std::string& card_number)
+    void set_card_number(const std::string_view& card_number)
     {
         card_number_ = card_number;
     }
 
-    void set_expire_date(const std::string& expire_date)
+    void set_expire_date(const std::string_view& expire_date)
     {
         expire_date_ = expire_date;
     }
@@ -59,7 +60,7 @@ private:
     std::vector<BankCard*> cards_;
     int account_balance_;
 public:
-    Account(const std::string& client_name, const int account_balance)
+    Account(const std::string& client_name, const int account_balance = 0)
         : client_name_(client_name), account_balance_(account_balance)
     {
     }
@@ -75,8 +76,8 @@ public:
 
     void display_account_info() const
     {
-        std::cout << "Client name: " << client_name_;
-        std::cout << "Account balance: " << account_balance_;
+        std::cout << "Client name: " << client_name_ << std::endl;
+        std::cout << "Account balance: " << account_balance_ << std::endl;
         
         if (!cards_.empty())
         {
@@ -89,26 +90,62 @@ public:
         }
         else
         {
-            std::cout << "No cards are attached to this account." << std::endl;
+            std::cout << "No cards are attached to this account." << std::endl << std::endl;
         }
     }
 
-    void add_bank_card(BankCard* card)
+    std::string get_client_name() const
     {
-        cards_.push_back(card);
+        return client_name_;
     }
 
-    void delete_bank_card(const std::string card_number)
+    void set_client_name(const std::string& client_name)
     {
-        for (std::vector<BankCard*>::iterator iter = cards_.begin(); iter != cards_.end(); iter++)
+        client_name_ = client_name;
+    }
+
+    int get_account_balance() const
+    {
+        return account_balance_;
+    }
+
+    void set_account_balance(const int account_balance)
+    {
+        account_balance_ = account_balance;
+    }
+
+    const BankCard* get_card(std::string card_number)
+    {
+        const BankCard* card = NULL;
+        for (auto iter = cards_.begin(); iter != cards_.end(); iter++)
         {
             if ((*iter)->get_card_number() == card_number)
             {
-                cards_.erase(iter);
-                delete *iter;
+                card = *iter;
                 break;
             }
         }
+
+        return card;
+    }
+    
+    void add_bank_card(BankCard* card)
+    {
+        if (get_card(card->get_card_number()) == NULL)
+        {
+            cards_.push_back(card);
+        }
+        else
+        {
+            std::cout << "Card is already exists" << std::endl << std::endl;
+            delete card;
+        }
+    }
+
+    void delete_bank_card(const std::string& card_number)
+    {
+        const BankCard* card = get_card(card_number);
+        delete card;
     }
 
     int get_account_available_balance() const
@@ -116,7 +153,7 @@ public:
         int cards_balance = 0;
         int balance_available = 0;
 
-        for (BankCard* card : cards_)
+        for (const BankCard* card : cards_)
         {
             cards_balance += card->get_card_balance();
         }
@@ -128,10 +165,80 @@ public:
 
         return balance_available;
     }
-
 };
 
 int main()
 {
+    Account* account = new Account("Roman", 1000);
 
+    while (true)
+    {
+        std::cout << "1) Display account info" << std::endl;
+        std::cout << "2) Add bank card" << std::endl;
+        std::cout << "3) Delete bank card" << std::endl;
+        std::cout << "4) Get available account balance" << std::endl;
+        std::cout << "5) Set account name" << std::endl;
+        std::cout << "6) Set account balance" << std::endl;
+        std::cout << "0) Exit" << std::endl;
+        std::cout << "Your option : ";
+
+        int choice;
+        std::cin >> choice;
+        
+        switch (choice)
+        {
+        case 1:
+            account->display_account_info();
+            break;
+        case 2: 
+        {
+            std::string card_number, expire_date;
+            int card_balance;
+            std::cout << "Enter card number: ";
+            std::cin >> card_number;
+            std::cout << "Enter expire date (MM/YY): ";
+            std::cin >> expire_date;
+            std::cout << "Enter card balance: ";
+            std::cin >> card_balance;
+            account->add_bank_card(new BankCard(card_number, expire_date, card_balance));
+            break;
+        }
+        case 3:
+        {
+            std::string card_number;
+            std::cout << "Enter card number to delete: ";
+            std::cin >> card_number;
+            account->delete_bank_card(card_number);
+            break;
+        }
+        case 4: // 
+            std::cout << "Available account balance: " << account->get_account_available_balance() << std::endl;
+            break;
+        case 5:
+        {
+            std::string new_name;
+            std::cout << "Enter new account name: ";
+            std::cin.ignore();
+            std::getline(std::cin, new_name);
+            account->set_client_name(new_name);
+            break;
+        }
+        case 6: 
+        {
+            int new_balance;
+            std::cout << "Enter new account balance: ";
+            std::cin >> new_balance;
+            account->set_account_balance(new_balance);
+            break;
+        }
+        case 0: // Exit
+            delete account;
+            std::cout << "Exiting..." << std::endl;
+            return 0;
+        default:
+            std::cout << "Invalid option. Please try again." << std::endl;
+        }
+    }
+
+    return 0;
 }
