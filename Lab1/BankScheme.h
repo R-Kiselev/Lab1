@@ -58,6 +58,9 @@ public:
     {
         return card_balance_;
     }
+
+    BankCard(const BankCard&) = delete;
+    void operator = (const BankCard&) = delete;
 };
 
 class Account
