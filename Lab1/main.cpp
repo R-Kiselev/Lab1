@@ -6,17 +6,6 @@
 #include "Account.h"
 #include "main.h"
 
-enum class menu_options
-{
-    end = 0,
-    account_info,
-    add_card,
-    delete_card,
-    get_balance,
-    set_name,
-    set_balance,
-};
-
 int main()
 {
     auto account = std::make_unique<Account>("Roman", 1000);
