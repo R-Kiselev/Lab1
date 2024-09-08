@@ -5,6 +5,17 @@
 #include <memory>
 #include "BankScheme.h"
 
+enum menu_options
+{
+    exit = 0,
+    account_info,
+    add_card,
+    delete_card,
+    get_balance,
+    set_name,
+    set_balance,
+};
+
 int main()
 {
     auto account = std::make_unique<Account>("Roman", 1000);
@@ -25,10 +36,10 @@ int main()
         
         switch (choice)
         {
-        case 1:
+        case account_info:
             account->display_account_info();
             break;
-        case 2: 
+        case add_card: 
         {
             std::string card_number;
             std::string expire_date;
@@ -43,7 +54,7 @@ int main()
             account->add_bank_card(std::make_unique<BankCard>(card_number, expire_date, card_balance));
             break;
         }
-        case 3:
+        case delete_card:
         {
             std::string card_number;
             std::cout << "Enter card number to delete: ";
@@ -60,19 +71,18 @@ int main()
 
             break;
         }
-        case 4: // 
+        case get_balance:
             std::cout << "Available account balance: " << account->get_account_available_balance() << std::endl;
             break;
-        case 5:
+        case set_name:
         {
             std::string new_name;
             std::cout << "Enter new account name: ";
-            std::cin.ignore();
-            std::getline(std::cin, new_name);
+            std::cin >> new_name;
             account->set_client_name(new_name);
             break;
         }
-        case 6: 
+        case set_balance: 
         {
             int new_balance;
             std::cout << "Enter new account balance: ";
@@ -80,11 +90,11 @@ int main()
             account->set_account_balance(new_balance);
             break;
         }
-        case 0: // Exit
-            std::cout << "Exiting..." << std::endl;
+        case exit: 
+            std::cout << "Exit" << std::endl;
             return 0;
         default:
-            std::cout << "Invalid option. Please try again." << std::endl;
+            std::cout << "Invalid option. Please try again" << std::endl;
         }
     }
 }
