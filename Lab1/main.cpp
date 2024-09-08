@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <string_view>
+#include <memory>
 
 class BankCard
 {
@@ -82,7 +83,7 @@ public:
         if (!cards_.empty())
         {
             std::cout << "Attached cards: " << std::endl << std::endl;
-            for (BankCard* card : cards_)
+            for (const BankCard* card : cards_)
             {
                 card->display_card_info();
                 std::cout << std::endl;
@@ -99,7 +100,7 @@ public:
         return client_name_;
     }
 
-    void set_client_name(const std::string& client_name)
+    void set_client_name(const std::string_view& client_name)
     {
         client_name_ = client_name;
     }
@@ -114,38 +115,42 @@ public:
         account_balance_ = account_balance;
     }
 
-    const BankCard* get_card(std::string card_number)
+    const BankCard* get_card(const std::string& card_number)
     {
-        const BankCard* card = NULL;
-        for (auto iter = cards_.begin(); iter != cards_.end(); iter++)
+        for (const auto& card : cards_)
         {
-            if ((*iter)->get_card_number() == card_number)
+            if (card->get_card_number() == card_number)
             {
-                card = *iter;
-                break;
+                return card;
             }
         }
-
-        return card;
+        return nullptr;
     }
     
     void add_bank_card(BankCard* card)
     {
-        if (get_card(card->get_card_number()) == NULL)
+        if (get_card(card->get_card_number()) == nullptr)
         {
             cards_.push_back(card);
         }
         else
         {
             std::cout << "Card is already exists" << std::endl << std::endl;
-            delete card;
         }
     }
 
-    void delete_bank_card(const std::string& card_number)
+    bool delete_bank_card(const std::string& card_number)
     {
-        const BankCard* card = get_card(card_number);
-        delete card;
+        for (auto iter = cards_.begin(); iter != cards_.end(); iter++)
+        {
+            if ((*iter)->get_card_number() == card_number)
+            {
+                cards_.erase(iter);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     int get_account_available_balance() const
@@ -169,7 +174,7 @@ public:
 
 int main()
 {
-    Account* account = new Account("Roman", 1000);
+    auto account = std::make_unique<Account>("Roman", 1000);
 
     while (true)
     {
@@ -192,7 +197,9 @@ int main()
             break;
         case 2: 
         {
-            std::string card_number, expire_date;
+            std::string card_number;
+            std::string expire_date;
+
             int card_balance;
             std::cout << "Enter card number: ";
             std::cin >> card_number;
@@ -208,7 +215,16 @@ int main()
             std::string card_number;
             std::cout << "Enter card number to delete: ";
             std::cin >> card_number;
-            account->delete_bank_card(card_number);
+
+            if (account->delete_bank_card(card_number))
+            {
+                std::cout << "Card was deleted" << std::endl;
+            }
+            else
+            {
+                std::cout << "Card was not found" << std::endl;
+            }
+
             break;
         }
         case 4: // 
@@ -232,13 +248,10 @@ int main()
             break;
         }
         case 0: // Exit
-            delete account;
             std::cout << "Exiting..." << std::endl;
             return 0;
         default:
             std::cout << "Invalid option. Please try again." << std::endl;
         }
     }
-
-    return 0;
 }
