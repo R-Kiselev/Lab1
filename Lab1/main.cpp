@@ -5,7 +5,7 @@
 #include <memory>
 #include "Account.h"
 
-enum menu_options
+enum class menu_options
 {
     end = 0,
     account_info,
@@ -19,7 +19,6 @@ enum menu_options
 int main()
 {
     auto account = std::make_unique<Account>("Roman", 1000);
-
     while (true)
     {
         std::cout << "1) Display account info" << std::endl;
@@ -34,12 +33,13 @@ int main()
         int choice;
         std::cin >> choice;
 
-        switch (choice)
+        menu_options option = static_cast<menu_options>(choice);
+        switch (option)
         {
-        case account_info:
+        case menu_options::account_info:
             account->display_account_info();
             break;
-        case add_card:
+        case menu_options::add_card:
         {
             std::string card_number;
             std::string expire_date;
@@ -54,7 +54,7 @@ int main()
             account->add_bank_card(std::make_unique<BankCard>(card_number, expire_date, card_balance));
             break;
         }
-        case delete_card:
+        case menu_options::delete_card:
         {
             std::string card_number;
             std::cout << "Enter card number to delete: ";
@@ -71,10 +71,10 @@ int main()
 
             break;
         }
-        case get_balance:
+        case menu_options::get_balance:
             std::cout << "Available account balance: " << account->get_account_available_balance() << std::endl;
             break;
-        case set_name:
+        case menu_options::set_name:
         {
             std::string new_name;
             std::cout << "Enter new account name: ";
@@ -82,7 +82,7 @@ int main()
             account->set_client_name(new_name);
             break;
         }
-        case set_balance:
+        case menu_options::set_balance:
         {
             int new_balance;
             std::cout << "Enter new account balance: ";
@@ -90,7 +90,7 @@ int main()
             account->set_account_balance(new_balance);
             break;
         }
-        case end:
+        case menu_options::end:
             std::cout << "Exit" << std::endl;
             return 0;
         default:
