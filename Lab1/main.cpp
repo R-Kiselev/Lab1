@@ -33,7 +33,7 @@ int main()
         int choice;
         std::cin >> choice;
 
-        menu_options option = static_cast<menu_options>(choice);
+        auto option = static_cast<menu_options>(choice);
         switch (option)
         {
         case menu_options::account_info:
