@@ -28,3 +28,7 @@
 ## Требования
 
 - C++17 или новее
+
+## Ссылка на Sonar
+
+- https://sonarcloud.io/project/overview?id=R-Kiselev_Lab1
