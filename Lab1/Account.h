@@ -22,10 +22,14 @@ public:
     int get_account_balance() const;
     void set_account_balance(const int account_balance);
 
-    const BankCard* get_card(const std::string_view& card_number) const;
+    BankCard* get_card(const std::string_view& card_number) const;
     void add_bank_card(std::unique_ptr<BankCard> card);
     bool delete_bank_card(const std::string_view& card_number);
     int get_account_available_balance() const;
+    
+    void transfer_money(const std::string_view& recipient_card_number, const std::string_view& sender_card_number, const int sum) const;
+
+    void transfer_money(const std::string_view& card_number, const int sum) const;
 
     Account(const Account&) = delete;
     void operator=(const Account&) = delete;

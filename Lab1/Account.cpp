@@ -50,7 +50,7 @@ void Account::set_account_balance(const int account_balance)
     account_balance_ = account_balance;
 }
 
-const BankCard* Account::get_card(const std::string_view& card_number) const
+BankCard* Account::get_card(const std::string_view& card_number) const
 {
     for (const auto& card : cards_)
     {
@@ -97,4 +97,59 @@ int Account::get_account_available_balance() const
     }
 
     return (account_balance_ - cards_balance > 0) ? account_balance_ - cards_balance : 0;
+}
+
+void Account::transfer_money(const std::string_view& recipient_card_number, const std::string_view& sender_card_number, const int sum) const
+{
+    BankCard* sender_card = get_card(sender_card_number);
+    if (sender_card != nullptr)
+    {
+        if (sender_card->get_card_balance() >= sum)
+        {
+            BankCard* recipient_card = get_card(recipient_card_number);
+            if (recipient_card != nullptr)
+            {
+                int new_balance_recipient = recipient_card->get_card_balance() + sum;
+                recipient_card->set_card_balance(new_balance_recipient);
+
+                int new_balance_sender = sender_card->get_card_balance() - sum;
+                sender_card->set_card_balance(new_balance_sender);
+            }
+            else
+            {
+                std::cout << "There is no such card number : " << recipient_card_number << std::endl << std::endl;
+            }
+        }
+        else
+        {
+            std::cout << "Sum is greater than sender's card balance " << std::endl;
+            std::cout << "Sum: " << sum << std::endl;
+            std::cout << "Balance: " << sender_card->get_card_balance() << std::endl << std::endl;
+        }
+    }
+    else
+    {
+        std::cout << "There is no such card number : " << sender_card_number << std::endl << std::endl;
+    }
+}
+void Account::transfer_money(const std::string_view& card_number, const int sum) const
+{
+    int available_balance = get_account_available_balance();
+    if (available_balance >= sum)
+    {
+        BankCard* card = get_card(card_number);
+        if (card != nullptr)
+        {
+            int new_balance = card->get_card_balance() + sum;
+            card->set_card_balance(new_balance);
+        }
+        else
+        {
+            std::cout << "There is no such card number : " << card_number << std::endl << std::endl;
+        }
+    }
+    else
+    {
+        std::cout << "There is no available account balance" << std::endl << std::endl;
+    }
 }

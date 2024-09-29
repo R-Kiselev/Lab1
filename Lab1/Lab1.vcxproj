@@ -131,12 +131,14 @@
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="BankCard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu_account_card.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Account.h" />
     <ClInclude Include="BankCard.h" />
     <ClInclude Include="BankScheme.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="menu_account_card.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
