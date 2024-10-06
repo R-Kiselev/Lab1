@@ -4,19 +4,27 @@
 #include <string>
 #include <string_view>
 #include <memory>
+#include <sqlite3.h>
 #include "Account.h"
 
 enum class menu_options
 {
     end = 0,
-    account_info,
+    
+    accounts_info,
+    add_account,
+    delete_account,
+
     add_card,
     delete_card,
-    get_balance,
+    
     set_name,
     set_balance,
+    
     transfer_account,
-    transfer_cards
+    transfer_cards,
+
+    save_into_db
 };
 
-void menu_account_card();
+void menu_account_card(sqlite3* DB);
