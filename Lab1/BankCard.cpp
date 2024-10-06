@@ -13,6 +13,7 @@ static bool is_card_number(const std::string_view& card_number)
     }
     return true;
 }
+
 static bool is_expire_date(const std::string_view& exp_date)
 {
     std::vector<char> accepted_symbols = { '-', '\\', '/'};
@@ -35,7 +36,7 @@ static bool is_expire_date(const std::string_view& exp_date)
         else
             digits_count++;
     }
-    if (digits_count == 0)
+    if (digits_count != 4)
         return false;
     return true;
 }

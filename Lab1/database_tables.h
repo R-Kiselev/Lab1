@@ -29,7 +29,7 @@ void create_account_table(sqlite3* DB)
     char* errorMessage;
     std::string query =
         "CREATE TABLE IF NOT EXISTS accounts ("
-        "id INT PRIMARY KEY,"
+        "id INT RIMARY KEY,"
         "client_name TEXT NOT NULL,"
         "card_balance INTEGER DEFAULT 0 NOT NULL);";
 

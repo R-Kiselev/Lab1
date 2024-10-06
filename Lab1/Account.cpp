@@ -10,6 +10,7 @@ Account::~Account()
     for (const auto& card : cards_) {
         std::cout << "Card ID: " << card->get_id() << std::endl;
     }
+    cards_.clear();
 }
 
 void Account::display_info() const
@@ -162,14 +163,4 @@ void Account::transfer_money(const std::string_view& card_number, const int sum)
     {
         std::cout << "There is no available account balance" << std::endl << std::endl;
     }
-}
-
-Card* find_card(const AccountCollection& collection, const std::string_view& card_number) {
-    for (const auto& account : collection.accounts_) {
-        Card* card = account->get_card(card_number);
-        if (card != nullptr) {
-            return card;
-        }
-    }
-    return nullptr;
 }

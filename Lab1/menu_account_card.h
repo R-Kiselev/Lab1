@@ -6,6 +6,7 @@
 #include <memory>
 #include <sqlite3.h>
 #include "Account.h"
+#include "AccountCollection.h"
 
 enum class menu_options
 {
@@ -24,7 +25,10 @@ enum class menu_options
     transfer_account,
     transfer_cards,
 
-    save_into_db
+    save_into_db,
+
+    test_assignment_operator,
+    test_equality_operator
 };
 
 void menu_account_card(sqlite3* DB);

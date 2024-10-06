@@ -2,7 +2,6 @@
 
 void menu_account_card(sqlite3* DB)
 {
-
     AccountCollection ac;
 
     ac.load_from_db(DB);
@@ -39,6 +38,9 @@ void menu_account_card(sqlite3* DB)
         std::cout << "9) Transfer money between two cards" << std::endl;
 
         std::cout << "10) Save info to the database" << std::endl;
+
+        std::cout << "11) Test assignment operator" << std::endl;
+        std::cout << "12) Test equality operator" << std::endl;
 
         std::cout << "0) Exit" << std::endl;
         std::cout << "Your option : ";
@@ -193,6 +195,54 @@ void menu_account_card(sqlite3* DB)
         case menu_options::save_into_db:
             ac.save_to_db(DB);
             break;
+        case menu_options::test_assignment_operator:
+        {
+            std::string source_card;
+            std::string destination_card;
+
+            std::cout << "Enter first card ID to copy from: ";
+            std::cin >> source_card;
+            std::cout << "Enter second card ID to copy to: ";
+            std::cin >> destination_card;
+
+            Card* card_from = find_card(ac, source_card);
+            Card* card_to = find_card(ac, destination_card);
+
+            if (card_from && card_to) {
+                *card_to = *card_from;
+                std::cout << "Card " << destination_card << " assigned the values from Card " << source_card << std::endl;
+            }
+            else {
+                std::cout << "One of the cards not found." << std::endl;
+            }
+            break;
+        }
+        case menu_options::test_equality_operator:
+        {
+            std::string source_card;
+            std::string destination_card;
+
+            std::cout << "Enter first card number to compare with: ";
+            std::cin >> source_card;
+            std::cout << "Enter second card number to compare with: ";
+            std::cin >> destination_card;
+
+            Card* card_from = find_card(ac, source_card);
+            Card* card_to = find_card(ac, destination_card);
+
+            if (card_from && card_to) {
+                if (*card_from == *card_to) {
+                    std::cout << "Cards " << source_card << " and " << destination_card << " are equal in balance and expire date." << std::endl;
+                }
+                else {
+                    std::cout << "Cards " << source_card << " and " << destination_card << " are not equal." << std::endl;
+                }
+            }
+            else {
+                std::cout << "One of the cards not found." << std::endl;
+            }
+            break;
+        }
         case menu_options::end:
             std::cout << "Exit" << std::endl;
             return;

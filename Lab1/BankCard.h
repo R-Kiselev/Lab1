@@ -36,6 +36,20 @@ public:
     int get_account_id() const;
 
     Card(const Card&) = delete;
-    void operator=(const Card&) = delete;
+
+    void operator=(const Card& other) 
+    {
+        if (this != &other) 
+        {
+            expire_date_ = other.expire_date_;
+            balance_ = other.balance_;
+        }
+    }
+
+    bool operator==(const Card& other) const 
+    {
+        return balance_ == other.balance_
+            && expire_date_ == other.expire_date_;
+    }
 };
 
