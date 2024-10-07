@@ -28,15 +28,12 @@ void AccountCollection::print_accounts() const {
 }
 
 bool AccountCollection::delete_account(const int id) {
-    if (auto it = std::ranges::find_if(accounts_.begin(), accounts_.end(),
-        [id](const auto& account) {
-            return account->get_id() == id;
+    if (auto it = std::ranges::find_if(accounts_, [id](const auto& account) {
+        return account->get_id() == id;
         }); it != accounts_.end()) {
-
         accounts_.erase(it);
         return true;
     }
-
     std::cout << "There is no account with ID = " << id << std::endl;
     return false;
 }

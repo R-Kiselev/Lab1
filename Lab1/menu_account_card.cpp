@@ -189,10 +189,8 @@ void menu_account_card(sqlite3* DB)
             std::cout << "Enter second card ID to copy to: ";
             std::cin >> destination_card;
 
-            const Card* card_from = find_card(ac, source_card);
-            Card* card_to = find_card(ac, destination_card);
-
-            if (card_from && card_to) {
+            if (const Card* card_from = find_card(ac, source_card);
+                Card* card_to = find_card(ac, destination_card)) {
                 *card_to = *card_from;
                 std::cout << "Card " << destination_card << " assigned the values from Card " << source_card << std::endl;
             }
@@ -211,10 +209,8 @@ void menu_account_card(sqlite3* DB)
             std::cout << "Enter second card number to compare with: ";
             std::cin >> destination_card;
 
-            const Card* card_from = find_card(ac, source_card);
-            Card* card_to = find_card(ac, destination_card);
-
-            if (card_from && card_to) {
+            if (const Card* card_from = find_card(ac, source_card);
+                      Card* card_to = find_card(ac, destination_card)) {
                 if (*card_from == *card_to) {
                     std::cout << "Cards " << source_card << " and " << destination_card << " are equal in balance and expire date." << std::endl;
                 }
