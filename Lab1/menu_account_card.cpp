@@ -90,7 +90,7 @@ void menu_account_card(sqlite3* DB)
                 auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
                 ac[account_id]->add_card(std::move(card));
             }
-            catch (const std::exception& e)
+            catch (const CardException& e)
             {
                 std::cerr << e.what() << std::endl << std::endl;
             }
@@ -189,7 +189,7 @@ void menu_account_card(sqlite3* DB)
             std::cout << "Enter second card ID to copy to: ";
             std::cin >> destination_card;
 
-            Card* card_from = find_card(ac, source_card);
+            const Card* card_from = find_card(ac, source_card);
             Card* card_to = find_card(ac, destination_card);
 
             if (card_from && card_to) {
@@ -211,7 +211,7 @@ void menu_account_card(sqlite3* DB)
             std::cout << "Enter second card number to compare with: ";
             std::cin >> destination_card;
 
-            Card* card_from = find_card(ac, source_card);
+            const Card* card_from = find_card(ac, source_card);
             Card* card_to = find_card(ac, destination_card);
 
             if (card_from && card_to) {

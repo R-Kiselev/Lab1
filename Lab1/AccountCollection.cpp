@@ -13,8 +13,8 @@ void AccountCollection::create_account(const int id, const std::string& client_n
 }
 
 Account* AccountCollection::find_account_by_id(int id) {
-    auto it = std::ranges::find_if(accounts_.begin(), accounts_.end(),
-        [id](const auto& account) {
+    auto it = std::ranges::find_if(accounts_,
+        [id](const std::unique_ptr<Account>& account) {
             return account->get_id() == id;
         });
 
@@ -28,12 +28,11 @@ void AccountCollection::print_accounts() const {
 }
 
 bool AccountCollection::delete_account(const int id) {
-    auto it = std::ranges::find_if(accounts_.begin(), accounts_.end(),
+    if (auto it = std::ranges::find_if(accounts_.begin(), accounts_.end(),
         [id](const auto& account) {
             return account->get_id() == id;
-        });
+        }); it != accounts_.end()) {
 
-    if (it != accounts_.end()) {
         accounts_.erase(it);
         return true;
     }

@@ -53,3 +53,8 @@ public:
     }
 };
 
+class CardException : public std::runtime_error {
+public:
+    explicit CardException(const std::string& message)
+        : std::runtime_error(message) {}
+};

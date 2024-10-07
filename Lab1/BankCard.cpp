@@ -13,32 +13,25 @@ static bool is_card_number(const std::string_view& card_number)
     }
     return true;
 }
-
-static bool is_expire_date(const std::string_view& exp_date)
-{
-    std::vector<char> accepted_symbols = { '-', '\\', '/'};
+static bool is_expire_date(const std::string_view& exp_date) {
+    std::vector<char> accepted_symbols = { '-', '\\', '/' };
     int symb_count = 0;
     int digits_count = 0;
-    for (char ch : exp_date)
-    {
-        if (!std::isdigit(ch))
-        {
-            if (ch == '-')
-            {
-                symb_count++;
-                if (symb_count > 1) return false;
-            }
-            else if (std::find(accepted_symbols.begin(), accepted_symbols.end(), ch) == accepted_symbols.end())
-            {
-                return false;
-            }
+
+    for (char ch : exp_date) {
+        if (std::isdigit(ch)) {
+            digits_count++;
+            continue;
+        }
+
+        if (std::ranges::find(accepted_symbols, ch) == accepted_symbols.end() || symb_count > 1) {
+            return false;
         }
         else
-            digits_count++;
+            symb_count++;
     }
-    if (digits_count != 4)
-        return false;
-    return true;
+
+    return digits_count == 4;
 }
 Card::Card(const int id,
     const std::string& card_number,
@@ -54,7 +47,7 @@ Card::Card(const int id,
     }
     else
     {
-        throw std::runtime_error("Wrong symbols in card number or expire date.");
+        throw CardException("Wrong symbols in card number or expire date.");
     }
 }
 
