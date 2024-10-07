@@ -13,7 +13,7 @@ void AccountCollection::create_account(const int id, const std::string& client_n
 }
 
 Account* AccountCollection::find_account_by_id(int id) {
-    auto it = std::find_if(accounts_.begin(), accounts_.end(),
+    auto it = std::ranges::find_if(accounts_.begin(), accounts_.end(),
         [id](const auto& account) {
             return account->get_id() == id;
         });
@@ -21,14 +21,14 @@ Account* AccountCollection::find_account_by_id(int id) {
     return it != accounts_.end() ? it->get() : nullptr;
 }
 
-void AccountCollection::print_accounts() {
+void AccountCollection::print_accounts() const {
     for (auto& account : accounts_) {
         account->display_info();
     }
 }
 
 bool AccountCollection::delete_account(const int id) {
-    auto it = std::find_if(accounts_.begin(), accounts_.end(),
+    auto it = std::ranges::find_if(accounts_.begin(), accounts_.end(),
         [id](const auto& account) {
             return account->get_id() == id;
         });
@@ -42,7 +42,8 @@ bool AccountCollection::delete_account(const int id) {
     return false;
 }
 
-void AccountCollection::save_to_db(sqlite3* db) {
+void AccountCollection::save_to_db(sqlite3* db) const
+{
     const char* sql = "DELETE FROM accounts;";
     sqlite3_exec(db, sql, nullptr, nullptr, nullptr);
     for (const auto& account : accounts_) {
@@ -74,7 +75,7 @@ void AccountCollection::load_from_db(sqlite3* db) {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int id = sqlite3_column_int(stmt, 0);
-        const char* client_name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        auto* client_name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
         int balance = sqlite3_column_int(stmt, 2);
 
         create_account(id, client_name, balance);
@@ -89,7 +90,8 @@ Account* AccountCollection::operator[](int id) {
 }
 
 void AccountCollection::transfer_money_between_cards(const std::string_view& recipient_card_number,
-    const std::string_view& sender_card_number, int sum) {
+    const std::string_view& sender_card_number, int sum) const
+{
     Card* sender_card = find_card(*this, sender_card_number);
     if (sender_card && sender_card->get_balance() >= sum) {
         Card* recipient_card = find_card(*this, recipient_card_number);

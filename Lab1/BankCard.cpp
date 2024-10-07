@@ -6,7 +6,7 @@ static bool is_card_number(const std::string_view& card_number)
 
     for (char ch : card_number)
     {
-        if (!std::isdigit(ch) && std::find(accepted_symbols.begin(), accepted_symbols.end(), ch) == accepted_symbols.end())
+        if (!std::isdigit(ch) && std::ranges::find(accepted_symbols.begin(), accepted_symbols.end(), ch) == accepted_symbols.end())
         {
             return false;
         }
@@ -60,6 +60,7 @@ Card::Card(const int id,
 
 Card::~Card()
 {
+    std::cout << "Card ID: " << get_id() << std::endl;
 }
 
 void Card::display_info() const

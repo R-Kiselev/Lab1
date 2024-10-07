@@ -16,7 +16,7 @@ void create_card_table(sqlite3* DB)
         "account_id INT,"
         "FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE);";
 
-    int rc = sqlite3_exec(DB, query.c_str(), NULL, 0, &errorMessage);
+    int rc = sqlite3_exec(DB, query.c_str(), nullptr, 0, &errorMessage);
     if (rc != SQLITE_OK)
     {
         std::cerr << "Error creating card table: " << errorMessage << std::endl;
@@ -33,7 +33,7 @@ void create_account_table(sqlite3* DB)
         "client_name TEXT NOT NULL,"
         "card_balance INTEGER DEFAULT 0 NOT NULL);";
 
-    int rc = sqlite3_exec(DB, query.c_str(), NULL, 0, &errorMessage);
+    int rc = sqlite3_exec(DB, query.c_str(), nullptr, 0, &errorMessage);
     if (rc != SQLITE_OK)
     {
         std::cerr << "Error creating account table: " << errorMessage << std::endl;

@@ -6,22 +6,6 @@ void menu_account_card(sqlite3* DB)
 
     ac.load_from_db(DB);
 
-    //ac.create_account(1, "Roman", 1000);
-    //auto card1 = std::make_unique<Card>(1, "1111-2222-3333-4444", "08/27", 300, 1);
-    //auto card2 = std::make_unique<Card>(2, "2222-3333-4444-6666", "08/27", 300, 1);
-    //ac[1]->add_card(std::move(card1));
-    //ac[1]->add_card(std::move(card2));
-    //ac.create_account(2, "John", 500);
-    //auto card3 = std::make_unique<Card>(3, "3333-4444-5555-6666", "09/28", 200, 2);
-    //auto card4 = std::make_unique<Card>(4, "4444-5555-6666-7777", "09/28", 200, 2);
-    //ac[2]->add_card(std::move(card3));
-    //ac[2]->add_card(std::move(card4));
-    //ac.create_account(3, "Emily", 2000);
-    //auto card5 = std::make_unique<Card>(5, "5555-6666-7777-8888", "10/29", 500, 3);
-    //auto card6 = std::make_unique<Card>(6, "6666-7777-8888-9999", "10/29", 500, 3);
-    //ac[3]->add_card(std::move(card5));
-    //ac[3]->add_card(std::move(card6));
-
     while (true)
     {
         std::cout << "1) Display accounts info" << std::endl;
@@ -103,7 +87,7 @@ void menu_account_card(sqlite3* DB)
 
             try
             {
-                std::unique_ptr<Card> card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
+                auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
                 ac[account_id]->add_card(std::move(card));
             }
             catch (const std::exception& e)

@@ -6,10 +6,7 @@ Account::Account(const int id, const std::string& client_name, const int account
 }
 Account::~Account()
 {
-    std::cout << "Deleting account " << id_ << " and its cards" << std::endl;
-    for (const auto& card : cards_) {
-        std::cout << "Card ID: " << card->get_id() << std::endl;
-    }
+    std::cout << "Deleting account " << id_ << std::endl;
     cards_.clear();
 }
 

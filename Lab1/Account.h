@@ -36,8 +36,10 @@ public:
 
     void transfer_money(const std::string_view& card_number, const int sum) const;
 
-    void save_cards_to_db(sqlite3* db) {
-        for (const auto& card : cards_) {
+    void save_cards_to_db(sqlite3* db) const
+    {
+        for (const auto& card : cards_) 
+        {
             const char* sql_insert =
                 "INSERT OR REPLACE INTO cards (id, card_number, expire_date, balance, account_id) "
                 "VALUES (?, ?, ?, ?, ?);";
@@ -53,19 +55,19 @@ public:
         }
     }
     void load_cards_from_db(sqlite3* db) {
-        const char* sql_select = "SELECT id, card_number, expire_date, balance, account_id FROM cards WHERE account_id = ?;";
+        auto* sql_select = "SELECT id, card_number, expire_date, balance, account_id FROM cards WHERE account_id = ?;";
         sqlite3_stmt* stmt;
         sqlite3_prepare_v2(db, sql_select, -1, &stmt, nullptr);
         sqlite3_bind_int(stmt, 1, id_);
 
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             int id = sqlite3_column_int(stmt, 0);
-            const char* card_number = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-            const char* expire_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+            auto* card_number = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+            auto* expire_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
             int card_balance = sqlite3_column_int(stmt, 3);
             int account_id = sqlite3_column_int(stmt, 4);
 
-            std::unique_ptr<Card> card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
+            auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
             cards_.push_back(std::move(card));
         }
 
