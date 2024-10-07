@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 /Lab1/Database
 *.vcxproj*
+*.cd
+*.png
