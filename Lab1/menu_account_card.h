@@ -25,8 +25,6 @@ enum class menu_options
     transfer_account,
     transfer_cards,
 
-    save_into_db,
-
     test_assignment_operator,
     test_equality_operator
 };

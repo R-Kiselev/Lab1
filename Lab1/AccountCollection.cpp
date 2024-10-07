@@ -44,7 +44,7 @@ void AccountCollection::save_to_db(sqlite3* db) const
     sqlite3_exec(db, sql, nullptr, nullptr, nullptr);
     for (const auto& account : accounts_) {
         std::string sql_insert =
-            "INSERT OR REPLACE INTO accounts (id, client_name, card_balance) VALUES (?, ?, ?);";
+            "INSERT INTO accounts (id, client_name, card_balance) VALUES (?, ?, ?);";
         sqlite3_stmt* stmt;
 
         if (sqlite3_prepare_v2(db, sql_insert.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -59,7 +59,11 @@ void AccountCollection::save_to_db(sqlite3* db) const
             std::cout << sqlite3_errmsg(db) << std::endl;
         }
         sqlite3_finalize(stmt);
+    }
 
+    sql = "DELETE FROM cards;";
+    sqlite3_exec(db, sql, nullptr, nullptr, nullptr);
+    for (const auto& account : accounts_) {
         account->save_cards_to_db(db);
     }
 }

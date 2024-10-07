@@ -21,10 +21,8 @@ void menu_account_card(sqlite3* DB)
         std::cout << "8) Transfer money between account and card" << std::endl;
         std::cout << "9) Transfer money between two cards" << std::endl;
 
-        std::cout << "10) Save info to the database" << std::endl;
-
-        std::cout << "11) Test assignment operator" << std::endl;
-        std::cout << "12) Test equality operator" << std::endl;
+        std::cout << "10) Test assignment operator" << std::endl;
+        std::cout << "11) Test equality operator" << std::endl;
 
         std::cout << "0) Exit" << std::endl;
         std::cout << "Your option : ";
@@ -53,6 +51,7 @@ void menu_account_card(sqlite3* DB)
             std::cin >> balance;
 
             ac.create_account(id, client_name, balance);
+            ac.save_to_db(DB);
             break;
         }
         case menu_options::delete_account:
@@ -88,13 +87,20 @@ void menu_account_card(sqlite3* DB)
             try
             {
                 auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
-                ac[account_id]->add_card(std::move(card));
+                if (ac[account_id])
+                {
+                    ac[account_id]->add_card(std::move(card));
+                }
+                else
+                {
+                    throw CardException("There is no account with ID = " + std::to_string(account_id));
+                }
             }
             catch (const CardException& e)
             {
                 std::cerr << e.what() << std::endl << std::endl;
             }
-
+            ac.save_to_db(DB);
             break;
         }
         case menu_options::delete_card:
@@ -115,6 +121,7 @@ void menu_account_card(sqlite3* DB)
             {
                 std::cout << "Card was not found" << std::endl << std::endl;
             }
+            ac.save_to_db(DB);
             break;
         }
         case menu_options::set_name:
@@ -129,6 +136,7 @@ void menu_account_card(sqlite3* DB)
             auto account = ac.find_account_by_id(account_id);
             account->set_name(name);
 
+            ac.save_to_db(DB);
             break;
         }
         case menu_options::set_balance:
@@ -142,6 +150,7 @@ void menu_account_card(sqlite3* DB)
 
             auto account = ac.find_account_by_id(account_id);
             account->set_balance(balance);
+            ac.save_to_db(DB);
             break;
         }
         case menu_options::transfer_account:
@@ -158,6 +167,7 @@ void menu_account_card(sqlite3* DB)
             std::cin >> sum;
 
             ac.transfer_money_to_account_card(account_id, card_number, sum);
+            ac.save_to_db(DB);
             break;
         }
         case menu_options::transfer_cards:
@@ -174,11 +184,9 @@ void menu_account_card(sqlite3* DB)
             std::cin >> sum;
 
             ac.transfer_money_between_cards(recipient_card, sender_card, sum);
-            break;
-        }
-        case menu_options::save_into_db:
             ac.save_to_db(DB);
             break;
+        }
         case menu_options::test_assignment_operator:
         {
             std::string source_card;
@@ -192,11 +200,12 @@ void menu_account_card(sqlite3* DB)
             if (const Card* card_from = find_card(ac, source_card);
                 Card* card_to = find_card(ac, destination_card)) {
                 *card_to = *card_from;
-                std::cout << "Card " << destination_card << " assigned the values from Card " << source_card << std::endl;
+                std::cout << "Card " << destination_card << " assigned the values from card " << source_card << std::endl;
             }
             else {
                 std::cout << "One of the cards not found." << std::endl;
             }
+            ac.save_to_db(DB);
             break;
         }
         case menu_options::test_equality_operator:
