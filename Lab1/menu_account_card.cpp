@@ -210,13 +210,12 @@ void menu_account_card(sqlite3* DB)
             std::cin >> destination_card;
 
             if (const Card* card_from = find_card(ac, source_card);
-                      Card* card_to = find_card(ac, destination_card)) {
-                if (*card_from == *card_to) {
-                    std::cout << "Cards " << source_card << " and " << destination_card << " are equal in balance and expire date." << std::endl;
-                }
-                else {
+                const Card* card_to = find_card(ac, destination_card)) {
+                (*card_from == *card_to) ?
+                    std::cout << "Cards " << source_card << " and " << destination_card << " are equal in balance and expire date." << std::endl
+                :
                     std::cout << "Cards " << source_card << " and " << destination_card << " are not equal." << std::endl;
-                }
+                
             }
             else {
                 std::cout << "One of the cards not found." << std::endl;
