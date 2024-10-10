@@ -119,7 +119,8 @@ void handle_add_card(AccountCollection& ac, sqlite3* DB)
     int id;
     int card_balance;
     int account_id;
-    std::string card_number, expire_date;
+    std::string card_number;
+    std::string expire_date;
 
     std::cout << "Enter card id: ";
     std::cin >> id;
