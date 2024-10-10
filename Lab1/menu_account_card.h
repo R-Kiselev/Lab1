@@ -4,6 +4,7 @@
 #include <string>
 #include <string_view>
 #include <memory>
+#include <format>
 #include <sqlite3.h>
 #include "Account.h"
 #include "AccountCollection.h"

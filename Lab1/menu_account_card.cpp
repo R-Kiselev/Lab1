@@ -94,9 +94,10 @@ void menu_account_card(sqlite3* DB)
             try
             {
                 if (find_card(ac, id))
-                    throw CardException("Card with ID= " + std::to_string(id) + " already exists");
+                    throw CardException(std::format("Card with ID = {} already exists", id));
+
                 if (!ac[account_id])
-                    throw CardException("There is no account with ID = " + std::to_string(account_id));
+                    throw CardException(std::format("There is no account with ID = {}", account_id));
                 
                 auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
                 card->save_to_db(DB);
@@ -118,9 +119,7 @@ void menu_account_card(sqlite3* DB)
             std::cout << "Enter card id to delete: ";
             std::cin >> card_id;
 
-            auto card = find_card(ac, card_id);
-
-            if (card)
+            if (auto card = find_card(ac, card_id))
             {
                 card->delete_from_db(DB);
                 ac[account_id]->delete_card(card_id);
