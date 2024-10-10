@@ -168,7 +168,7 @@ void handle_delete_card(AccountCollection& ac, sqlite3* DB)
     }
     else
     {
-        std::cout << "Card was not found" << std::endl << std::endl;
+        std::cerr << std::format("Card with ID = {} was not found", card_id) << std::endl << std::endl;
     }
 }
 
@@ -181,9 +181,15 @@ void handle_set_name(AccountCollection& ac, sqlite3* DB)
     std::cout << "Enter new name: ";
     std::cin >> name;
 
-    auto account = ac.find_account_by_id(account_id);
-    account->set_name(name);
-    ac.save_collection_to_db(DB);
+    if (auto account = ac.find_account_by_id(account_id))
+    {
+        account->set_name(name);
+        account->update_object_db(account_id, name, account->get_balance(), DB);
+    }
+    else
+    {
+        std::cerr << std::format("There is no accounts with ID= {}", account_id) << std::endl << std::endl;
+    }
 }
 
 void handle_set_balance(AccountCollection& ac, sqlite3* DB)
@@ -195,9 +201,15 @@ void handle_set_balance(AccountCollection& ac, sqlite3* DB)
     std::cout << "Enter new balance: ";
     std::cin >> balance;
 
-    auto account = ac.find_account_by_id(account_id);
-    account->set_balance(balance);
-    ac.save_collection_to_db(DB);
+    if (auto account = ac.find_account_by_id(account_id))
+    {
+        account->set_balance(balance);
+        account->update_object_db(account_id, account->get_name(), balance, DB);
+    }
+    else
+    {
+        std::cerr << std::format("There is no accounts with ID= {}", account_id) << std::endl << std::endl;
+    }
 }
 
 void handle_transfer_account(AccountCollection& ac, sqlite3* DB)

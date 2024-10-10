@@ -124,7 +124,27 @@ int Card::get_account_id() const
 {
     return account_id_;
 }
+void Card::update_object_db(int id, const std::string& card_number, const std::string& expire_date,
+    const int balance, const int account_id, sqlite3* db) const
+{
+    const char* sql_update = "UPDATE cards SET card_number = ?, expire_date = ?, balance = ?, account_id = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql_update, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare update statement: " << sqlite3_errmsg(db) << "\n";
+    }
 
+    sqlite3_bind_text(stmt, 1, card_number.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, expire_date.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 3, balance);
+    sqlite3_bind_int(stmt, 4, account_id);
+    sqlite3_bind_int(stmt, 5, id);
+
+    if (sqlite3_step(stmt) != SQLITE_DONE) {
+        std::cerr << "Failed to execute update statement: " << sqlite3_errmsg(db) << "\n";
+        sqlite3_finalize(stmt);
+    }
+    sqlite3_finalize(stmt);
+}
 void Card::save_to_db(sqlite3* db) const
 {
     const char* sql_insert =

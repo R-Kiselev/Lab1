@@ -36,6 +36,8 @@ public:
     int get_id() const;
     int get_account_id() const;
 
+    void update_object_db(int id, const std::string& card_number, const std::string& expire_date,
+        const int balance, const int account_id, sqlite3* db) const;
     void save_to_db(sqlite3* db) const override;
     void delete_from_db(sqlite3* db) override;
 

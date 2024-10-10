@@ -35,6 +35,8 @@ public:
     int get_balance() const override;
     void set_balance(const int balance) override;
 
+
+    void update_object_db(int id, const std::string& name, const int balance, sqlite3* db) const;
     void save_to_db(sqlite3* db) const override;
     void delete_from_db(sqlite3* db) override;
 
