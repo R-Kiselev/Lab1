@@ -38,14 +38,14 @@ bool AccountCollection::delete_account(const int id) {
     return false;
 }
 
-void AccountCollection::save_to_db(sqlite3* db) const
+void AccountCollection::save_collection_to_db(sqlite3* db) const
 {
     for (const auto& account : accounts_) {
         account->save_to_db(db);
     }
 }
 
-void AccountCollection::load_from_db(sqlite3* db) {
+void AccountCollection::load_collection_from_db(sqlite3* db) {
     const char* sql_select = "SELECT id, client_name, card_balance FROM accounts;";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql_select, -1, &stmt, nullptr);
@@ -56,7 +56,7 @@ void AccountCollection::load_from_db(sqlite3* db) {
         int balance = sqlite3_column_int(stmt, 2);
 
         create_account(id, client_name, balance);
-        accounts_.back()->load_cards_from_db(db);
+        accounts_.back()->load_collection_from_db(db);
     }
 
     sqlite3_finalize(stmt);

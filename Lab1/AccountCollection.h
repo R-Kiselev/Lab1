@@ -6,7 +6,8 @@
 #include "Account.h"
 #include "BankCard.h"
 
-class AccountCollection {
+class AccountCollection : public IDatabaseCollection
+{
 private:
     std::vector<std::unique_ptr<Account>> accounts_;
 
@@ -15,13 +16,16 @@ public:
     Account* find_account_by_id(int id);
     void print_accounts() const;
     bool delete_account(const int id);
-    void save_to_db(sqlite3* db) const;
-    //void delete_account_from_db(sqlite3* db, const int account_id);
-    void load_from_db(sqlite3* db);
-    Account* operator[](int id);
+   
     void transfer_money_between_cards(const std::string_view& recipient_card_number,
         const std::string_view& sender_card_number, int sum) const;
     void transfer_money_to_account_card(int account_id, const std::string_view& card_number, int sum);
+    
+    void save_collection_to_db(sqlite3* db) const override;
+    void load_collection_from_db(sqlite3* db) override;
+
+    Account* operator[](int id);
+
     friend Card* find_card(const AccountCollection&, const int id);
     friend Card* find_card(const AccountCollection& collection, const std::string_view& card_number);
 };

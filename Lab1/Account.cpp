@@ -125,7 +125,7 @@ int Account::get_available_balance() const
     return (balance_ - cards_balance > 0) ? balance_ - cards_balance : 0;
 }
 
-void Account::save_cards_to_db(sqlite3* db) const
+void Account::save_collection_to_db(sqlite3* db) const
 {
     for (const auto& card : cards_)
     {
@@ -133,7 +133,7 @@ void Account::save_cards_to_db(sqlite3* db) const
     }
 }
 
-void Account::load_cards_from_db(sqlite3* db)
+void Account::load_collection_from_db(sqlite3* db)
 {
     const char* sql_select = "SELECT id, card_number, expire_date, balance, account_id FROM cards WHERE account_id = ?;";
     sqlite3_stmt* stmt;
@@ -155,7 +155,7 @@ void Account::load_cards_from_db(sqlite3* db)
     sqlite3_finalize(stmt);
 }
 
-void Account::save_to_db(sqlite3* db)
+void Account::save_to_db(sqlite3* db) const
 {
     std::string sql_insert =
         "INSERT INTO accounts (id, client_name, card_balance) VALUES (?, ?, ?);";
@@ -173,7 +173,7 @@ void Account::save_to_db(sqlite3* db)
         std::cout << sqlite3_errmsg(db) << std::endl;
     }
     sqlite3_finalize(stmt);
-    save_cards_to_db(db);
+    save_collection_to_db(db);
 }
 void Account::delete_from_db(sqlite3* db)
 {

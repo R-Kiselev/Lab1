@@ -125,7 +125,7 @@ int Card::get_account_id() const
     return account_id_;
 }
 
-void Card::save_to_db(sqlite3* db)
+void Card::save_to_db(sqlite3* db) const
 {
     const char* sql_insert =
         "INSERT INTO cards (id, card_number, expire_date, balance, account_id) "

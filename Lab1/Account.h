@@ -6,7 +6,7 @@
 #include "BankCard.h"
 #include <sqlite3.h>
 
-class Account
+class Account : public IFinancial, public IDatabaseObject, public IDatabaseCollection
 {
 private:
     int id_;
@@ -24,8 +24,6 @@ public:
     void set_id(const int id);
     std::string get_name() const;
     void set_name(const std::string_view& name);
-    int get_balance() const;
-    void set_balance(const int balance);
 
     Card* get_card(const std::string_view& card_number) const;
     Card* get_card(const int id) const;
@@ -34,11 +32,14 @@ public:
     bool delete_card(const int id);
     int get_available_balance() const;
     
-    void save_cards_to_db(sqlite3* db) const;
-    void load_cards_from_db(sqlite3* db);
+    int get_balance() const override;
+    void set_balance(const int balance) override;
 
-    void save_to_db(sqlite3* db);
-    void delete_from_db(sqlite3* db);
+    void save_to_db(sqlite3* db) const override;
+    void delete_from_db(sqlite3* db) override;
+
+    void save_collection_to_db(sqlite3* db) const override;
+    void load_collection_from_db(sqlite3* db) override;
     
     Account(const Account&) = delete;
     void operator=(const Account&) = delete;

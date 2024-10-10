@@ -4,7 +4,7 @@ void menu_account_card(sqlite3* DB)
 {
     AccountCollection ac;
 
-    ac.load_from_db(DB);
+    ac.load_collection_from_db(DB);
 
     while (true)
     {
@@ -144,7 +144,7 @@ void menu_account_card(sqlite3* DB)
             auto account = ac.find_account_by_id(account_id);
             account->set_name(name);
 
-            ac.save_to_db(DB);
+            ac.save_collection_to_db(DB);
             break;
         }
         case menu_options::set_balance:
@@ -158,7 +158,7 @@ void menu_account_card(sqlite3* DB)
 
             auto account = ac.find_account_by_id(account_id);
             account->set_balance(balance);
-            ac.save_to_db(DB);
+            ac.save_collection_to_db(DB);
             break;
         }
         case menu_options::transfer_account:
@@ -175,7 +175,7 @@ void menu_account_card(sqlite3* DB)
             std::cin >> sum;
 
             ac.transfer_money_to_account_card(account_id, card_number, sum);
-            ac.save_to_db(DB);
+            ac.save_collection_to_db(DB);
             break;
         }
         case menu_options::transfer_cards:
@@ -192,7 +192,7 @@ void menu_account_card(sqlite3* DB)
             std::cin >> sum;
 
             ac.transfer_money_between_cards(recipient_card, sender_card, sum);
-            ac.save_to_db(DB);
+            ac.save_collection_to_db(DB);
             break;
         }
         case menu_options::test_assignment_operator:
@@ -213,7 +213,7 @@ void menu_account_card(sqlite3* DB)
             else {
                 std::cout << "One of the cards not found." << std::endl;
             }
-            ac.save_to_db(DB);
+            ac.save_collection_to_db(DB);
             break;
         }
         case menu_options::test_equality_operator:
