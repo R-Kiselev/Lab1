@@ -12,43 +12,44 @@ void menu_account_card(sqlite3* DB)
         std::cin >> choice;
         std::cout << std::endl;
 
-        auto option = static_cast<menu_options>(choice);
-        switch (option)
+        using enum menu_options;
+
+        switch (static_cast<menu_options>(choice))
         {
-        case menu_options::accounts_info:
+        case accounts_info:
             handle_accounts_info(ac);
             break;
-        case menu_options::add_account:
+        case add_account:
             handle_add_account(ac, DB);
             break;
-        case menu_options::delete_account:
+        case delete_account:
             handle_delete_account(ac, DB);
             break;
-        case menu_options::add_card:
+        case add_card:
             handle_add_card(ac, DB);
             break;
-        case menu_options::delete_card:
+        case delete_card:
             handle_delete_card(ac, DB);
             break;
-        case menu_options::set_name:
+        case set_name:
             handle_set_name(ac, DB);
             break;
-        case menu_options::set_balance:
+        case set_balance:
             handle_set_balance(ac, DB);
             break;
-        case menu_options::transfer_account:
+        case transfer_account:
             handle_transfer_account(ac, DB);
             break;
-        case menu_options::transfer_cards:
+        case transfer_cards:
             handle_transfer_cards(ac, DB);
             break;
-        case menu_options::test_assignment_operator:
+        case test_assignment_operator:
             handle_test_assignment_operator(ac);
             break;
-        case menu_options::test_equality_operator:
+        case test_equality_operator:
             handle_test_equality_operator(ac);
             break;
-        case menu_options::end:
+        case end:
             std::cout << "Exit" << std::endl;
             return;
         default:
@@ -74,14 +75,15 @@ void display_menu()
     std::cout << "Your option: ";
 }
 
-void handle_accounts_info(AccountCollection& ac)
+void handle_accounts_info(const AccountCollection& ac)
 {
     ac.print_accounts();
 }
 
 void handle_add_account(AccountCollection& ac, sqlite3* DB)
 {
-    int id, balance;
+    int id;
+    int balance;
     std::string client_name;
 
     std::cout << "Enter id: ";
@@ -114,7 +116,9 @@ void handle_delete_account(AccountCollection& ac, sqlite3* DB)
 
 void handle_add_card(AccountCollection& ac, sqlite3* DB)
 {
-    int id, card_balance, account_id;
+    int id;
+    int card_balance;
+    int account_id;
     std::string card_number, expire_date;
 
     std::cout << "Enter card id: ";
@@ -147,7 +151,8 @@ void handle_add_card(AccountCollection& ac, sqlite3* DB)
 
 void handle_delete_card(AccountCollection& ac, sqlite3* DB)
 {
-    int account_id, card_id;
+    int account_id;
+    int card_id;
 
     std::cout << "Enter the ID of the account that the card belongs to: ";
     std::cin >> account_id;
@@ -182,7 +187,8 @@ void handle_set_name(AccountCollection& ac, sqlite3* DB)
 
 void handle_set_balance(AccountCollection& ac, sqlite3* DB)
 {
-    int account_id, balance;
+    int account_id;
+    int balance;
     std::cout << "Enter account id: ";
     std::cin >> account_id;
     std::cout << "Enter new balance: ";
@@ -195,7 +201,8 @@ void handle_set_balance(AccountCollection& ac, sqlite3* DB)
 
 void handle_transfer_account(AccountCollection& ac, sqlite3* DB)
 {
-    int account_id, sum;
+    int account_id;
+    int sum;
     std::string card_number;
 
     std::cout << "Enter sender's account id: ";
@@ -209,9 +216,10 @@ void handle_transfer_account(AccountCollection& ac, sqlite3* DB)
     ac.save_collection_to_db(DB);
 }
 
-void handle_transfer_cards(AccountCollection& ac, sqlite3* DB)
+void handle_transfer_cards(const AccountCollection& ac, sqlite3* DB)
 {
-    std::string recipient_card, sender_card;
+    std::string recipient_card;
+    std::string sender_card;
     int sum;
 
     std::cout << "Enter recipient card number: ";
@@ -225,9 +233,10 @@ void handle_transfer_cards(AccountCollection& ac, sqlite3* DB)
     ac.save_collection_to_db(DB);
 }
 
-void handle_test_assignment_operator(AccountCollection& ac)
+void handle_test_assignment_operator(const AccountCollection& ac)
 {
-    std::string source_card, destination_card;
+    std::string source_card;
+    std::string destination_card;
 
     std::cout << "Enter first card ID to copy from: ";
     std::cin >> source_card;
@@ -246,9 +255,10 @@ void handle_test_assignment_operator(AccountCollection& ac)
     }
 }
 
-void handle_test_equality_operator(AccountCollection& ac)
+void handle_test_equality_operator(const AccountCollection& ac)
 {
-    std::string source_card, destination_card;
+    std::string source_card;
+    std::string destination_card;
 
     std::cout << "Enter first card number to compare with: ";
     std::cin >> source_card;
