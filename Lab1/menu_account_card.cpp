@@ -51,7 +51,7 @@ void menu_account_card(sqlite3* DB)
             std::cin >> balance;
 
             ac.create_account(id, client_name, balance);
-            ac.save_to_db(DB);
+            ac[id]->save_to_db(DB);
             break;
         }
         case menu_options::delete_account:
@@ -60,8 +60,15 @@ void menu_account_card(sqlite3* DB)
             std::cout << "Enter id of account to delete: ";
             std::cin >> id;
 
-            ac.delete_account(id);
-
+            if (ac[id])
+            {
+                ac[id]->delete_from_db(DB);
+                ac.delete_account(id);
+            }
+            else
+            {
+                std::cerr << "There is no account with ID= " << id << std::endl;
+            }
             break;
         }
         case menu_options::add_card:
@@ -86,42 +93,43 @@ void menu_account_card(sqlite3* DB)
 
             try
             {
-                auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
-                if (ac[account_id])
-                {
-                    ac[account_id]->add_card(std::move(card));
-                }
-                else
-                {
+                if (find_card(ac, id))
+                    throw CardException("Card with ID= " + std::to_string(id) + " already exists");
+                if (!ac[account_id])
                     throw CardException("There is no account with ID = " + std::to_string(account_id));
-                }
+                
+                auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
+                card->save_to_db(DB);
+                ac[account_id]->add_card(std::move(card));
             }
             catch (const CardException& e)
             {
                 std::cerr << e.what() << std::endl << std::endl;
             }
-            ac.save_to_db(DB);
             break;
         }
         case menu_options::delete_card:
         {
             int account_id;
-            std::string card_number;
+            int card_id;
 
             std::cout << "Enter the ID of the account that the card belongs to: ";
             std::cin >> account_id;
-            std::cout << "Enter card number to delete: ";
-            std::cin >> card_number;
+            std::cout << "Enter card id to delete: ";
+            std::cin >> card_id;
 
-            if (ac[account_id]->delete_card(card_number))
+            auto card = find_card(ac, card_id);
+
+            if (card)
             {
+                card->delete_from_db(DB);
+                ac[account_id]->delete_card(card_id);
                 std::cout << "Card was deleted" << std::endl << std::endl;
             }
             else
             {
                 std::cout << "Card was not found" << std::endl << std::endl;
             }
-            ac.save_to_db(DB);
             break;
         }
         case menu_options::set_name:

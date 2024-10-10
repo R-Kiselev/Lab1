@@ -16,10 +16,12 @@ public:
     void print_accounts() const;
     bool delete_account(const int id);
     void save_to_db(sqlite3* db) const;
+    //void delete_account_from_db(sqlite3* db, const int account_id);
     void load_from_db(sqlite3* db);
     Account* operator[](int id);
     void transfer_money_between_cards(const std::string_view& recipient_card_number,
         const std::string_view& sender_card_number, int sum) const;
     void transfer_money_to_account_card(int account_id, const std::string_view& card_number, int sum);
-    friend Card* find_card(const AccountCollection&, const std::string_view&);
+    friend Card* find_card(const AccountCollection&, const int id);
+    friend Card* find_card(const AccountCollection& collection, const std::string_view& card_number);
 };

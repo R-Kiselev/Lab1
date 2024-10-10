@@ -28,17 +28,17 @@ public:
     void set_balance(const int balance);
 
     Card* get_card(const std::string_view& card_number) const;
+    Card* get_card(const int id) const;
+
     void add_card(std::unique_ptr<Card> card);
-    bool delete_card(const std::string_view& card_number);
+    bool delete_card(const int id);
     int get_available_balance() const;
     
-    void transfer_money(const std::string_view& recipient_card_number, const std::string_view& sender_card_number, const int sum) const;
-
-    void transfer_money(const std::string_view& card_number, const int sum) const;
-
     void save_cards_to_db(sqlite3* db) const;
     void load_cards_from_db(sqlite3* db);
 
+    void save_to_db(sqlite3* db);
+    void delete_from_db(sqlite3* db);
     
     Account(const Account&) = delete;
     void operator=(const Account&) = delete;

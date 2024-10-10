@@ -4,8 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <sqlite3.h>
+#include "interfaces.h"
 
-class Card
+class Card : IDatabase, IFinancial
 {
 private:
     int id_;
@@ -35,8 +36,10 @@ public:
     int get_id() const;
     int get_account_id() const;
 
-    Card(const Card&) = delete;
+    void save_to_db(sqlite3* db);
+    void delete_from_db(sqlite3* db);
 
+    Card(const Card&) = delete;
     void operator=(const Card& other) 
     {
         if (this != &other) 
@@ -45,7 +48,6 @@ public:
             balance_ = other.balance_;
         }
     }
-
     bool operator==(const Card& other) const 
     {
         return balance_ == other.balance_

@@ -40,31 +40,8 @@ bool AccountCollection::delete_account(const int id) {
 
 void AccountCollection::save_to_db(sqlite3* db) const
 {
-    const char* sql = "DELETE FROM accounts;";
-    sqlite3_exec(db, sql, nullptr, nullptr, nullptr);
     for (const auto& account : accounts_) {
-        std::string sql_insert =
-            "INSERT INTO accounts (id, client_name, card_balance) VALUES (?, ?, ?);";
-        sqlite3_stmt* stmt;
-
-        if (sqlite3_prepare_v2(db, sql_insert.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-            exit(-2);
-        }
-
-        sqlite3_bind_int(stmt, 1, account->get_id());
-        sqlite3_bind_text(stmt, 2, account->get_name().c_str(), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(stmt, 3, account->get_balance());
-
-        if (sqlite3_step(stmt) != SQLITE_DONE) {
-            std::cout << sqlite3_errmsg(db) << std::endl;
-        }
-        sqlite3_finalize(stmt);
-    }
-
-    sql = "DELETE FROM cards;";
-    sqlite3_exec(db, sql, nullptr, nullptr, nullptr);
-    for (const auto& account : accounts_) {
-        account->save_cards_to_db(db);
+        account->save_to_db(db);
     }
 }
 
@@ -123,6 +100,16 @@ void AccountCollection::transfer_money_to_account_card(int account_id, const std
     else {
         std::cout << "Account not found or insufficient funds: " << account_id << std::endl;
     }
+}
+
+Card* find_card(const AccountCollection& collection, const int id) {
+    for (const auto& account : collection.accounts_) {
+        Card* card = account->get_card(id);
+        if (card != nullptr) {
+            return card;
+        }
+    }
+    return nullptr;
 }
 
 Card* find_card(const AccountCollection& collection, const std::string_view& card_number) {

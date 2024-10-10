@@ -7,6 +7,7 @@
 #include <sqlite3.h>
 #include "Account.h"
 #include "AccountCollection.h"
+#include "BankCard.h"
 
 enum class menu_options
 {

@@ -124,3 +124,49 @@ int Card::get_account_id() const
 {
     return account_id_;
 }
+
+void Card::save_to_db(sqlite3* db)
+{
+    const char* sql_insert =
+        "INSERT INTO cards (id, card_number, expire_date, balance, account_id) "
+        "VALUES (?, ?, ?, ?, ?);";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql_insert, -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, get_id());
+    sqlite3_bind_text(stmt, 2,get_number().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3,get_expire_date().c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 4, get_balance());
+    sqlite3_bind_int(stmt, 5, get_account_id());
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+void Card::delete_from_db(sqlite3* db)
+{
+    const char* sql_delete = "DELETE FROM cards WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql_delete, -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, get_id());
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+//Card* Card::load_from_db(sqlite3* db)
+//{
+//    const char* sql_select = "SELECT id, card_number, expire_date, balance, account_id FROM cards WHERE account_id = ?;";
+//    sqlite3_stmt* stmt;
+//    sqlite3_prepare_v2(db, sql_select, -1, &stmt, nullptr);
+//    sqlite3_bind_int(stmt, 1, id_);
+//    if ((sqlite3_step(stmt) != SQLITE_ROW))
+//    {
+//        return nullptr;
+//    }
+//    
+//    int id = sqlite3_column_int(stmt, 0);
+//    auto* card_number = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+//    auto* expire_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+//    int card_balance = sqlite3_column_int(stmt, 3);
+//    int account_id = sqlite3_column_int(stmt, 4);
+//    auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
+//    sqlite3_finalize(stmt);
+//
+//    return card.get();
+//}
