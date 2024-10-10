@@ -184,7 +184,7 @@ void Account::delete_from_db(sqlite3* db)
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
 
-    for (auto& card : cards_)
+    for (const auto& card : cards_)
     {
         card->delete_from_db(db);
     }

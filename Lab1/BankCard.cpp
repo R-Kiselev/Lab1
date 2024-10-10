@@ -149,24 +149,3 @@ void Card::delete_from_db(sqlite3* db)
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
 }
-//Card* Card::load_from_db(sqlite3* db)
-//{
-//    const char* sql_select = "SELECT id, card_number, expire_date, balance, account_id FROM cards WHERE account_id = ?;";
-//    sqlite3_stmt* stmt;
-//    sqlite3_prepare_v2(db, sql_select, -1, &stmt, nullptr);
-//    sqlite3_bind_int(stmt, 1, id_);
-//    if ((sqlite3_step(stmt) != SQLITE_ROW))
-//    {
-//        return nullptr;
-//    }
-//    
-//    int id = sqlite3_column_int(stmt, 0);
-//    auto* card_number = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-//    auto* expire_date = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-//    int card_balance = sqlite3_column_int(stmt, 3);
-//    int account_id = sqlite3_column_int(stmt, 4);
-//    auto card = std::make_unique<Card>(id, card_number, expire_date, card_balance, account_id);
-//    sqlite3_finalize(stmt);
-//
-//    return card.get();
-//}
