@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>payments_window</class>
+ <widget class="QWidget" name="payments_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>payments_window</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    background-color: rgb(242, 244, 255); /* Светлый фон */
+}
+QLabel {
+    color: rgb(3, 63, 99); /* Темный синий цвет текста */
+    font-size: 14px; /* Размер шрифта */
+	border-bottom: 0
+}
+QMessageBox {
+    background-color: rgb(242, 244, 255); /* Светлый фон */
+    color: rgb(3, 63, 99); /* Темно-синий цвет текста для контраста */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 8px; /* Закругленные углы */
+}
+
+QMessageBox QLabel {
+    color: rgb(3, 63, 99); /* Темный цвет текста */
+    font-size: 14px; /* Размер шрифта */
+}
+QMessageBox QPushButton {
+    background-color: rgb(3, 63, 99); /* Синий фон кнопки */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px; /* Отступы для приятного вида */
+}
+QMessageBox QPushButton:hover {
+    background-color: rgb(40, 102, 110); /* Цвет при наведении */
+}
+QInputDialog {
+    background-color: rgb(242, 244, 255); /* Светлый фон */
+    color: rgb(3, 63, 99); /* Темно-синий цвет текста */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 8px; /* Закругленные углы */
+}
+
+QInputDialog QLabel {
+    color: rgb(3, 63, 99); /* Темный синий цвет текста */
+    font-size: 14px; /* Размер шрифта */
+}
+
+QInputDialog QLineEdit {
+    background-color: rgb(252, 247, 255); /* Светлый фон поля ввода */
+    color: rgb(3, 63, 99); /* Темный текст */
+    border: 1px solid rgb(124, 152, 133); /* Граница поля ввода */
+    border-radius: 5px; /* Закругленные углы поля ввода */
+    padding: 4px; /* Внутренние отступы */
+}
+
+QInputDialog QPushButton {
+    background-color: rgb(3, 63, 99); /* Синий фон кнопки */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px; /* Отступы для приятного вида */
+}
+
+QInputDialog QPushButton:hover {
+    background-color: rgb(40, 102, 110); /* Цвет при наведении */
+}
+QPushButton {
+    background-color: rgb(3, 63, 99); /* Тёмно-синий основной цвет */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 10px; /* Закруглённые края */
+    padding: 8px 16px; /* Отступы для приятного вида */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: bold; /* Жирный текст */
+}
+QPushButton:hover {
+    background-color: rgb(40, 102, 110); /* Цвет кнопки при наведении */
+    color: rgb(218, 223, 247); /* Голубой текст при наведении */
+}
+QPushButton:pressed {
+    background-color: rgb(124, 152, 133); /* Цвет при нажатии */
+}
+QScrollArea {
+    background-color: rgb(242, 244, 255); /* Светлый фон */
+    border: 1px solid rgb(169, 211, 255); /* Тонкая граница */
+    border-radius: 5px; /* Закругленные углы */
+}
+QScrollBar:vertical {
+    background-color: rgb(242, 244, 255); /* Цвет фона скроллбара */
+    width: 10px; /* Ширина скроллбара */
+}
+QScrollBar::handle:vertical {
+    background-color: rgb(3, 63, 99); /* Основной цвет ползунка */
+    border-radius: 5px;
+    min-height: 20px; /* Минимальная высота ползунка */
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    background: none; /* Без линий сверху и снизу */
+    height: 0px;
+}
+</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="1">
+    <spacer name="verticalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="6" column="1">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="1">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="transfer_accounts_button">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Accounts</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="transfer_account_card_button">
+       <property name="text">
+        <string>Account and card</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="transfer_cards_button">
+       <property name="text">
+        <string>Cards</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="0" column="1">
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="2">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="1">
+    <widget class="QPushButton" name="back_button">
+     <property name="text">
+      <string>Back</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Transfer money between :</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -10,7 +10,6 @@ class AccountCollection : public IDatabaseCollection
 {
 private:
     std::vector<std::unique_ptr<Account>> accounts_;
-
 public:
     void create_account(const int id, const std::string& client_name, const int balance);
     Account* find_account_by_id(int id);

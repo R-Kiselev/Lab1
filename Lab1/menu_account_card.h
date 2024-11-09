@@ -43,5 +43,5 @@ void handle_set_name(AccountCollection& ac, sqlite3* DB);
 void handle_set_balance(AccountCollection& ac, sqlite3* DB);
 void handle_transfer_account(AccountCollection& ac, sqlite3* DB);
 void handle_transfer_cards(const AccountCollection& ac, sqlite3* DB);
-void handle_test_assignment_operator(const AccountCollection& ac);
+void handle_test_assignment_operator(const AccountCollection& ac, sqlite3* DB);
 void handle_test_equality_operator(const AccountCollection& ac);

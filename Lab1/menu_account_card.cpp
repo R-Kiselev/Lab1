@@ -44,7 +44,7 @@ void menu_account_card(sqlite3* DB)
             handle_transfer_cards(ac, DB);
             break;
         case test_assignment_operator:
-            handle_test_assignment_operator(ac);
+            handle_test_assignment_operator(ac, DB);
             break;
         case test_equality_operator:
             handle_test_equality_operator(ac);
@@ -246,7 +246,7 @@ void handle_transfer_cards(const AccountCollection& ac, sqlite3* DB)
     ac.save_collection_to_db(DB);
 }
 
-void handle_test_assignment_operator(const AccountCollection& ac)
+void handle_test_assignment_operator(const AccountCollection& ac, sqlite3* DB)
 {
     std::string source_card;
     std::string destination_card;
@@ -261,6 +261,7 @@ void handle_test_assignment_operator(const AccountCollection& ac)
     {
         *card_to = *card_from;
         std::cout << "Card " << destination_card << " assigned the values from card " << source_card << std::endl;
+        card_to->save_to_db(DB);
     }
     else
     {

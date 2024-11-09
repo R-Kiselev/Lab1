@@ -26,15 +26,16 @@ public:
     void display_info() const;
     void set_number(const std::string_view& number);
     void set_expire_date(const std::string_view& expire_date);
-    void set_balance(const int card_balance) override;
     void set_id(const int id);
     void set_account_id(const int id);
 
     std::string get_number() const;
     std::string get_expire_date() const;
-    int get_balance() const override;
     int get_id() const;
     int get_account_id() const;
+    
+    int get_balance() const override;
+    void set_balance(const int card_balance) override;
 
     void update_object_db(int id, const std::string& card_number, const std::string& expire_date,
         const int balance, const int account_id, sqlite3* db) const;

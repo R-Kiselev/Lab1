@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>client_dialog</class>
+ <widget class="QDialog" name="client_dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>344</width>
+    <height>190</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>client_dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Стиль для самого QDialog */
+QDialog {
+    background-color: rgb(220, 224, 235); /* Светлый фон */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 12px; /* Закругленные углы */
+    padding: 20px; /* Отступы внутри диалога */
+    min-width: 300px; /* Минимальная ширина диалога */
+}
+
+/* Стиль для QLabel */
+QLabel {
+    background-color: rgb(220, 224, 235); /* Светлый фон */
+    color: rgb(3, 63, 99); /* Темный синий цвет текста */
+    font-size: 14px; /* Размер шрифта */
+    margin-bottom: 8px; /* Отступ снизу, чтобы разделить текст с полем */
+}
+
+/* Стиль для QLineEdit */
+QLineEdit {
+    background-color: rgb(255, 255, 255); /* Белый фон для текстового поля */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 5px 10px; /* Отступы для удобства ввода */
+    font-size: 14px; /* Размер шрифта */
+    color: rgb(3, 63, 99); /* Цвет текста */
+}
+
+QLineEdit:focus {
+    border-color: rgb(3, 63, 99); /* Изменение цвета рамки при фокусе */
+}
+
+/* Стиль для QComboBox */
+QComboBox {
+    background-color: rgb(255, 255, 255); /* Белый фон для комбобокса */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 5px 10px; /* Отступы */
+    font-size: 14px; /* Размер шрифта */
+    color: rgb(3, 63, 99); /* Цвет текста */
+}
+
+QComboBox QAbstractItemView {
+    border: 2px solid rgb(40, 102, 110); /* Рамка для выпадающего списка */
+    background-color: rgb(255, 255, 255); /* Белый фон */
+    color: rgb(3, 63, 99); /* Цвет текста */
+}
+
+/* Стиль для QPushButton */
+QPushButton {
+    background-color: rgb(3, 63, 99); /* Тёмно-синий основной цвет */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 10px; /* Закруглённые края */
+    padding: 8px 16px; /* Отступы для приятного вида */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: bold; /* Жирный текст */
+}
+
+QPushButton:hover {
+    background-color: rgb(40, 102, 110); /* Цвет кнопки при наведении */
+    color: rgb(218, 223, 247); /* Голубой текст при наведении */
+}
+
+QPushButton:pressed {
+    background-color: rgb(124, 152, 133); /* Цвет при нажатии */
+}
+
+/* Выравнивание элементов внутри диалога */
+QDialog QLabel,
+QDialog QLineEdit,
+QDialog QComboBox,
+QDialog QPushButton {
+    margin-bottom: 10px; /* Отступы между элементами */
+}
+
+/* Чтобы скрыть рамку у элементов, если они внутри формы */
+QDialog QLineEdit:focus, QComboBox:focus {
+    outline: none;
+}
+</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Social Status</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="social_status_combo"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="name_edit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="ok_button">
+         <property name="text">
+          <string>OK</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="cancel_button">
+         <property name="text">
+          <string>Cancel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
