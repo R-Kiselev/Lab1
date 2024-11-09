@@ -38,29 +38,11 @@ int main(int argc, char *argv[])
 	create_accounts_table(DB);
 	create_cards_table(DB);
 
-
-////	menu_account_card(DB);
-//    BankRepository bank_repo(DB);
-//    BankService bank_service(&bank_repo);
-//
-//    SocialStatusRepository social_status_repo(DB);
-//    SocialStatusService social_status_service(&social_status_repo);
-//
-//    ClientRepository client_repo(DB);
-//    ClientService client_service(&client_repo, &social_status_service);
-//
-//    AccountRepository account_repo(DB);
-//    AccountService account_service(&account_repo, &client_service, &bank_service);
-//
-//    CardRepository card_repo(DB);
-//    CardService card_service(&card_repo, &account_service);
-
     sqlite3_close(DB);
 
     QApplication a(argc, argv);
     mainwindow w;
     w.show();
 
-    int result = a.exec();
-    return result;
+    return QApplication::exec();
 }

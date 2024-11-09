@@ -14,8 +14,8 @@ bank_window::bank_window(sqlite3* db) :
     ui->setupUi(this);
     setWindowTitle("Список банков");
 
-    clients_window_ = new clients_window(db);
-    connect(clients_window_, &clients_window::back_button, this, &bank_window::show);
+    clients_window_ = std::make_unique<clients_window>(db);
+    connect(clients_window_.get(), &clients_window::back_button, this, &bank_window::show);
     connect(ui->back_button, &QPushButton::clicked, this, &bank_window::go_back);
 
     connect(ui->add_button, &QPushButton::clicked, this, &bank_window::add);
@@ -28,8 +28,6 @@ bank_window::~bank_window() {
         sqlite3_close(db);
         db = nullptr;
     }
-    delete bank_service;
-    delete bank_repository;
     delete ui;
 }
 
@@ -39,8 +37,8 @@ void bank_window::go_back() {
 }
 
 void bank_window::setup_services(sqlite3* db) {
-    bank_repository = new BankRepository(db);
-    bank_service = new BankService(bank_repository);
+    bank_repository = std::make_unique<BankRepository>(db);
+    bank_service = std::make_unique<BankService>(bank_repository.get());
 }
 
 void bank_window::open_clients_window(int bank_id) {

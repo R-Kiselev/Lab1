@@ -12,6 +12,8 @@
 #include "../Bank/BankService.h"
 #include "client_widget.h"
 #include "../../sqlite/sqlite3.h"
+#include <memory>
+
 class accounts_window;
 
 QT_BEGIN_NAMESPACE
@@ -31,7 +33,7 @@ public:
 
     void setBankId(int bank_id);
     void add();
-    void update(int client_id);
+    void update_client(int client_id);
     void delete_client(int client_id);
 signals:
     void back_button();
@@ -44,17 +46,17 @@ private:
     Ui::clients_window *ui;
     QVBoxLayout *layout;
 
-    accounts_window* accounts_window_;
+    std::unique_ptr<accounts_window> accounts_window_;
     sqlite3* db_;
 
-    SocialStatusRepository* social_status_repository;
-    SocialStatusService* social_status_service;
-    ClientRepository* client_repository;
-    ClientService* client_service;
-    BankRepository* bank_repository;
-    BankService* bank_service;
-    AccountRepository* account_repository;
-    AccountService* account_service;
+    std::unique_ptr<SocialStatusRepository> social_status_repository;
+    std::unique_ptr<SocialStatusService> social_status_service;
+    std::unique_ptr<ClientRepository> client_repository;
+    std::unique_ptr<ClientService> client_service;
+    std::unique_ptr<BankRepository> bank_repository;
+    std::unique_ptr<BankService> bank_service;
+    std::unique_ptr<AccountRepository> account_repository;
+    std::unique_ptr<AccountService> account_service;
 
     int bank_id;
 };

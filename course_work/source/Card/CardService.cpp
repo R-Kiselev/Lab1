@@ -1,14 +1,15 @@
 #include "../../include/Card/CardService.h"
 
 
-CardService::CardService(CardRepository *card_repository, AccountService *account_service) {
-    card_repository_ = card_repository;
-    account_service_ = account_service;
+CardService::CardService(CardRepository *card_repository, AccountService *account_service) :
+        card_repository_(card_repository), account_service_(account_service)
+{
+
 }
 std::string generate_card_number() {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, 9);
+    std::uniform_int_distribution dist(0, 9);
 
     std::string card_number;
 
@@ -23,20 +24,20 @@ std::string generate_card_number() {
 }
 std::string generate_card_expiry_date() {
     auto now = std::chrono::system_clock::now();
-    std::time_t now_time = std::chrono::system_clock::to_time_t(now);
-    std::tm* local_time = std::localtime(&now_time);
-
-    int current_month = local_time->tm_mon + 1;
-    int current_year = local_time->tm_year + 1900;
+    auto now_time = std::chrono::system_clock::to_time_t(now);
+    std::tm local_time{};
+    localtime_s(&local_time, &now_time);
+    int current_month = local_time.tm_mon + 1;
+    int current_year = local_time.tm_year + 1900;
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(3, 8);
+    std::uniform_int_distribution dist(3, 8);
     int additional_years = dist(gen);
 
     int expiry_year = current_year + additional_years;
 
-    std::string expiry_date = (current_month < 10 ? "0" : "") + std::to_string(current_month) + "/" + std::to_string(expiry_year % 100);
+    std::string expiry_date = std::format("{}{}/{}", (current_month < 10 ? "0" : ""), std::to_string(current_month), std::to_string(expiry_year % 100));
 
     return expiry_date;
 }
@@ -50,33 +51,21 @@ void CardService::add(const int account_id) const {
     }
     std::string expire_date = generate_card_expiry_date();
     int balance = 0;
-    std::unique_ptr<Card> card = std::make_unique<Card>(number, expire_date, balance, account_id);
+    auto card = std::make_unique<Card>(number, expire_date, balance, account_id);
     card_repository_->add(card.get());
 }
 void CardService::remove(int id) {
-    try {
-        auto card = card_repository_->get_by_id(id);
-        card_repository_->remove(card->get_id());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto card = card_repository_->get_by_id(id);
+    card_repository_->remove(card->get_id());
 }
-void CardService::update(int id, int balance)
+void CardService::update(int id, int balance) const
 {
     if (balance < 0) {
         throw ValidationException("New balance cannot be negative");
     }
-    try {
-        auto card = card_repository_->get_by_id(id);
-        card->set_balance(balance);
-        card_repository_->update(card.get());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto card = card_repository_->get_by_id(id);
+    card->set_balance(balance);
+    card_repository_->update(card.get());
 }
 std::unique_ptr<Card> CardService::get_by_id(int id) const {
     return card_repository_->get_by_id(id);

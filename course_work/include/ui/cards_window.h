@@ -11,6 +11,7 @@
 #include <QInputDialog>
 #include <QPushButton>
 #include <QLabel>
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class cards_window;
@@ -34,7 +35,7 @@ signals:
 protected slots:
     void go_back();
     void add();
-    void update(int card_id);
+    void update_card(int card_id);
     void delete_card(int card_id);
 private:
     Ui::cards_window *ui;
@@ -42,16 +43,16 @@ private:
 
     sqlite3* db_;
 
-    BankRepository* bank_repository;
-    BankService* bank_service;
-    SocialStatusRepository* social_status_repository;
-    SocialStatusService* social_status_service;
-    ClientRepository* client_repository;
-    ClientService* client_service;
-    AccountRepository* account_repository;
-    AccountService* account_service;
-    CardRepository* card_repository;
-    CardService* card_service;
+    std::unique_ptr<BankRepository> bank_repository;
+    std::unique_ptr<BankService> bank_service;
+    std::unique_ptr<SocialStatusRepository> social_status_repository;
+    std::unique_ptr<SocialStatusService> social_status_service;
+    std::unique_ptr<ClientRepository> client_repository;
+    std::unique_ptr<ClientService> client_service;
+    std::unique_ptr<AccountRepository> account_repository;
+    std::unique_ptr<AccountService> account_service;
+    std::unique_ptr<CardRepository> card_repository;
+    std::unique_ptr<CardService> card_service;
 
     int account_id_;
 };

@@ -27,7 +27,7 @@ std::unique_ptr<Account> AccountRepository::get_by_id(const int id) const
     sqlite3_bind_int(stmt, 1, id);
     if(sqlite3_step(stmt) != SQLITE_ROW){
         sqlite3_finalize(stmt);
-        throw NotFoundException("Account with ID " + std::to_string(id) + " not found in database");
+        throw NotFoundException(std::format("Account with ID {} not found in database", std::to_string(id)));
     }
     int account_id = sqlite3_column_int(stmt, 0);
     int balance = sqlite3_column_int(stmt, 1);

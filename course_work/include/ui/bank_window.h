@@ -18,6 +18,7 @@
 #include "../Bank/BankService.h"
 
 #include "../Errors/CustomExceptions.h"
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class bank_window; }
@@ -45,11 +46,11 @@ private:
     Ui::bank_window *ui;
     QVBoxLayout *layout;
 
-    clients_window* clients_window_;
+    std::unique_ptr<clients_window> clients_window_;
 
     sqlite3* db;
-    BankRepository* bank_repository;
-    BankService* bank_service;
+    std::unique_ptr<BankRepository> bank_repository;
+    std::unique_ptr<BankService> bank_service;
 };
 
 

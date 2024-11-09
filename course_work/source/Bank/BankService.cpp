@@ -12,29 +12,16 @@ void BankService::add(const std::string &name) const {
     bank_repository_->add(bank.get());
 }
 void BankService::remove(int id) {
-    try {
-        auto bank = bank_repository_->get_by_id(id);
-        bank_repository_->remove(bank->get_id());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto bank = bank_repository_->get_by_id(id);
+    bank_repository_->remove(bank->get_id());
 }
-void BankService::update(const int id, const std::string& new_name) {
+void BankService::update(const int id, const std::string& new_name) const {
     if (new_name.empty()) {
         throw ValidationException("New bank name cannot be empty");
     }
-
-    try {
-        auto bank = bank_repository_->get_by_id(id);
-        bank->set_name(new_name);
-        bank_repository_->update(bank.get());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto bank = bank_repository_->get_by_id(id);
+    bank->set_name(new_name);
+    bank_repository_->update(bank.get());
 }
 
 std::unique_ptr<Bank> BankService::get_by_id(const int id) const

@@ -20,29 +20,17 @@ void AccountService::add(const int client_id, const int bank_id) const {
     account_repository_->add(account.get());
 }
 void AccountService::remove(int id) {
-    try {
-        auto account = account_repository_->get_by_id(id);
-        account_repository_->remove(account->get_id());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto account = account_repository_->get_by_id(id);
+    account_repository_->remove(account->get_id());
 }
-void AccountService::update(int id, const int balance)
+void AccountService::update(int id, const int balance) const
 {
     if (balance < 0){
         throw ValidationException("Balance cannot be negative");
     }
-    try {
-        auto account = account_repository_->get_by_id(id);
-        account->set_balance(balance);
-        account_repository_->update(account.get());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto account = account_repository_->get_by_id(id);
+    account->set_balance(balance);
+    account_repository_->update(account.get());
 }
 std::unique_ptr<Account> AccountService::get_by_id(int id) const
 {

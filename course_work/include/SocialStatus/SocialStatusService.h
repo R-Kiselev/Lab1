@@ -7,7 +7,7 @@ class SocialStatusService{
 private:
     SocialStatusRepository* social_status_repository_;
 public:
-    SocialStatusService(SocialStatusRepository* social_status_repository_);
+    explicit SocialStatusService(SocialStatusRepository* social_status_repository_);
     ~SocialStatusService() = default;
 
     void add(const std::string& name) const;

@@ -15,8 +15,8 @@ clients_window::clients_window(sqlite3* db)
 {
     ui->setupUi(this);
 
-    accounts_window_ = new accounts_window(db_);
-    connect(accounts_window_, &accounts_window::back_button, this, [this](){
+    accounts_window_ = std::make_unique<accounts_window>(db_);
+    connect(accounts_window_.get(), &accounts_window::back_button, this, [this](){
         load_clients(bank_id);
         this->show();
     });
@@ -35,14 +35,6 @@ clients_window::~clients_window() {
         sqlite3_close(db_);
         db_ = nullptr;
     }
-    delete account_service;
-    delete account_repository;
-    delete client_service;
-    delete client_repository;
-    delete social_status_service;
-    delete social_status_repository;
-    delete bank_service;
-    delete bank_repository;
 }
 
 void clients_window::open_accounts_window(int client_id) {
@@ -59,21 +51,21 @@ void clients_window::go_back() {
 }
 
 void clients_window::setup_services(sqlite3* db){
-    bank_repository = new BankRepository(db);
-    bank_service = new BankService(bank_repository);
+    bank_repository = std::make_unique<BankRepository>(db);
+    bank_service = std::make_unique<BankService>(bank_repository.get());
 
-    social_status_repository = new SocialStatusRepository(db);
-    social_status_service = new SocialStatusService(social_status_repository);
+    social_status_repository = std::make_unique<SocialStatusRepository>(db);
+    social_status_service = std::make_unique<SocialStatusService>(social_status_repository.get());
 
-    client_repository = new ClientRepository(db);
-    client_service = new ClientService(client_repository, social_status_service);
+    client_repository = std::make_unique<ClientRepository>(db);
+    client_service = std::make_unique<ClientService>(client_repository.get(), social_status_service.get());
 
-    account_repository = new AccountRepository(db);
-    account_service = new AccountService(account_repository, client_service, bank_service);
+    account_repository = std::make_unique<AccountRepository>(db);
+    account_service = std::make_unique<AccountService>(account_repository.get(), client_service.get(), bank_service.get());
 }
 
 void clients_window::add() {
-    client_dialog dialog(social_status_service, this);
+    client_dialog dialog(social_status_service.get(), this);
     if (dialog.exec() == QDialog::Accepted) {
         QString client_name = dialog.get_name();
         int social_status_id = dialog.get_social_status_id();
@@ -89,8 +81,8 @@ void clients_window::add() {
     }
 }
 
-void clients_window::update(int client_id) {
-    client_dialog dialog(social_status_service, this);
+void clients_window::update_client(int client_id) {
+    client_dialog dialog(social_status_service.get(), this);
     if (dialog.exec() == QDialog::Accepted) {
         QString new_name = dialog.get_name();
         int new_social_status_id = dialog.get_social_status_id();
@@ -128,7 +120,7 @@ void clients_window::load_clients(int bank_id) {
             auto *client_widget_ = new client_widget(client.get(), this);
             client_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
             connect(client_widget_, &client_widget::clicked, this, &clients_window::open_accounts_window);
-            connect(client_widget_, &client_widget::updateRequested, this, &clients_window::update);
+            connect(client_widget_, &client_widget::updateRequested, this, &clients_window::update_client);
             connect(client_widget_, &client_widget::deleteRequested, this, &clients_window::delete_client);
             layout->addWidget(client_widget_);
         }

@@ -6,6 +6,7 @@
 #include "../../sqlite/sqlite3.h"
 #include "../../include/Errors/CustomExceptions.h"
 #include "../interfaces.h"
+#include <format>
 
 class BankRepository : public IRepository<Bank> {
 private:

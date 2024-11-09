@@ -16,8 +16,8 @@ accounts_window::accounts_window(sqlite3* db)
 {
     ui->setupUi(this);
 
-    cards_window_ = new cards_window(db_);
-    connect(cards_window_, &cards_window::back_button, this, &accounts_window::show);
+    cards_window_ = std::make_unique<cards_window>(db_);
+    connect(cards_window_.get(), &cards_window::back_button, this, &accounts_window::show);
 
     setWindowTitle("Список аккаунтов клиента");
     setMinimumSize(400, 300);
@@ -33,13 +33,6 @@ accounts_window::~accounts_window() {
         sqlite3_close(db_);
         db_ = nullptr;
     }
-    delete account_service;
-    delete account_repository;
-    delete client_service;
-    delete client_repository;
-    delete social_status_service;
-    delete social_status_repository;
-    delete bank_service;
 }
 
 void accounts_window::on_back_button_clicked() {
@@ -63,17 +56,17 @@ void accounts_window::open_card_window(int account_id) {
 }
 
 void accounts_window::setup_services(sqlite3* db){
-    bank_repository = new BankRepository(db);
-    bank_service = new BankService(bank_repository);
+    bank_repository = std::make_unique<BankRepository>(db);
+    bank_service = std::make_unique<BankService>(bank_repository.get());
 
-    social_status_repository = new SocialStatusRepository(db);
-    social_status_service = new SocialStatusService(social_status_repository);
+    social_status_repository = std::make_unique<SocialStatusRepository>(db);
+    social_status_service = std::make_unique<SocialStatusService>(social_status_repository.get());
 
-    client_repository = new ClientRepository(db);
-    client_service = new ClientService(client_repository, social_status_service);
+    client_repository = std::make_unique<ClientRepository>(db);
+    client_service = std::make_unique<ClientService>(client_repository.get(), social_status_service.get());
 
-    account_repository = new AccountRepository(db);
-    account_service = new AccountService(account_repository, client_service, bank_service);
+    account_repository = std::make_unique<AccountRepository>(db);
+    account_service = std::make_unique<AccountService>(account_repository.get(), client_service.get(), bank_service.get());
 }
 void accounts_window::add(){
     try{
@@ -85,7 +78,7 @@ void accounts_window::add(){
     }
 
 }
-void accounts_window::update(int account_id){
+void accounts_window::update_account(int account_id){
     bool ok;
     QString new_balance = QInputDialog::getText(this, tr("Update Account"),
                                                 tr("Enter new account balance:"), QLineEdit::Normal, "", &ok);
@@ -124,7 +117,7 @@ void accounts_window::load_accounts(int client_id) {
             account_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
             connect(account_widget_, &account_widget::clicked, this, &accounts_window::open_card_window);
-            connect(account_widget_, &account_widget::updateRequested, this, &accounts_window::update);
+            connect(account_widget_, &account_widget::updateRequested, this, &accounts_window::update_account);
             connect(account_widget_, &account_widget::deleteRequested, this, &accounts_window::delete_account);
             layout->addWidget(account_widget_);
         }

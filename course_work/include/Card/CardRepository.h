@@ -6,13 +6,14 @@
 #include "../../sqlite/sqlite3.h"
 #include "../../include/Errors/CustomExceptions.h"
 #include "../interfaces.h"
+#include <format>
 
 class CardRepository : public IRepository<Card>
 {
 private:
     sqlite3* db_;
 public:
-    CardRepository(sqlite3* db): db_(db){};
+    explicit CardRepository(sqlite3* db): db_(db){};
     ~CardRepository() = default;
 
     void add(Card* card) const override;

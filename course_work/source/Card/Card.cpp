@@ -11,13 +11,13 @@ void Card::set_id(const int id) {
 int Card::get_id() const {
     return id_;
 }
-void Card::set_number(std::string card_number) {
+void Card::set_number(const std::string& card_number) {
     number_ = card_number;
 }
 std::string Card::get_number() const {
     return number_;
 }
-void Card::set_expire_date(std::string expire_date) {
+void Card::set_expire_date(const std::string& expire_date) {
     expire_date_ = expire_date;
 }
 std::string Card::get_expire_date() const {

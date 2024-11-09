@@ -13,7 +13,7 @@ public:
 
     void add(const int account_id) const;
     void remove(int id);
-    void update(int id, int balance);
+    void update(int id, int balance) const;
     std::unique_ptr<Card> get_by_id(int id) const;
     std::unique_ptr<Card> get_card_by_number(std::string& number) const;
     std::vector<std::unique_ptr<Card>> get_all() const;

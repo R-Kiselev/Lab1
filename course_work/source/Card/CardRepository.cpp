@@ -46,7 +46,7 @@ std::unique_ptr<Card> CardRepository::get_by_id(const int id) const
     sqlite3_bind_int(stmt, 1, id);
     if(sqlite3_step(stmt) != SQLITE_ROW){
         sqlite3_finalize(stmt);
-        throw NotFoundException("Card with ID " + std::to_string(id) + " not found in database");
+        throw NotFoundException(std::format("Card with ID {} not found in database", std::to_string(id)));
     }
     int card_id = sqlite3_column_int(stmt, 0);
     std::string number(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));

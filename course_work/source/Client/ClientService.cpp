@@ -19,14 +19,8 @@ std::unique_ptr<Client> ClientService::add(const std::string& name, const int so
 }
 void ClientService::remove(int id)
 {
-    try {
-        auto client = client_repository_->get_by_id(id);
-        client_repository_->remove(client->get_id());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto client = client_repository_->get_by_id(id);
+    client_repository_->remove(client->get_id());
 }
 void ClientService::update(int id,const std::optional<std::string>& name, const std::optional<int>& social_status_id)
 {
@@ -37,20 +31,14 @@ void ClientService::update(int id,const std::optional<std::string>& name, const 
         throw ValidationException("Social status does not exist");
     }
 
-    try {
-        auto client = client_repository_->get_by_id(id);
-        if (name.has_value()) {
-            client->set_name(*name);
-        }
-        if (social_status_id.has_value()) {
-            client->set_social_status_id(*social_status_id);
-        }
-        client_repository_->update(client.get());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
+    auto client = client_repository_->get_by_id(id);
+    if (name.has_value()) {
+        client->set_name(*name);
     }
+    if (social_status_id.has_value()) {
+        client->set_social_status_id(*social_status_id);
+    }
+    client_repository_->update(client.get());
 }
 std::unique_ptr<Client> ClientService::get_by_id(int id) const
 {

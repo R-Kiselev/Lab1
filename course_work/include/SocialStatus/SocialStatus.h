@@ -13,12 +13,12 @@ protected:
 
     void set_id(const int id);
 public:
-    SocialStatus();
+    explicit SocialStatus() = default;
+    ~SocialStatus() = default;
     SocialStatus(const std::string& name);
-    ~SocialStatus();
     int get_id() const;
     std::string get_name() const;
-    void set_name(const std::string& name);
+    void set_name(const std::string_view& name);
     SocialStatus(const SocialStatus&) = delete;
     void operator=(const SocialStatus&) = delete;
 };

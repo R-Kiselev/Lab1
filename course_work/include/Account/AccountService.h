@@ -18,7 +18,7 @@ public:
 
     void add(const int client_id, const int bank_id) const;
     void remove(int id);
-    void update(int id, const int balance);
+    void update(int id, const int balance) const;
     std::unique_ptr<Account> get_by_id(int id) const;
     std::vector<std::unique_ptr<Account>> get_all() const;
     void display_all() const;

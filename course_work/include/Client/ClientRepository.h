@@ -6,13 +6,14 @@
 #include "../../sqlite/sqlite3.h"
 #include "../../include/Errors/CustomExceptions.h"
 #include "../interfaces.h"
+#include <format>
 
 class ClientRepository : public IRepository<Client>
 {
 private:
     sqlite3* db_;
 public:
-    ClientRepository(sqlite3* db): db_(db){};
+    explicit ClientRepository(sqlite3* db): db_(db){};
 
     void add(Client* client) const override;
     void remove(const int id) override;

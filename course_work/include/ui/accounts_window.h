@@ -28,7 +28,7 @@ public:
     void load_accounts(int client_id);
 
     void add();
-    void update(int account_id);
+    void update_account(int account_id);
     void delete_account(int account_id);
 
     void set_client_id(int client_id);
@@ -45,16 +45,16 @@ private:
     QVBoxLayout *layout;
 
     sqlite3* db_;
-    cards_window* cards_window_;
+    std::unique_ptr<cards_window> cards_window_;
 
-    BankRepository* bank_repository;
-    BankService* bank_service;
-    SocialStatusRepository* social_status_repository;
-    SocialStatusService* social_status_service;
-    ClientRepository* client_repository;
-    ClientService* client_service;
-    AccountRepository* account_repository;
-    AccountService* account_service;
+    std::unique_ptr<BankRepository> bank_repository;
+    std::unique_ptr<BankService> bank_service;
+    std::unique_ptr<SocialStatusRepository> social_status_repository;
+    std::unique_ptr<SocialStatusService> social_status_service;
+    std::unique_ptr<ClientRepository> client_repository;
+    std::unique_ptr<ClientService> client_service;
+    std::unique_ptr<AccountRepository> account_repository;
+    std::unique_ptr<AccountService> account_service;
 
     int client_id;
     int bank_id;

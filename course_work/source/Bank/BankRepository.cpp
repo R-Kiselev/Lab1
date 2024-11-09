@@ -14,7 +14,7 @@ void BankRepository::add(Bank* bank) const {
 }
 
 void BankRepository::remove(int id) {
-    std::string sql = "DELETE FROM banks WHERE id = " + std::to_string(id) + ";";
+    std::string sql = std::format("DELETE FROM banks WHERE id = {} ;", std::to_string(id));
     char* errMsg = nullptr;
     if (sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::string error_message = errMsg;
@@ -24,9 +24,9 @@ void BankRepository::remove(int id) {
 }
 
 std::unique_ptr<Bank> BankRepository::get_by_id(int id) const {
-    std::string sql = "SELECT id, name FROM banks WHERE id = " + std::to_string(id) + ";";
+    std::string sql = std::format("SELECT id, name FROM banks WHERE id = {} ;", std::to_string(id));
     sqlite3_stmt* stmt;
-    std::unique_ptr<Bank> bank = std::make_unique<Bank>();
+    auto bank = std::make_unique<Bank>();
 
     if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         throw DatabaseException(sqlite3_errmsg(db_));
@@ -37,7 +37,7 @@ std::unique_ptr<Bank> BankRepository::get_by_id(int id) const {
         bank->set_name(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
     } else {
         sqlite3_finalize(stmt);
-        throw NotFoundException("Bank with ID " + std::to_string(id) + " not found");
+        throw NotFoundException(std::format("Bank with ID  not found", std::to_string(id)));
     }
 
     sqlite3_finalize(stmt);
@@ -65,7 +65,7 @@ std::vector<std::unique_ptr<Bank>> BankRepository::get_all() const {
 }
 
 void BankRepository::update(Bank* bank) const {
-    std::string sql = "UPDATE banks SET name = '" + bank->get_name() + "' WHERE id = " + std::to_string(bank->get_id()) + ";";
+    std::string sql = std::format("UPDATE banks SET name = '{}' WHERE id = {};", bank->get_name(), std::to_string(bank->get_id()));
     char* errMsg = nullptr;
     if (sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::string error_message = errMsg;

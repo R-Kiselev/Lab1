@@ -10,7 +10,7 @@ class Account
 {
 private:
     int id_;
-    int balance_;
+    int balance_ = 0;
     int client_id_;
     int bank_id_;
 protected:

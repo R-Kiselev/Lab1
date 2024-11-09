@@ -12,12 +12,12 @@ protected:
 
     void set_id(const int id);
 public:
-    Bank();
-    Bank(const std::string& name);
-    ~Bank();
+    Bank() = default;
+    ~Bank() = default;
+    explicit Bank(const std::string& name);
     int get_id() const;
     std::string get_name() const;
-    void set_name(const std::string& name);
+    void set_name(const std::string_view& name);
     Bank(const Bank&) = delete;
     void operator=(const Bank&) = delete;
 };

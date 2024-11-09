@@ -19,9 +19,9 @@ public:
 
     void set_id(const int id);
     int get_id() const;
-    void set_number(std::string number);
+    void set_number(const std::string& number);
     std::string get_number() const;
-    void set_expire_date(std::string expire_date);
+    void set_expire_date(const std::string& expire_date);
     std::string get_expire_date() const;
     void set_balance(const int balance);
     int get_balance() const;
@@ -34,10 +34,10 @@ public:
     bool operator==(const Card& other) const {
         return this->balance_ == other.balance_;
     }
-    bool operator+(const Card& other) const {
-        return this->balance_ + other.balance_;
+    friend int operator+(const Card& lhs, const Card& rhs) {
+        return lhs.balance_ + rhs.balance_;
     }
-    bool operator-(const Card& other) const {
-        return this->balance_ - other.balance_;
+    friend int operator-(const Card& lhs, const Card& rhs) {
+        return lhs.balance_ - rhs.balance_;
     }
 };

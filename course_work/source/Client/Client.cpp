@@ -13,7 +13,7 @@ int Client::get_id() const
 {
     return id_;
 }
-void Client::set_name(const std::string& name)
+void Client::set_name(const std::string_view& name)
 {
     name_ = name;
 }

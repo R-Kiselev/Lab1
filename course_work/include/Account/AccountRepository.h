@@ -5,13 +5,14 @@
 #include "../../sqlite/sqlite3.h"
 #include "../../include/Errors/CustomExceptions.h"
 #include "../interfaces.h"
+#include <format>
 
 class AccountRepository : public IRepository<Account>
 {
 private:
     sqlite3* db_;
 public:
-    AccountRepository(sqlite3* db): db_(db){};
+    explicit AccountRepository(sqlite3* db): db_(db){};
 
     void add(Account* account) const override;
     std::unique_ptr<Account> get_by_id(const int id) const override;

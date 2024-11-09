@@ -1,7 +1,7 @@
 #include "../../include/Account/Account.h"
 
 Account::Account(const int client_id, const int bank_id):
-    balance_(0), client_id_(client_id), bank_id_(bank_id)
+    client_id_(client_id), bank_id_(bank_id)
 {
 }
 

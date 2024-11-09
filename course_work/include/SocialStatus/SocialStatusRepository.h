@@ -7,13 +7,14 @@
 #include "../../sqlite/sqlite3.h"
 #include "../../include/Errors/CustomExceptions.h"
 #include "../interfaces.h"
+#include <format>
 
 class SocialStatusRepository : public IRepository<SocialStatus>
 {
 private:
     sqlite3* db_;
 public:
-    SocialStatusRepository(sqlite3* db): db_(db){};
+    explicit SocialStatusRepository(sqlite3* db): db_(db){};
 
     void add(SocialStatus* SocialStatus) const override;
     void remove(const int id) override;

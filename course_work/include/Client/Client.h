@@ -15,7 +15,7 @@ public:
     int get_id() const;
     void set_id(const int id);
     std::string get_name() const;
-    void set_name(const std::string& name);
+    void set_name(const std::string_view& name);
     int get_social_status_id() const;
     void set_social_status_id(const int social_status_id);
     Client(const Client&) = delete;

@@ -14,7 +14,7 @@ void SocialStatusRepository::add(SocialStatus* social_status) const {
 }
 
 void SocialStatusRepository::remove(int id) {
-    std::string sql = "DELETE FROM social_statuses WHERE id = " + std::to_string(id) + ";";
+    std::string sql = std::format("DELETE FROM social_statuses WHERE id = {} ;", std::to_string(id));
     char* errMsg = nullptr;
     if (sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::string error_message = errMsg;
@@ -24,9 +24,9 @@ void SocialStatusRepository::remove(int id) {
 }
 
 std::unique_ptr<SocialStatus> SocialStatusRepository::get_by_id(int id) const {
-    std::string sql = "SELECT id, name FROM social_statuses WHERE id = " + std::to_string(id) + ";";
+    std::string sql = std::format("SELECT id, name FROM social_statuses WHERE id = ;",std::to_string(id));
     sqlite3_stmt* stmt;
-    std::unique_ptr<SocialStatus> social_status = std::make_unique<SocialStatus>();
+    auto social_status = std::make_unique<SocialStatus>();
 
     if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         throw DatabaseException(sqlite3_errmsg(db_));
@@ -37,7 +37,7 @@ std::unique_ptr<SocialStatus> SocialStatusRepository::get_by_id(int id) const {
         social_status->set_name(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
     } else {
         sqlite3_finalize(stmt);
-        throw NotFoundException("SocialStatus with ID " + std::to_string(id) + " not found");
+        throw NotFoundException(std::format("SocialStatus with ID {} not found", std::to_string(id)));
     }
 
     sqlite3_finalize(stmt);
@@ -65,7 +65,7 @@ std::vector<std::unique_ptr<SocialStatus>> SocialStatusRepository::get_all() con
 }
 
 void SocialStatusRepository::update(SocialStatus* social_status) const {
-    std::string sql = "UPDATE social_statuses SET name = '" + social_status->get_name() + "' WHERE id = " + std::to_string(social_status->get_id()) + ";";
+    std::string sql = std::format("UPDATE social_statuses SET name = '{}' WHERE id = {};", social_status->get_name(), std::to_string(social_status->get_id()));
     char* errMsg = nullptr;
     if (sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::string error_message = errMsg;

@@ -12,29 +12,16 @@ void SocialStatusService::add(const std::string &name) const {
     social_status_repository_->add(social_status.get());
 }
 void SocialStatusService::remove(int id) {
-    try {
-        auto social_status = social_status_repository_->get_by_id(id);
-        social_status_repository_->remove(social_status->get_id());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto social_status = social_status_repository_->get_by_id(id);
+    social_status_repository_->remove(social_status->get_id());
 }
 void SocialStatusService::update(const int id, const std::string& new_name) {
     if (new_name.empty()) {
         throw ValidationException("New social_status name cannot be empty");
     }
-
-    try {
-        auto social_status = social_status_repository_->get_by_id(id);
-        social_status->set_name(new_name);
-        social_status_repository_->update(social_status.get());
-    } catch (const NotFoundException& e) {
-        throw;
-    } catch (const CustomException& e) {
-        throw;
-    }
+    auto social_status = social_status_repository_->get_by_id(id);
+    social_status->set_name(new_name);
+    social_status_repository_->update(social_status.get());
 }
 
 std::unique_ptr<SocialStatus> SocialStatusService::get_by_id(const int id) const
