@@ -80,5 +80,7 @@ CMakeSettings.json
 #Local course work files
 *.docx
 *.db
-cmake-build-debug/
-/sqlite/
+course_work/cmake-build-debug/
+course_work/sqlite
+/Lab1
+/qt
