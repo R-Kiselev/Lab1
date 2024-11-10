@@ -79,9 +79,6 @@ add_executable(course_work
         source/menu/client_dialog.cpp
         include/ui/client_dialog.h
         source/menu/client_dialog.ui
-        source/menu/account_dialog.cpp
-        include/ui/account_dialog.h
-        source/menu/account_dialog.ui
         source/menu/payments_window.cpp
         include/ui/payments_window.h
         source/menu/payments_window.ui

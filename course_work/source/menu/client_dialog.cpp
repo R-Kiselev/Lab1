@@ -25,7 +25,6 @@ client_dialog::client_dialog(SocialStatusService* social_status_service, QWidget
 }
 
 client_dialog::~client_dialog() {
-    delete ui;
 }
 
 QString client_dialog::get_name() const {

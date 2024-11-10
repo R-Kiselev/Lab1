@@ -15,7 +15,7 @@ public:
 
     std::unique_ptr<Client> add(const std::string& name, const int social_status_id) const;
     void remove(int id);
-    void update(int id,const std::optional<std::string>& name, const std::optional<int>& social_status_id);
+    void update(int id,const std::optional<std::string>& name, const std::optional<int>& social_status_id) const;
     std::unique_ptr<Client> get_by_id(int id) const;
     std::vector<std::unique_ptr<Client>> get_all() const;
     void display_all() const;

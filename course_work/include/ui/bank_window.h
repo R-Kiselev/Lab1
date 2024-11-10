@@ -43,8 +43,8 @@ private slots:
     void delete_bank(int bank_id);
 
 private:
-    Ui::bank_window *ui;
-    QVBoxLayout *layout;
+    std::unique_ptr<Ui::bank_window>ui;
+    std::unique_ptr<QVBoxLayout> layout;
 
     std::unique_ptr<clients_window> clients_window_;
 

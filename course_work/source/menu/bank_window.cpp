@@ -28,7 +28,6 @@ bank_window::~bank_window() {
         sqlite3_close(db);
         db = nullptr;
     }
-    delete ui;
 }
 
 void bank_window::go_back() {
@@ -105,17 +104,7 @@ void bank_window::load_banks() {
     catch (const CustomException& e) {
         QMessageBox::information(this, "Information", "Banks was not found.");
     }
-    container->setStyleSheet(
-            "QWidget#bank_widget {"
-            "    background-color: rgb(242, 244, 255);"
-            "    border-bottom: 1px solid rgb(3, 63, 99);"
-            "    padding: 10px;"
-            "    border-radius: 5px;"
-            "}"
-            "QWidget#bank_widget:hover {"
-            "    background-color: rgb(230, 234, 245);"
-            "}"
-    );
+
     container->setLayout(layout);
     ui->scrollArea->setWidget(container);
     ui->scrollArea->setWidgetResizable(true);

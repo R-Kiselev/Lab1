@@ -11,7 +11,7 @@
 #include "ui_mainwindow.h"
 
 mainwindow::mainwindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::mainwindow)
+        : QMainWindow(parent), ui{new Ui::mainwindow}
 {
     ui->setupUi(this);
     setWindowTitle("Главное меню");
@@ -19,16 +19,16 @@ mainwindow::mainwindow(QWidget *parent)
     const std::string db_path = "D:\\Study\\2\\PHLL\\course_work\\bank.db";
     db_ = open_database(db_path);
 
-    bank_window_ = new bank_window(db_);
-    connect(bank_window_, &bank_window::back_button, this, &mainwindow::show);
+    bank_window_ = std::make_unique<bank_window>(db_);
+    connect(bank_window_.get(), &bank_window::back_button, this, &mainwindow::show);
     connect(ui->banks_button, &QPushButton::clicked, this, [this](){
         this->close();
         bank_window_->load_banks();
         bank_window_->show();
     });
 
-    payments_window_ = new payments_window(db_);
-    connect(payments_window_, &payments_window::back_button, this, &mainwindow::show);
+    payments_window_ = std::make_unique<payments_window>(db_);
+    connect(payments_window_.get(), &payments_window::back_button, this, &mainwindow::show);
     connect(ui->payments_button, &QPushButton::clicked, this, [this](){
         this->close();
         payments_window_->show();
@@ -48,7 +48,6 @@ sqlite3* mainwindow::open_database(const std::string& db_path) {
     return db;
 }
 mainwindow::~mainwindow() {
-    delete ui;
     if(db_){
         sqlite3_close(db_);
         db_ = nullptr;

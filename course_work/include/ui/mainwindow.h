@@ -10,6 +10,7 @@
 #include "bank_window.h"
 #include "payments_window.h"
 #include "../../sqlite/sqlite3.h"
+#include <memory>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -26,10 +27,10 @@ public:
 
     sqlite3* open_database(const std::string& db_path);
 private:
-    Ui::mainwindow *ui;
+    std::unique_ptr<Ui::mainwindow> ui;
     QVBoxLayout *layout;
 
-    payments_window* payments_window_;
-    bank_window* bank_window_;
+    std::unique_ptr<payments_window> payments_window_;
+    std::unique_ptr<bank_window> bank_window_;
     sqlite3* db_;
 };

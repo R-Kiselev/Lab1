@@ -22,7 +22,7 @@ void ClientService::remove(int id)
     auto client = client_repository_->get_by_id(id);
     client_repository_->remove(client->get_id());
 }
-void ClientService::update(int id,const std::optional<std::string>& name, const std::optional<int>& social_status_id)
+void ClientService::update(int id,const std::optional<std::string>& name, const std::optional<int>& social_status_id) const
 {
     if (name.has_value() && name->empty()) {
         throw ValidationException("New client name cannot be empty");

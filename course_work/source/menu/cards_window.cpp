@@ -21,7 +21,6 @@ cards_window::cards_window(sqlite3* db) :
 }
 
 cards_window::~cards_window() {
-    delete ui;
     if (db_) {
         sqlite3_close(db_);
         db_ = nullptr;

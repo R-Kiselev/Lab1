@@ -9,8 +9,9 @@
 #include <QMouseEvent>
 
 bank_widget::bank_widget(const Bank* bank, QWidget *parent)
-        : QWidget(parent), ui(new Ui::bank_widget),  bank(bank), bank_id(bank ? bank->get_id() : -1)
+        : QWidget(parent), ui(new Ui::bank_widget),  bank(bank)
 {
+    bank_id = bank ? bank->get_id() : -1;
     ui->setupUi(this);
     ui->labelId->setText("Id: " + QString::number(bank->get_id()));
     ui->labelName->setText("Name: " + QString::fromStdString(bank->get_name()));
@@ -20,7 +21,6 @@ bank_widget::bank_widget(const Bank* bank, QWidget *parent)
 }
 
 bank_widget::~bank_widget() {
-    delete ui;
 }
 
 void bank_widget::mousePressEvent(QMouseEvent* event) {

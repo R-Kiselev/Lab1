@@ -4,7 +4,6 @@
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QInputDialog>
-#include "account_dialog.h"
 #include "../../sqlite/sqlite3.h"
 #include "../Account/AccountService.h"
 #include "account_widget.h"
@@ -31,8 +30,8 @@ public:
     void update_account(int account_id);
     void delete_account(int account_id);
 
-    void set_client_id(int client_id);
-    void set_bank_id(int bank_id);
+    void set_client_id(int client_id_);
+    void set_bank_id(int bank_id_);
 signals:
     void back_button();
 
@@ -41,7 +40,7 @@ private slots:
     void open_card_window(int account_id);
 
 private:
-    Ui::accounts_window *ui;
+    std::unique_ptr<Ui::accounts_window> ui;
     QVBoxLayout *layout;
 
     sqlite3* db_;

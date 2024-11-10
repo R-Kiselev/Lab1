@@ -24,7 +24,7 @@ void SocialStatusRepository::remove(int id) {
 }
 
 std::unique_ptr<SocialStatus> SocialStatusRepository::get_by_id(int id) const {
-    std::string sql = std::format("SELECT id, name FROM social_statuses WHERE id = ;",std::to_string(id));
+    std::string sql = std::format("SELECT id, name FROM social_statuses WHERE id = {};",std::to_string(id));
     sqlite3_stmt* stmt;
     auto social_status = std::make_unique<SocialStatus>();
 

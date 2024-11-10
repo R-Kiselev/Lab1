@@ -28,7 +28,7 @@ private slots:
     void onUpdateClicked();
     void onDeleteClicked();
 private:
-    Ui::client_widget *ui;
+    std::unique_ptr<Ui::client_widget> ui;
     int client_id;
     Client* client;
 };

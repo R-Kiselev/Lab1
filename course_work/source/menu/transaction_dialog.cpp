@@ -19,16 +19,20 @@ transaction_dialog::transaction_dialog(sqlite3* db) :
 }
 
 void transaction_dialog::setup_services() {
-    bank_repository = new BankRepository(db_);
-    bank_service = new BankService(bank_repository);
-    social_status_repository = new SocialStatusRepository(db_);
-    social_status_service = new SocialStatusService(social_status_repository);
-    client_repository = new ClientRepository(db_);
-    client_service = new ClientService(client_repository, social_status_service);
-    account_repository = new AccountRepository(db_);
-    account_service = new AccountService(account_repository, client_service, bank_service);
-    card_repository = new CardRepository(db_);
-    card_service = new CardService(card_repository, account_service);
+    bank_repository = std::make_unique<BankRepository>(db_);
+    bank_service = std::make_unique<BankService>(bank_repository.get());
+
+    social_status_repository = std::make_unique<SocialStatusRepository>(db_);
+    social_status_service = std::make_unique<SocialStatusService>(social_status_repository.get());
+
+    client_repository = std::make_unique<ClientRepository>(db_);
+    client_service = std::make_unique<ClientService>(client_repository.get(), social_status_service.get());
+
+    account_repository = std::make_unique<AccountRepository>(db_);
+    account_service = std::make_unique<AccountService>(account_repository.get(), client_service.get(), bank_service.get());
+
+    card_repository = std::make_unique<CardRepository>(db_);
+    card_service = std::make_unique<CardService>(card_repository.get(), account_service.get());
 }
 void transaction_dialog::set_transfer_type(int transferType) {
     transfer_type = transferType;
@@ -66,7 +70,7 @@ void transaction_dialog::handle_transfer_between_accounts(int source_id, int tar
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
 
-        transaction_service = new TransactionService();
+        transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_account, target_account, amount);
 
         account_service->update(source_account->get_id(), source_account->get_balance());
@@ -74,7 +78,6 @@ void transaction_dialog::handle_transfer_between_accounts(int source_id, int tar
 
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
-        delete transaction_service;
     } catch (const CustomException& e) {
         QMessageBox::critical(this, "Error", e.what());
         rollback_transaction();
@@ -89,14 +92,13 @@ void transaction_dialog::handle_transfer_between_cards(std::string source_number
         auto target_card = card_service->get_card_by_number(target_number);
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
-        transaction_service = new TransactionService();
+        transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_card, target_card, amount);
 
         card_service->update(source_card->get_id(), source_card->get_balance());
         card_service->update(target_card->get_id(), target_card->get_balance());
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
-        delete transaction_service;
     } catch (const CustomException& e) {
         QMessageBox::critical(this, "Error", e.what());
         rollback_transaction();
@@ -111,14 +113,13 @@ void transaction_dialog::handle_account_to_card_transfer(int source_id, std::str
         auto target_card = card_service->get_card_by_number(target_card_number);
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
-        transaction_service = new TransactionService();
+        transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_account, target_card, amount);
 
         account_service->update(source_account->get_id(), source_account->get_balance());
         card_service->update(target_card->get_id(), target_card->get_balance());
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
-        delete transaction_service;
     }
     catch (const CustomException& e) {
         QMessageBox::critical(this, "Error", e.what());
@@ -133,14 +134,13 @@ void transaction_dialog::handle_card_to_account_transfer(std::string source_card
         auto target_account = account_service->get_by_id(target_id);
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
-        transaction_service = new TransactionService();
+        transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_card, target_account, amount);
 
         card_service->update(source_card->get_id(), source_card->get_balance());
         account_service->update(target_account->get_id(), target_account->get_balance());
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
-        delete transaction_service;
     }
     catch (const CustomException& e) {
         QMessageBox::critical(this, "Error", e.what());
@@ -176,18 +176,7 @@ void transaction_dialog::perform_transaction() {
     QDialog::accept();
 }
 transaction_dialog::~transaction_dialog() {
-    delete ui;
     if (db_) {
         sqlite3_close(db_);
     }
-    delete bank_service;
-    delete bank_repository;
-    delete social_status_service;
-    delete social_status_repository;
-    delete client_service;
-    delete client_repository;
-    delete account_service;
-    delete account_repository;
-    delete card_service;
-    delete card_repository;
 }

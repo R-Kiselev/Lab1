@@ -15,16 +15,16 @@ public:
     ~bank_widget() override;
 
 signals:
-    void clicked(int bank_id);  // сигнал для передачи id банка
-    void updateRequested(int bank_id);  // сигнал для запроса обновления банка
-    void deleteRequested(int bank_id);  // сигнал для запроса удаления банка
+    void clicked(int bank_id);
+    void updateRequested(int bank_id);
+    void deleteRequested(int bank_id);
 
 private slots:
-    void mousePressEvent(QMouseEvent* event) override;  // обработка клика
+    void mousePressEvent(QMouseEvent* event) override;
     void onUpdateClicked();
     void onDeleteClicked();
 private:
-    Ui::bank_widget *ui;
-    int bank_id;  // id банка
+    std::unique_ptr<Ui::bank_widget> ui;
+    int bank_id;
     const Bank* bank;
 };

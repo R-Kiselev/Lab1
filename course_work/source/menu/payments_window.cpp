@@ -23,7 +23,6 @@ payments_window::payments_window(sqlite3* db) :
 }
 
 payments_window::~payments_window() {
-    delete ui;
 }
 void payments_window::go_back() {
     this->close();

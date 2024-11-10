@@ -25,7 +25,7 @@ protected slots:
     void onUpdateClicked();
     void onDeleteClicked();
 private:
-    Ui::card_widget *ui;
+    std::unique_ptr<Ui::card_widget> ui;
     Card* card;
     int card_id;
 };

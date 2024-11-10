@@ -23,7 +23,6 @@ card_widget::card_widget(QWidget *parent, Card* card) :
 }
 
 card_widget::~card_widget() {
-    delete ui;
 }
 
 void card_widget::onUpdateClicked() {

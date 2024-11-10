@@ -37,7 +37,7 @@ std::unique_ptr<Bank> BankRepository::get_by_id(int id) const {
         bank->set_name(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
     } else {
         sqlite3_finalize(stmt);
-        throw NotFoundException(std::format("Bank with ID  not found", std::to_string(id)));
+        throw NotFoundException(std::format("Bank with ID {} not found", std::to_string(id)));
     }
 
     sqlite3_finalize(stmt);

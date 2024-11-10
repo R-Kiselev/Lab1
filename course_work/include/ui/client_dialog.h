@@ -26,7 +26,7 @@ public:
     int get_social_status_id() const;
 
 private:
-    Ui::client_dialog *ui;
+    std::unique_ptr<Ui::client_dialog> ui;
     QLineEdit *name_edit;
     QComboBox *social_status_id_edit;
     QPushButton *ok_button;

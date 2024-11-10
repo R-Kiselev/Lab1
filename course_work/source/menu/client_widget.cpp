@@ -21,12 +21,11 @@ client_widget::client_widget(const Client* client, QWidget *parent) :
 }
 
 client_widget::~client_widget() {
-    delete ui;
 }
 
 void client_widget::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        emit clicked(client_id);  // передаем id банка при клике
+        emit clicked(client_id);
     }
 }
 

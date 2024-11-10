@@ -15,7 +15,7 @@ void SocialStatusService::remove(int id) {
     auto social_status = social_status_repository_->get_by_id(id);
     social_status_repository_->remove(social_status->get_id());
 }
-void SocialStatusService::update(const int id, const std::string& new_name) {
+void SocialStatusService::update(const int id, const std::string& new_name) const {
     if (new_name.empty()) {
         throw ValidationException("New social_status name cannot be empty");
     }

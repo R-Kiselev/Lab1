@@ -19,9 +19,9 @@ public:
 
     void set_id(const int id);
     int get_id() const;
-    void set_number(const std::string& number);
+    void set_number(const std::string_view& number);
     std::string get_number() const;
-    void set_expire_date(const std::string& expire_date);
+    void set_expire_date(const std::string_view& expire_date);
     std::string get_expire_date() const;
     void set_balance(const int balance);
     int get_balance() const;

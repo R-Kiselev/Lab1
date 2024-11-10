@@ -15,7 +15,7 @@ protected:
 public:
     explicit SocialStatus() = default;
     ~SocialStatus() = default;
-    SocialStatus(const std::string& name);
+    explicit SocialStatus(const std::string& name);
     int get_id() const;
     std::string get_name() const;
     void set_name(const std::string_view& name);

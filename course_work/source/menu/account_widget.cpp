@@ -9,7 +9,9 @@
 #include <QMouseEvent>
 
 account_widget::account_widget(QWidget *parent, Account* account) :
-        QWidget(parent), ui(new Ui::account_widget), account(account), account_id(account ? account->get_id() : -1) {
+        QWidget(parent), ui(new Ui::account_widget), account(account) {
+    account_id = account ? account->get_id() : -1;
+
     ui->setupUi(this);
     ui->labelId->setText("Id: " + QString::number(account->get_id()));
     ui->labelBalance->setText("Balance: " + QString::number(account->get_balance()));
@@ -21,7 +23,6 @@ account_widget::account_widget(QWidget *parent, Account* account) :
 }
 
 account_widget::~account_widget() {
-    delete ui;
 }
 
 void account_widget::mousePressEvent(QMouseEvent* event) {

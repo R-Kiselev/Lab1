@@ -28,7 +28,6 @@ accounts_window::accounts_window(sqlite3* db)
 }
 
 accounts_window::~accounts_window() {
-    delete ui;
     if (db_) {
         sqlite3_close(db_);
         db_ = nullptr;
@@ -130,9 +129,9 @@ void accounts_window::load_accounts(int client_id) {
     ui->scrollArea->setWidget(container);
     ui->scrollArea->setWidgetResizable(true);
 }
-void accounts_window::set_client_id(int client_id) {
-    this->client_id = client_id;
+void accounts_window::set_client_id(int client_id_) {
+    this->client_id = client_id_;
 }
-void accounts_window::set_bank_id(int bank_id) {
-    this->bank_id = bank_id;
+void accounts_window::set_bank_id(int bank_id_) {
+    this->bank_id = bank_id_;
 }

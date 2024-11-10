@@ -26,7 +26,7 @@ private slots:
     void go_back();
     void open_transaction_dialog(int transfer_type);
 private:
-    Ui::payments_window *ui;
+    std::unique_ptr<Ui::payments_window> ui;
     transaction_dialog* transaction_dialog_;
     sqlite3* db_;
 };

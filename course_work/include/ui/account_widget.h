@@ -30,7 +30,7 @@ private slots:
     void onUpdateClicked();
     void onDeleteClicked();
 private:
-    Ui::account_widget *ui;
+    std::unique_ptr<Ui::account_widget> ui;
     int account_id;
     Account* account;
 };
