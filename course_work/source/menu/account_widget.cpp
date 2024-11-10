@@ -22,8 +22,7 @@ account_widget::account_widget(QWidget *parent, Account* account) :
     connect(ui->delete_button, &QPushButton::clicked, this, &account_widget::onDeleteClicked);
 }
 
-account_widget::~account_widget() {
-}
+account_widget::~account_widget() = default;
 
 void account_widget::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {

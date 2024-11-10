@@ -16,14 +16,14 @@ payments_window::payments_window(sqlite3* db) :
 
     connect(ui->back_button, &QPushButton::clicked, this, &payments_window::go_back);
 
-    transaction_dialog_ = new transaction_dialog(db_);
+    transaction_dialog_ = std::make_unique<transaction_dialog>(db_);
     connect(ui->transfer_accounts_button, &QPushButton::clicked, [this]() { open_transaction_dialog(0); });
     connect(ui->transfer_account_card_button, &QPushButton::clicked, [this]() { open_transaction_dialog(1); });
     connect(ui->transfer_cards_button, &QPushButton::clicked, [this]() { open_transaction_dialog(2); });
 }
 
-payments_window::~payments_window() {
-}
+payments_window::~payments_window() = default;
+
 void payments_window::go_back() {
     this->close();
     emit back_button();

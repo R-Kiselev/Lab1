@@ -84,7 +84,7 @@ void cards_window::delete_card(int card_id) {
 }
 void cards_window::load_cards(int account_id) {
     auto *container = new QWidget(this);
-    auto *layout = new QVBoxLayout(container);
+    auto layout{new QVBoxLayout(container)};
 
     try{
         auto cards = card_service->get_cards_by_account_id(account_id);

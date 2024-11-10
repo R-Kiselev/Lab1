@@ -41,7 +41,7 @@ private slots:
 
 private:
     std::unique_ptr<Ui::accounts_window> ui;
-    QVBoxLayout *layout;
+    std::unique_ptr<QVBoxLayout> layout;
 
     sqlite3* db_;
     std::unique_ptr<cards_window> cards_window_;

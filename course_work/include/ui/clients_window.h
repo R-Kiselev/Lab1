@@ -43,7 +43,7 @@ public slots:
 
 
 private:
-    Ui::clients_window *ui;
+    std::unique_ptr<Ui::clients_window> ui;
     QVBoxLayout *layout;
 
     std::unique_ptr<accounts_window> accounts_window_;

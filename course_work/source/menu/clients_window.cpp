@@ -30,7 +30,6 @@ clients_window::clients_window(sqlite3* db)
 }
 
 clients_window::~clients_window() {
-    delete ui;
     if (db_) {
         sqlite3_close(db_);
         db_ = nullptr;
@@ -112,7 +111,7 @@ void clients_window::delete_client(int client_id) {
 }
 void clients_window::load_clients(int bank_id) {
     auto *container = new QWidget(this);
-    auto *layout = new QVBoxLayout(container);
+    auto layout {new QVBoxLayout(container)};
 
     try{
         auto clients = client_service->get_all_by_bank_id(bank_id);

@@ -12,7 +12,7 @@ protected:
 
     void set_id(const int id);
 public:
-    Bank() = default;
+    explicit Bank() = default;
     ~Bank() = default;
     explicit Bank(const std::string& name);
     int get_id() const;

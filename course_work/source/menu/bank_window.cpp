@@ -86,7 +86,7 @@ void bank_window::delete_bank(int bank_id) {
 
 void bank_window::load_banks() {
     auto *container = new QWidget(this);
-    auto *layout = new QVBoxLayout(container);
+    auto layout {new QVBoxLayout(container)};
 
     try{
         auto banks = bank_service->get_all();

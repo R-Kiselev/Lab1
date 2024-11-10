@@ -106,7 +106,7 @@ void accounts_window::delete_account(int account_id){
 }
 void accounts_window::load_accounts(int client_id) {
     auto *container = new QWidget(this);
-    auto *layout = new QVBoxLayout(container);
+    auto layout {new QVBoxLayout(container)};
 
     try{
         auto accounts = account_service->get_all_by_client_id(client_id);
