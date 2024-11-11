@@ -108,28 +108,28 @@ void accounts_window::delete_account(int account_id){
     }
 }
 void accounts_window::load_accounts(int client_id) {
-    auto *container = new QWidget(this);
-    auto layout = new QVBoxLayout(container);
+    auto container = std::make_unique<QWidget>(this);
+    auto layout = std::make_unique<QVBoxLayout>(container.get());
 
-    try{
+    try {
         auto accounts = account_service->get_all_by_client_id(client_id);
         for (const auto& account : accounts) {
-            auto *account_widget_ = new account_widget(this, account.get());
-
+            auto account_widget_ = std::make_unique<account_widget>(this, account.get());
             account_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
-            connect(account_widget_, &account_widget::clicked, this, &accounts_window::open_card_window);
-            connect(account_widget_, &account_widget::updateRequested, this, &accounts_window::update_account);
-            connect(account_widget_, &account_widget::deleteRequested, this, &accounts_window::delete_account);
-            layout->addWidget(account_widget_);
+            connect(account_widget_.get(), &account_widget::clicked, this, &accounts_window::open_card_window);
+            connect(account_widget_.get(), &account_widget::updateRequested, this, &accounts_window::update_account);
+            connect(account_widget_.get(), &account_widget::deleteRequested, this, &accounts_window::delete_account);
+
+            layout->addWidget(account_widget_.release());
         }
     }
     catch (const CustomException& e) {
         QMessageBox::warning(this, "Warning", "This client has no more accounts. Create account or this client will be deleted.");
     }
 
-    container->setLayout(layout);
-    ui->scrollArea->setWidget(container);
+    container->setLayout(layout.release());
+    ui->scrollArea->setWidget(container.release());
     ui->scrollArea->setWidgetResizable(true);
 }
 void accounts_window::set_client_id(int client_id_) {

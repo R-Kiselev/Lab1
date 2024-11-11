@@ -92,29 +92,27 @@ void bank_window::delete_bank(int bank_id) {
 }
 
 void bank_window::load_banks() {
-    auto *container = new QWidget(this);
-    auto layout = new QVBoxLayout(container);
+    auto container = std::make_unique<QWidget>(this);
+    auto layout = std::make_unique<QVBoxLayout>(container.get());
 
     try{
         auto banks = bank_service->get_all();
         for (const auto& bank : banks) {
-            auto *bank_widget_ = new bank_widget(bank.get(), this);
+            auto bank_widget_ = std::make_unique<bank_widget>(bank.get());
             bank_widget_->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 
-            connect(bank_widget_, &bank_widget::clicked, this, &bank_window::open_clients_window);
-            connect(bank_widget_, &bank_widget::updateRequested, this, &bank_window::update);
-            connect(bank_widget_, &bank_widget::deleteRequested, this, &bank_window::delete_bank);
+            connect(bank_widget_.get(), &bank_widget::clicked, this, &bank_window::open_clients_window);
+            connect(bank_widget_.get(), &bank_widget::updateRequested, this, &bank_window::update);
+            connect(bank_widget_.get(), &bank_widget::deleteRequested, this, &bank_window::delete_bank);
 
-            layout->addWidget(bank_widget_);
+            layout->addWidget(bank_widget_.release());
         }
     }
     catch (const CustomException& e) {
         QMessageBox::information(this, "Information", "Banks was not found.");
     }
 
-    container->setLayout(layout);
-    ui->scrollArea->setWidget(container);
+    container->setLayout(layout.release());
+    ui->scrollArea->setWidget(container.release());
     ui->scrollArea->setWidgetResizable(true);
-    ui->scrollArea->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-    layout->setSpacing(10);
 }

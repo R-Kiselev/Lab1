@@ -87,25 +87,25 @@ void cards_window::delete_card(int card_id) {
     }
 }
 void cards_window::load_cards(int account_id) {
-    auto *container = new QWidget(this);
-    auto layout= new QVBoxLayout(container);
+    auto container = std::make_unique<QWidget>(this);
+    auto layout = std::make_unique<QVBoxLayout>(container.get());
 
     try{
         auto cards = card_service->get_cards_by_account_id(account_id);
         for (const auto& card : cards) {
-            auto *card_widget_ = new card_widget(this, card.get());
-            connect(card_widget_, &card_widget::updateRequested, this, &cards_window::update_card);
-            connect(card_widget_, &card_widget::deleteRequested, this, &cards_window::delete_card);
+            auto card_widget_ = std::make_unique<card_widget>(this, card.get());
+            connect(card_widget_.get(), &card_widget::updateRequested, this, &cards_window::update_card);
+            connect(card_widget_.get(), &card_widget::deleteRequested, this, &cards_window::delete_card);
             card_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-            layout->addWidget(card_widget_);
+            layout->addWidget(card_widget_.release());
         }
     }
     catch (const CustomException& e) {
         QMessageBox::information(this, "Information", "Cards was not found.");
     }
 
-    container->setLayout(layout);
-    ui->scrollArea->setWidget(container);
+    container->setLayout(layout.release());
+    ui->scrollArea->setWidget(container.release());
     ui->scrollArea->setWidgetResizable(true);
 }
 void cards_window::set_account_id(int account_id){

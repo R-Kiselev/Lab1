@@ -113,26 +113,26 @@ void clients_window::delete_client(int client_id) {
     }
 }
 void clients_window::load_clients(int bank_id) {
-    auto *container = new QWidget(this);
-    auto layout =new QVBoxLayout(container);
+    auto container = std::make_unique<QWidget>(this);
+    auto layout = std::make_unique<QVBoxLayout>(container.get());
 
     try{
         auto clients = client_service->get_all_by_bank_id(bank_id);
         for (const auto& client : clients) {
-            auto *client_widget_ = new client_widget(client.get(), this);
+            auto client_widget_ = std::make_unique<client_widget>(client.get());
             client_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-            connect(client_widget_, &client_widget::clicked, this, &clients_window::open_accounts_window);
-            connect(client_widget_, &client_widget::updateRequested, this, &clients_window::update_client);
-            connect(client_widget_, &client_widget::deleteRequested, this, &clients_window::delete_client);
-            layout->addWidget(client_widget_);
+            connect(client_widget_.get(), &client_widget::clicked, this, &clients_window::open_accounts_window);
+            connect(client_widget_.get(), &client_widget::updateRequested, this, &clients_window::update_client);
+            connect(client_widget_.get(), &client_widget::deleteRequested, this, &clients_window::delete_client);
+            layout->addWidget(client_widget_.release());
         }
     }
     catch (const CustomException& e) {
         QMessageBox::information(this, "Empty", e.what());
     }
 
-    container->setLayout(layout);
-    ui->scrollArea->setWidget(container);
+    container->setLayout(layout.release());
+    ui->scrollArea->setWidget(container.release());
     ui->scrollArea->setWidgetResizable(true);
 }
 
