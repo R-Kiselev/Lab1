@@ -40,11 +40,8 @@ signals:
 public slots:
     void go_back();
     void open_accounts_window(int client_id);
-
-
 private:
     std::unique_ptr<Ui::clients_window> ui;
-    QVBoxLayout *layout;
 
     std::unique_ptr<accounts_window> accounts_window_;
     sqlite3* db_;

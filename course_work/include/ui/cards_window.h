@@ -39,7 +39,6 @@ protected slots:
     void delete_card(int card_id);
 private:
     std::unique_ptr<Ui::cards_window> ui;
-    QVBoxLayout *layout;
 
     sqlite3* db_;
 

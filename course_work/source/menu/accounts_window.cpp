@@ -107,12 +107,12 @@ void accounts_window::delete_account(int account_id){
         }
     }
 }
-void accounts_window::load_accounts(int client_id) {
+void accounts_window::load_accounts(int client_id_) {
     auto container = std::make_unique<QWidget>(this);
     auto layout = std::make_unique<QVBoxLayout>(container.get());
 
     try {
-        auto accounts = account_service->get_all_by_client_id(client_id);
+        auto accounts = account_service->get_all_by_client_id(client_id_);
         for (const auto& account : accounts) {
             auto account_widget_ = std::make_unique<account_widget>(this, account.get());
             account_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);

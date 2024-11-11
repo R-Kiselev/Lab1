@@ -44,7 +44,6 @@ private slots:
 
 private:
     std::unique_ptr<Ui::bank_window>ui;
-    std::unique_ptr<QVBoxLayout> layout;
 
     std::unique_ptr<clients_window> clients_window_;
 
