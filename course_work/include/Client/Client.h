@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include "../interfaces.h"
 
-class Client
+class Client : public IEntity
 {
 private:
     int id_;
@@ -11,9 +12,9 @@ private:
 public:
     Client() = default;
     Client(const std::string& name, const int social_status_id);
-    ~Client() = default;
-    int get_id() const;
-    void set_id(const int id);
+    ~Client() override = default;
+    int get_id() const override;
+    void set_id(const int id) override;
     std::string get_name() const;
     void set_name(const std::string_view& name);
     int get_social_status_id() const;

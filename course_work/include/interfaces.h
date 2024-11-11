@@ -5,8 +5,6 @@
 
 template <typename T>
 class IRepository {
-private:
-    sqlite3* db_;
 public:
     IRepository() = default;
     virtual ~IRepository() = default;
@@ -39,7 +37,18 @@ public:
     IService& operator=(const IService&) = delete;
 };
 
-class IDisplay{
+class IEntity {
 public:
-    virtual void display_all() const = 0;
+    virtual ~IEntity() = default;
+
+    virtual int get_id() const = 0;
+    virtual void set_id(int id) = 0;
+};
+
+class IFinancial {
+public:
+    virtual ~IFinancial() = default;
+
+    virtual void set_balance(int balance) = 0;
+    virtual int get_balance() const = 0;
 };

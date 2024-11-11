@@ -112,12 +112,12 @@ void clients_window::delete_client(int client_id) {
         }
     }
 }
-void clients_window::load_clients(int bank_id) {
+void clients_window::load_clients(int bank_id_) {
     auto container = std::make_unique<QWidget>(this);
     auto layout = std::make_unique<QVBoxLayout>(container.get());
 
     try{
-        auto clients = client_service->get_all_by_bank_id(bank_id);
+        auto clients = client_service->get_all_by_bank_id(bank_id_);
         for (const auto& client : clients) {
             auto client_widget_ = std::make_unique<client_widget>(client.get());
             client_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
