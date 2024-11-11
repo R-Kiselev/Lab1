@@ -87,6 +87,8 @@ add_executable(course_work
         source/menu/transaction_dialog.ui
         include/Transaction/Transaction.h
         include/Transaction/TransactionService.h
+        include/interfaces.h
+        include/database_tables.h
 )
 target_link_libraries(course_work
         Qt::Core
