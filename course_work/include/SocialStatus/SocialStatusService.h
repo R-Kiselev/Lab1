@@ -3,22 +3,24 @@
 #include <iostream>
 #include "SocialStatusRepository.h"
 #include "../validation_utils.h"
+#include "../interfaces.h"
 
-class SocialStatusService{
+class SocialStatusService :public IService<SocialStatus>
+{
 private:
     SocialStatusRepository* social_status_repository_;
     std::unique_ptr<ValidationService> validation_service;
 public:
     explicit SocialStatusService(SocialStatusRepository* social_status_repository_);
-    ~SocialStatusService() = default;
+    ~SocialStatusService() override = default;
 
-    void add(const std::string& name) const;
-    void remove(int id);
-    void update(int id, const std::string& name) const;
-    std::unique_ptr<SocialStatus> get_by_id(int id) const;
-    std::vector<std::unique_ptr<SocialStatus>>get_all() const;
+    void add(SocialStatus* social_status) const override;
+    void remove(int id) override;
+    void update(int id, SocialStatus* new_social_status) const override;
+    std::unique_ptr<SocialStatus> get_by_id(int id) const override;
+    std::vector<std::unique_ptr<SocialStatus>>get_all() const override;
+    bool exists(const int id) const override;
     void display_all() const;
-    bool exists(const int id) const;
 
     SocialStatusService(const SocialStatusService&) = delete;
     void operator=(const SocialStatusService&) = delete;

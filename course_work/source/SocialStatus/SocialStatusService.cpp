@@ -5,21 +5,20 @@ SocialStatusService::SocialStatusService(SocialStatusRepository *social_status_r
 {
     validation_service = std::make_unique<ValidationService>();
 }
-void SocialStatusService::add(const std::string &name) const {
-    validation_service->validate_name(name);
-    auto social_status = std::make_unique<SocialStatus>(name);
-    social_status_repository_->add(social_status.get());
+void SocialStatusService::add(SocialStatus* social_status) const {
+    validation_service->validate_name(social_status->get_name());
+    social_status_repository_->add(social_status);
 }
 void SocialStatusService::remove(int id) {
     validation_service->validate_id(id);
     auto social_status = social_status_repository_->get_by_id(id);
     social_status_repository_->remove(social_status->get_id());
 }
-void SocialStatusService::update(const int id, const std::string& new_name) const {
+void SocialStatusService::update(const int id, SocialStatus* new_social_status) const {
     validation_service->validate_id(id);
-    validation_service->validate_name(new_name);
+    validation_service->validate_name(new_social_status->get_name());
     auto social_status = social_status_repository_->get_by_id(id);
-    social_status->set_name(new_name);
+    social_status->set_name(new_social_status->get_name());
     social_status_repository_->update(social_status.get());
 }
 
