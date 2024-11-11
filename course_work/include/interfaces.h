@@ -21,3 +21,25 @@ public:
     IRepository(const IRepository&) = delete;
     void operator=(const IRepository&) = delete;
 };
+
+template <typename T>
+class IService {
+public:
+    IService() = default;
+    virtual ~IService() = default;
+
+    virtual void add(T* entity) const = 0;
+    virtual void remove(int id) = 0;
+    virtual void update(int id, T* entity) const = 0;
+    virtual std::unique_ptr<T> get_by_id(int id) const = 0;
+    virtual std::vector<std::unique_ptr<T>> get_all() const = 0;
+    virtual bool exists(int id) const = 0;
+
+    IService(const IService&) = delete;
+    IService& operator=(const IService&) = delete;
+};
+
+class IDisplay{
+public:
+    virtual void display_all() const = 0;
+};

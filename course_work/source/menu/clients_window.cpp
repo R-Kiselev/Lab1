@@ -70,8 +70,10 @@ void clients_window::add() {
         int social_status_id = dialog.get_social_status_id();
 
         try{
-            auto client = client_service->add(client_name.toStdString(), social_status_id);
-            account_service->add(client->get_id(), bank_id);
+            auto client = std::make_unique<Client>(client_name.toStdString(), social_status_id);
+            client_service->add(client.get());
+            auto account = std::make_unique<Account>(client->get_id(), bank_id);
+            account_service->add(account.get());
             load_clients(bank_id);
         }
         catch (const CustomException& e) {
@@ -87,7 +89,8 @@ void clients_window::update_client(int client_id) {
         int new_social_status_id = dialog.get_social_status_id();
 
         try {
-            client_service->update(client_id, new_name.toStdString(), new_social_status_id);
+            auto client = std::make_unique<Client>(new_name.toStdString(), new_social_status_id);
+            client_service->update(client_id, client.get());
             load_clients(bank_id);
         }
         catch (const CustomException& e) {
@@ -111,7 +114,7 @@ void clients_window::delete_client(int client_id) {
 }
 void clients_window::load_clients(int bank_id) {
     auto *container = new QWidget(this);
-    auto layout {new QVBoxLayout(container)};
+    auto layout =new QVBoxLayout(container);
 
     try{
         auto clients = client_service->get_all_by_bank_id(bank_id);

@@ -10,8 +10,7 @@
 
 account_widget::account_widget(QWidget *parent, Account* account) :
         QWidget(parent), ui(new Ui::account_widget), account(account) {
-    account_id = account ? account->get_id() : -1;
-
+    set_account_id(account->get_id());
     ui->setupUi(this);
     ui->labelId->setText("Id: " + QString::number(account->get_id()));
     ui->labelBalance->setText("Balance: " + QString::number(account->get_balance()));
@@ -23,7 +22,9 @@ account_widget::account_widget(QWidget *parent, Account* account) :
 }
 
 account_widget::~account_widget() = default;
-
+void account_widget::set_account_id(int account_id_){
+    account_id = account_id_;
+}
 void account_widget::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         emit clicked(account_id);

@@ -3,23 +3,28 @@
 #include <optional>
 #include "ClientRepository.h"
 #include "../SocialStatus/SocialStatusService.h"
+#include "../validation_utils.h"
+#include "../interfaces.h"
 
-class ClientService
+class ClientService : public IService<Client>
 {
 private:
     ClientRepository* client_repository_;
     SocialStatusService* social_status_service_;
+    std::unique_ptr<ValidationService> validation_service;
 public:
-    ClientService(ClientRepository* client_repository_, SocialStatusService* social_status_service_);
+    explicit ClientService(ClientRepository* client_repository_, SocialStatusService* social_status_service_);
     ~ClientService() = default;
 
-    std::unique_ptr<Client> add(const std::string& name, const int social_status_id) const;
+    void add(Client* client) const override;
     void remove(int id);
-    void update(int id,const std::optional<std::string>& name, const std::optional<int>& social_status_id) const;
-    std::unique_ptr<Client> get_by_id(int id) const;
-    std::vector<std::unique_ptr<Client>> get_all() const;
+    void update(int id, Client* client) const override;
+    std::unique_ptr<Client> get_by_id(int id) const override;
+    std::vector<std::unique_ptr<Client>> get_all() const override;
+    bool exists(const int id) const override;
+
     void display_all() const;
-    bool exists(const int id) const;
+
     std::vector<std::unique_ptr<Client>> get_all_by_bank_id(const int bank_id);
     bool has_accounts(const int id) const;
 

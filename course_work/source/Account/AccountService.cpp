@@ -7,33 +7,37 @@ AccountService::AccountService(AccountRepository *account_repository,
       client_service_(client_service),
       bank_service_(bank_service)
 {
+    validation_service = std::make_unique<ValidationService>();
 }
 
-void AccountService::add(const int client_id, const int bank_id) const {
-    if(!client_service_->exists(client_id)){
+void AccountService::add(Account* account) const {
+    validation_service->validate_id(account->get_client_id());
+    validation_service->validate_id(account->get_bank_id());
+    if(!client_service_->exists(account->get_client_id())){
         throw ValidationException("Client does not exist");
     }
-    if(!bank_service_->exists(bank_id)){
+    if(!bank_service_->exists(account->get_bank_id())){
         throw ValidationException("Bank does not exist");
     }
-    auto account = std::make_unique<Account>(client_id, bank_id);
-    account_repository_->add(account.get());
+    account_repository_->add(account);
 }
 void AccountService::remove(int id) {
+    validation_service->validate_id(id);
     auto account = account_repository_->get_by_id(id);
     account_repository_->remove(account->get_id());
 }
-void AccountService::update(int id, const int balance) const
+void AccountService::update(int id, Account* new_account) const
 {
-    if (balance < 0){
-        throw ValidationException("Balance cannot be negative");
-    }
+    validation_service->validate_balance(new_account->get_balance());
+
     auto account = account_repository_->get_by_id(id);
-    account->set_balance(balance);
+    account->set_balance(new_account->get_balance());
+
     account_repository_->update(account.get());
 }
 std::unique_ptr<Account> AccountService::get_by_id(int id) const
 {
+    validation_service->validate_id(id);
     return account_repository_->get_by_id(id);
 }
 std::vector<std::unique_ptr<Account>> AccountService::get_all() const
@@ -56,10 +60,12 @@ void AccountService::display_all() const {
     }
 }
 bool AccountService::exists(const int id) const {
+    validation_service->validate_id(id);
     return account_repository_->exists(id);
 }
 
 std::vector<std::unique_ptr<Account>> AccountService::get_all_by_client_id(int client_id) const
 {
+    validation_service->validate_id(client_id);
     return account_repository_->get_all_by_client_id(client_id);
 }

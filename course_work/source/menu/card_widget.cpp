@@ -22,8 +22,7 @@ card_widget::card_widget(QWidget *parent, Card* card) :
     connect(ui->delete_button, &QPushButton::clicked, this, &card_widget::onDeleteClicked);
 }
 
-card_widget::~card_widget() {
-}
+card_widget::~card_widget() = default;
 
 void card_widget::onUpdateClicked() {
     emit updateRequested(card_id);

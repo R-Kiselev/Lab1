@@ -11,7 +11,7 @@
 bank_widget::bank_widget(const Bank* bank, QWidget *parent)
         : QWidget(parent), ui(new Ui::bank_widget),  bank(bank)
 {
-    bank_id = bank ? bank->get_id() : -1;
+    setBankId(bank->get_id());
     ui->setupUi(this);
     ui->labelId->setText("Id: " + QString::number(bank->get_id()));
     ui->labelName->setText("Name: " + QString::fromStdString(bank->get_name()));
@@ -20,8 +20,7 @@ bank_widget::bank_widget(const Bank* bank, QWidget *parent)
     connect(ui->delete_button, &QPushButton::clicked, this, &bank_widget::onDeleteClicked);
 }
 
-bank_widget::~bank_widget() {
-}
+bank_widget::~bank_widget() = default;
 
 void bank_widget::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
@@ -35,4 +34,8 @@ void bank_widget::onUpdateClicked() {
 
 void bank_widget::onDeleteClicked() {
     emit deleteRequested(bank_id);
+}
+
+void bank_widget::setBankId(int bankId) {
+    bank_id = bankId;
 }

@@ -1,31 +1,30 @@
 #include "../../include/Bank/BankService.h"
 
 BankService::BankService(BankRepository *bank_repository)
-    : bank_repository_(bank_repository){}
-// improve validation
-void BankService::add(const std::string &name) const {
-    if (name.empty()) {
-        throw ValidationException("Bank name cannot be empty");
-    }
-
-    auto bank = std::make_unique<Bank>(name);
-    bank_repository_->add(bank.get());
+    : bank_repository_(bank_repository)
+{
+    validation_service = std::make_unique<ValidationService>();
+}
+void BankService::add(Bank* bank) const {
+    validation_service->validate_name(bank->get_name());
+    bank_repository_->add(bank);
 }
 void BankService::remove(int id) {
     auto bank = bank_repository_->get_by_id(id);
     bank_repository_->remove(bank->get_id());
 }
-void BankService::update(const int id, const std::string& new_name) const {
-    if (new_name.empty()) {
-        throw ValidationException("New bank name cannot be empty");
-    }
+void BankService::update(const int id, Bank* new_bank) const {
+    validation_service->validate_name(new_bank->get_name());
+
     auto bank = bank_repository_->get_by_id(id);
-    bank->set_name(new_name);
+    bank->set_name(new_bank->get_name());
+
     bank_repository_->update(bank.get());
 }
 
 std::unique_ptr<Bank> BankService::get_by_id(const int id) const
 {
+    validation_service->validate_id(id);
     return bank_repository_->get_by_id(id);
 }
 std::vector<std::unique_ptr<Bank>> BankService::get_all() const
@@ -46,5 +45,6 @@ void BankService::display_all() const {
     }
 }
 bool BankService::exists(const int id) const {
+    validation_service->validate_id(id);
     return bank_repository_->exists(id);
 }

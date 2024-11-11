@@ -4,8 +4,6 @@ Account::Account(const int client_id, const int bank_id):
     client_id_(client_id), bank_id_(bank_id)
 {
 }
-
-
 void Account::set_id(const int id)
 {
     id_ = id;

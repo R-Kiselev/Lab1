@@ -73,8 +73,9 @@ void transaction_dialog::handle_transfer_between_accounts(int source_id, int tar
         transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_account, target_account, amount);
 
-        account_service->update(source_account->get_id(), source_account->get_balance());
-        account_service->update(target_account->get_id(), target_account->get_balance());
+
+        account_service->update(source_id, source_account.get());
+        account_service->update(target_id, target_account.get());
 
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
@@ -95,8 +96,8 @@ void transaction_dialog::handle_transfer_between_cards(std::string source_number
         transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_card, target_card, amount);
 
-        card_service->update(source_card->get_id(), source_card->get_balance());
-        card_service->update(target_card->get_id(), target_card->get_balance());
+        card_service->update(source_card->get_id(), source_card.get());
+        card_service->update(target_card->get_id(), target_card.get());
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
     } catch (const CustomException& e) {
@@ -116,8 +117,8 @@ void transaction_dialog::handle_account_to_card_transfer(int source_id, std::str
         transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_account, target_card, amount);
 
-        account_service->update(source_account->get_id(), source_account->get_balance());
-        card_service->update(target_card->get_id(), target_card->get_balance());
+        account_service->update(source_account->get_id(), source_account.get());
+        card_service->update(target_card->get_id(), target_card.get());
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
     }
@@ -137,8 +138,8 @@ void transaction_dialog::handle_card_to_account_transfer(std::string source_card
         transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_card, target_account, amount);
 
-        card_service->update(source_card->get_id(), source_card->get_balance());
-        account_service->update(target_account->get_id(), target_account->get_balance());
+        card_service->update(source_card->get_id(), source_card.get());
+        account_service->update(target_account->get_id(), target_account.get());
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
     }

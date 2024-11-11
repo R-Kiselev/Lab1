@@ -4,25 +4,30 @@
 #include "AccountRepository.h"
 #include "../Client/ClientService.h"
 #include "../Bank/BankService.h"
-class AccountService
+#include "../validation_utils.h"
+#include "../interfaces.h"
+
+class AccountService : public IService<Account>
 {
 private:
     AccountRepository* account_repository_;
     ClientService* client_service_;
     BankService* bank_service_;
+    std::unique_ptr<ValidationService> validation_service;
 public:
     AccountService(AccountRepository* account_repository,
                    ClientService* client_service,
                    BankService* bank_service);
     ~AccountService() = default;
 
-    void add(const int client_id, const int bank_id) const;
-    void remove(int id);
-    void update(int id, const int balance) const;
-    std::unique_ptr<Account> get_by_id(int id) const;
-    std::vector<std::unique_ptr<Account>> get_all() const;
+    void add(Account* account) const override;
+    void remove(int id) override;
+    void update(int id, Account* account) const override;
+    std::unique_ptr<Account> get_by_id(int id) const override;
+    std::vector<std::unique_ptr<Account>> get_all() const override;
+    bool exists(const int id) const override;
+
     void display_all() const;
-    bool exists(const int id) const;
     [[nodiscard]] std::vector<std::unique_ptr<Account>> get_all_by_client_id(int client_id) const;
 
     AccountService(const AccountService&) = delete;

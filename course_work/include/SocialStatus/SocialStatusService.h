@@ -2,10 +2,12 @@
 
 #include <iostream>
 #include "SocialStatusRepository.h"
+#include "../validation_utils.h"
 
 class SocialStatusService{
 private:
     SocialStatusRepository* social_status_repository_;
+    std::unique_ptr<ValidationService> validation_service;
 public:
     explicit SocialStatusService(SocialStatusRepository* social_status_repository_);
     ~SocialStatusService() = default;

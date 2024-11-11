@@ -20,8 +20,7 @@ client_widget::client_widget(const Client* client, QWidget *parent) :
     connect(ui->delete_button, &QPushButton::clicked, this, &client_widget::onDeleteClicked);
 }
 
-client_widget::~client_widget() {
-}
+client_widget::~client_widget() = default;
 
 void client_widget::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {

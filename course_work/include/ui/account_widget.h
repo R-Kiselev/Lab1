@@ -19,12 +19,11 @@ public:
     explicit account_widget(QWidget *parent = nullptr, Account* account = nullptr);
 
     ~account_widget() override;
-
+    void set_account_id(int account_id_);
 signals:
     void clicked(int account_id);
     void updateRequested(int account_id);
     void deleteRequested(int account_id);
-
 private slots:
     void mousePressEvent(QMouseEvent* event) override;
     void onUpdateClicked();

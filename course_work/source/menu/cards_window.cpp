@@ -50,7 +50,9 @@ void cards_window::setup_services(sqlite3* db){
 }
 void cards_window::add() {
     try {
-        card_service->add(account_id_);
+        auto card = std::make_unique<Card>();
+        card->set_account_id(account_id_);
+        card_service->add(card.get());
         load_cards(account_id_);
     } catch (const CustomException &e) {
         QMessageBox::critical(this, "Error", e.what());
@@ -62,7 +64,9 @@ void cards_window::update_card(int card_id) {
                                                 tr("Enter new card balance:"), QLineEdit::Normal, "", &ok);
     if (ok) {
         try {
-            card_service->update(card_id, new_balance.toInt());
+            auto card = std::make_unique<Card>();
+            card->set_balance(new_balance.toInt());
+            card_service->update(card_id, card.get());
             load_cards(account_id_);
         } catch (const CustomException &e) {
             QMessageBox::critical(this, "Error", e.what());
@@ -84,7 +88,7 @@ void cards_window::delete_card(int card_id) {
 }
 void cards_window::load_cards(int account_id) {
     auto *container = new QWidget(this);
-    auto layout{new QVBoxLayout(container)};
+    auto layout= new QVBoxLayout(container);
 
     try{
         auto cards = card_service->get_cards_by_account_id(account_id);

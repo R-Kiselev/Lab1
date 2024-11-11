@@ -24,8 +24,7 @@ client_dialog::client_dialog(SocialStatusService* social_status_service, QWidget
     }
 }
 
-client_dialog::~client_dialog() {
-}
+client_dialog::~client_dialog() = default;
 
 QString client_dialog::get_name() const {
     return ui->name_edit->text();

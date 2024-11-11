@@ -69,7 +69,8 @@ void accounts_window::setup_services(sqlite3* db){
 }
 void accounts_window::add(){
     try{
-        account_service->add(client_id, bank_id);
+        auto account = std::make_unique<Account>(client_id, bank_id);
+        account_service->add(account.get());
         load_accounts(client_id);
     }
     catch (const CustomException& e) {
@@ -83,7 +84,9 @@ void accounts_window::update_account(int account_id){
                                                 tr("Enter new account balance:"), QLineEdit::Normal, "", &ok);
     if (ok) {
         try{
-            account_service->update(account_id, new_balance.toInt());
+            auto account = std::make_unique<Account>(client_id, bank_id);
+            account->set_balance(new_balance.toInt());
+            account_service->update(account_id, account.get());
             load_accounts(client_id);
         }
         catch (const CustomException& e) {
@@ -106,7 +109,7 @@ void accounts_window::delete_account(int account_id){
 }
 void accounts_window::load_accounts(int client_id) {
     auto *container = new QWidget(this);
-    auto layout {new QVBoxLayout(container)};
+    auto layout = new QVBoxLayout(container);
 
     try{
         auto accounts = account_service->get_all_by_client_id(client_id);

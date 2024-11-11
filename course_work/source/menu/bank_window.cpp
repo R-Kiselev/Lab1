@@ -51,8 +51,14 @@ void bank_window::add(int bank_id) {
     QString bank_name = QInputDialog::getText(this, tr("Add Bank"),
                                               tr("Enter bank name:"), QLineEdit::Normal, "", &ok);
     if (ok && !bank_name.isEmpty()) {
-        bank_service->add(bank_name.toStdString());
-        load_banks();
+        try{
+            auto bank = std::make_unique<Bank>(bank_name.toStdString());
+            bank_service->add(bank.get());
+            load_banks();
+        }
+        catch (CustomException& e){
+            QMessageBox::critical(this, "Error", e.what());
+        }
     }
 }
 void bank_window::update(int bank_id) {
@@ -61,7 +67,8 @@ void bank_window::update(int bank_id) {
                                              tr("Enter new bank name:"), QLineEdit::Normal, "", &ok);
     if (ok) {
         try{
-            bank_service->update(bank_id, new_name.toStdString());
+            auto bank = std::make_unique<Bank>(new_name.toStdString());
+            bank_service->update(bank_id, bank.get());
             load_banks();
         }
         catch (const CustomException& e) {
@@ -86,7 +93,7 @@ void bank_window::delete_bank(int bank_id) {
 
 void bank_window::load_banks() {
     auto *container = new QWidget(this);
-    auto layout {new QVBoxLayout(container)};
+    auto layout = new QVBoxLayout(container);
 
     try{
         auto banks = bank_service->get_all();

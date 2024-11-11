@@ -4,7 +4,7 @@
 CardService::CardService(CardRepository *card_repository, AccountService *account_service) :
         card_repository_(card_repository), account_service_(account_service)
 {
-
+    validation_service = std::make_unique<ValidationService>();
 }
 std::string generate_card_number() {
     std::random_device rd;
@@ -41,33 +41,39 @@ std::string generate_card_expiry_date() {
 
     return expiry_date;
 }
-void CardService::add(const int account_id) const {
-    if (!account_service_->exists(account_id)) {
+void CardService::add(Card* card) const {
+    validation_service->validate_id(card->get_account_id());
+    if (!account_service_->exists(card->get_account_id())) {
         throw NotFoundException("Account does not exist");
     }
+
     std::string number = generate_card_number();
     while(card_repository_->exists(number)){
         number = generate_card_number();
     }
     std::string expire_date = generate_card_expiry_date();
     int balance = 0;
-    auto card = std::make_unique<Card>(number, expire_date, balance, account_id);
-    card_repository_->add(card.get());
+
+    card->set_number(number);
+    card->set_expire_date(expire_date);
+    card->set_balance(0);
+    card_repository_->add(card);
 }
 void CardService::remove(int id) {
+    validation_service->validate_id(id);
     auto card = card_repository_->get_by_id(id);
     card_repository_->remove(card->get_id());
 }
-void CardService::update(int id, int balance) const
+void CardService::update(int id, Card* new_card) const
 {
-    if (balance < 0) {
-        throw ValidationException("New balance cannot be negative");
-    }
+    validation_service->validate_id(id);
+    validation_service->validate_balance(new_card->get_balance());
     auto card = card_repository_->get_by_id(id);
-    card->set_balance(balance);
+    card->set_balance(new_card->get_balance());
     card_repository_->update(card.get());
 }
 std::unique_ptr<Card> CardService::get_by_id(int id) const {
+    validation_service->validate_id(id);
     return card_repository_->get_by_id(id);
 }
 std::unique_ptr<Card> CardService::get_card_by_number(std::string &number) const {
@@ -78,6 +84,7 @@ std::vector<std::unique_ptr<Card>> CardService::get_all() const {
 }
 std::vector<std::unique_ptr<Card>> CardService::get_cards_by_account_id(const int account_id) const
 {
+    validation_service->validate_id(account_id);
     if (!account_service_->exists(account_id)) {
         throw NotFoundException("Account does not exist");
     }
@@ -100,6 +107,7 @@ void CardService::display_all_cards() const {
     }
 }
 bool CardService::exists(const int id) const {
+    validation_service->validate_id(id);
     return card_repository_->exists(id);
 }
 

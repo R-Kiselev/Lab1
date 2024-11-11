@@ -26,5 +26,9 @@ private slots:
 private:
     std::unique_ptr<Ui::bank_widget> ui;
     int bank_id;
+public:
+    void setBankId(int bankId);
+
+private:
     const Bank* bank;
 };
