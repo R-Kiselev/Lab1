@@ -14,7 +14,7 @@ private:
     sqlite3* db_;
 public:
     explicit CardRepository(sqlite3* db): db_(db){};
-    ~CardRepository() = default;
+    ~CardRepository() override = default;
 
     void add(Card* card) const override;
     std::unique_ptr<Card> get_by_id(const int id) const override;
