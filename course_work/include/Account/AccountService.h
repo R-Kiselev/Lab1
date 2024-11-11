@@ -18,7 +18,7 @@ public:
     AccountService(AccountRepository* account_repository,
                    ClientService* client_service,
                    BankService* bank_service);
-    ~AccountService() = default;
+    ~AccountService() override = default;
 
     void add(Account* account) const override;
     void remove(int id) override;

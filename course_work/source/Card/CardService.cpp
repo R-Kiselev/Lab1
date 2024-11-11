@@ -52,7 +52,6 @@ void CardService::add(Card* card) const {
         number = generate_card_number();
     }
     std::string expire_date = generate_card_expiry_date();
-    int balance = 0;
 
     card->set_number(number);
     card->set_expire_date(expire_date);

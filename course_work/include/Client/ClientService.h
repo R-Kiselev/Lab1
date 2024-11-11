@@ -14,10 +14,10 @@ private:
     std::unique_ptr<ValidationService> validation_service;
 public:
     explicit ClientService(ClientRepository* client_repository_, SocialStatusService* social_status_service_);
-    ~ClientService() = default;
+    ~ClientService() override = default;
 
     void add(Client* client) const override;
-    void remove(int id);
+    void remove(int id) override;
     void update(int id, Client* client) const override;
     std::unique_ptr<Client> get_by_id(int id) const override;
     std::vector<std::unique_ptr<Client>> get_all() const override;

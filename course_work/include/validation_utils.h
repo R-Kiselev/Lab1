@@ -12,12 +12,12 @@ public:
             throw ValidationException("Name must contain only alphabetic characters, spaces and hyphens between words.");
         }
     }
-    void validate_balance(const int balance){
+    void validate_balance(const int balance) const{
         if (balance < 0){
             throw ValidationException("Balance must be a positive integer.");
         }
     }
-    void validate_id(const int id){
+    void validate_id(const int id) const{
         if (id < 0){
             throw ValidationException("ID must be a positive integer.");
         }

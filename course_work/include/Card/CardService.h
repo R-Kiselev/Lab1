@@ -5,14 +5,14 @@
 #include "../validation_utils.h"
 #include "../interfaces.h"
 
-class CardService : IService<Card>{
+class CardService : public IService<Card>{
 private:
     CardRepository* card_repository_;
     AccountService* account_service_;
     std::unique_ptr<ValidationService> validation_service;
 public:
     CardService(CardRepository* card_repository, AccountService* account_service);
-    ~CardService() = default;
+    ~CardService() override = default;
 
     void add(Card* card) const override;
     void remove(int id) override;
