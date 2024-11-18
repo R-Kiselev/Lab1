@@ -119,7 +119,7 @@ void clients_window::load_clients(int bank_id_) {
     try{
         auto clients = client_service->get_all_by_bank_id(bank_id_);
         for (const auto& client : clients) {
-            auto client_widget_ = std::make_unique<client_widget>(client.get());
+            auto client_widget_ = std::make_unique<client_widget>(client.get(), this, db_);
             client_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
             connect(client_widget_.get(), &client_widget::clicked, this, &clients_window::open_accounts_window);
             connect(client_widget_.get(), &client_widget::updateRequested, this, &clients_window::update_client);

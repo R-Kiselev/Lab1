@@ -7,6 +7,8 @@
 
 #include <QWidget>
 #include "../Client/Client.h"
+#include "../../sqlite/sqlite3.h"
+#include "../Errors/CustomExceptions.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class client_widget; }
@@ -16,7 +18,7 @@ class client_widget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit client_widget(const Client* client, QWidget *parent = nullptr);
+    explicit client_widget(const Client* client, QWidget *parent = nullptr, sqlite3* db=nullptr);
     ~client_widget() override;
 
 signals:
@@ -27,10 +29,12 @@ private slots:
     void mousePressEvent(QMouseEvent* event) override;
     void onUpdateClicked();
     void onDeleteClicked();
+    std::string get_social_status_name(int social_status_id);
 private:
     std::unique_ptr<Ui::client_widget> ui;
     int client_id;
     Client* client;
+    sqlite3* db_;
 };
 
 

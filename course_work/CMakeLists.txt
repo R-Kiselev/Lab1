@@ -89,6 +89,7 @@ add_executable(course_work
         include/Transaction/TransactionService.h
         include/interfaces.h
         include/database_tables.h
+        include/validation_utils.h
 )
 target_link_libraries(course_work
         Qt::Core

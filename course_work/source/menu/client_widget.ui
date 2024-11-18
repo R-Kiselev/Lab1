@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>151</height>
+    <height>106</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,19 +49,6 @@ QPushButton:pressed {
      <item row="0" column="0">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="labelId">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Id :</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QLabel" name="labelName">
          <property name="text">
           <string>Name:</string>
@@ -70,8 +57,14 @@ QPushButton:pressed {
        </item>
        <item>
         <widget class="QLabel" name="labelSocialStatusId">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
-          <string>Social_status_id:</string>
+          <string>Social status:</string>
          </property>
         </widget>
        </item>

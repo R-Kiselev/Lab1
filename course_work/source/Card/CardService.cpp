@@ -75,19 +75,19 @@ std::unique_ptr<Card> CardService::get_by_id(int id) const {
     validation_service->validate_id(id);
     return card_repository_->get_by_id(id);
 }
-std::unique_ptr<Card> CardService::get_card_by_number(std::string &number) const {
-    return card_repository_->get_card_by_number(number);
+std::unique_ptr<Card> CardService::get_by_number(std::string &number) const {
+    return card_repository_->get_by_number(number);
 }
 std::vector<std::unique_ptr<Card>> CardService::get_all() const {
     return card_repository_->get_all();
 }
-std::vector<std::unique_ptr<Card>> CardService::get_cards_by_account_id(const int account_id) const
+std::vector<std::unique_ptr<Card>> CardService::get_all_by_account_id(const int account_id) const
 {
     validation_service->validate_id(account_id);
     if (!account_service_->exists(account_id)) {
         throw NotFoundException("Account does not exist");
     }
-    return card_repository_->get_cards_by_account_id(account_id);
+    return card_repository_->get_all_by_account_id(account_id);
 }
 
 void CardService::display_all_cards() const {

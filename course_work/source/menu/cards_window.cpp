@@ -91,9 +91,9 @@ void cards_window::load_cards(int account_id) {
     auto layout = std::make_unique<QVBoxLayout>(container.get());
 
     try{
-        auto cards = card_service->get_cards_by_account_id(account_id);
+        auto cards = card_service->get_all_by_account_id(account_id);
         for (const auto& card : cards) {
-            auto card_widget_ = std::make_unique<card_widget>(this, card.get());
+            auto card_widget_ = std::make_unique<card_widget>(this, card.get(), db_);
             connect(card_widget_.get(), &card_widget::updateRequested, this, &cards_window::update_card);
             connect(card_widget_.get(), &card_widget::deleteRequested, this, &cards_window::delete_card);
             card_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);

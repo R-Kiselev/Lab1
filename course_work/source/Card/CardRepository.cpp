@@ -59,7 +59,7 @@ std::unique_ptr<Card> CardRepository::get_by_id(const int id) const
 
     return card;
 }
-std::unique_ptr<Card> CardRepository::get_card_by_number(std::string& number_) const{
+std::unique_ptr<Card> CardRepository::get_by_number(std::string& number_) const{
     std::string sql = "SELECT id, number, expire_date, balance, account_id FROM cards WHERE number = ?;";
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -106,7 +106,7 @@ std::vector<std::unique_ptr<Card>> CardRepository::get_all() const {
 
     return cards;
 }
-std::vector<std::unique_ptr<Card>> CardRepository::get_cards_by_account_id(const int account_id) const
+std::vector<std::unique_ptr<Card>> CardRepository::get_all_by_account_id(const int account_id) const
 {
     std::vector<std::unique_ptr<Card>> cards;
     std::string sql = "SELECT id, number, expire_date, balance, account_id "

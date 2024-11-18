@@ -1,9 +1,3 @@
-//
-// Created by Waimale on 11/8/2024.
-//
-
-// You may need to build the project (run Qt uic code generator) to get "ui_payments_window.h" resolved
-
 #include "../../include/ui/payments_window.h"
 #include "ui_payments_window.h"
 

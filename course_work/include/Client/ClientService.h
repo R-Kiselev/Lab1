@@ -26,6 +26,8 @@ public:
     void display_all() const;
 
     std::vector<std::unique_ptr<Client>> get_all_by_bank_id(const int bank_id);
+    std::vector<std::unique_ptr<Client>> get_all_by_account_id(const int account_id);
+
     bool has_accounts(const int id) const;
 
     ClientService(const ClientService&) = delete;

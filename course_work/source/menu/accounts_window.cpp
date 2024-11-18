@@ -114,7 +114,7 @@ void accounts_window::load_accounts(int client_id_) {
     try {
         auto accounts = account_service->get_all_by_client_id(client_id_);
         for (const auto& account : accounts) {
-            auto account_widget_ = std::make_unique<account_widget>(this, account.get());
+            auto account_widget_ = std::make_unique<account_widget>(this, account.get(), db_);
             account_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
             connect(account_widget_.get(), &account_widget::clicked, this, &accounts_window::open_card_window);

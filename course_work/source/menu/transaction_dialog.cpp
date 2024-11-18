@@ -89,8 +89,8 @@ void transaction_dialog::handle_transfer_between_cards(std::string source_number
                                                        std::string target_number, int amount) {
     begin_transaction();
     try {
-        auto source_card = card_service->get_card_by_number(source_number);
-        auto target_card = card_service->get_card_by_number(target_number);
+        auto source_card = card_service->get_by_number(source_number);
+        auto target_card = card_service->get_by_number(target_number);
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
         transaction_service = std::make_unique<TransactionService>();
@@ -111,7 +111,7 @@ void transaction_dialog::handle_account_to_card_transfer(int source_id, std::str
     begin_transaction();
     try {
         auto source_account = account_service->get_by_id(source_id);
-        auto target_card = card_service->get_card_by_number(target_card_number);
+        auto target_card = card_service->get_by_number(target_card_number);
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
         transaction_service = std::make_unique<TransactionService>();
@@ -131,7 +131,7 @@ void transaction_dialog::handle_account_to_card_transfer(int source_id, std::str
 void transaction_dialog::handle_card_to_account_transfer(std::string source_card_number, int target_id, int amount) {
     begin_transaction();
     try{
-        auto source_card = card_service->get_card_by_number(source_card_number);
+        auto source_card = card_service->get_by_number(source_card_number);
         auto target_account = account_service->get_by_id(target_id);
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
