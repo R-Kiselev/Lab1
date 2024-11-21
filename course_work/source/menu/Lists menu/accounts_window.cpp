@@ -5,8 +5,8 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_accounts_window.h" resolved
 
 #include <QLabel>
-#include "../../include/ui/cards_window.h"
-#include "../../include/ui/accounts_window.h"
+#include "../../../include/ui/cards_window.h"
+#include "../../../include/ui/accounts_window.h"
 
 #include "ui_accounts_window.h"
 
@@ -35,14 +35,6 @@ accounts_window::~accounts_window() {
 }
 
 void accounts_window::on_back_button_clicked() {
-    try {
-        if (!client_service->has_accounts(client_id)) {
-            client_service->remove(client_id);
-        }
-    } catch (const CustomException& e) {
-        QMessageBox::critical(this, "Error", e.what());
-    }
-
     this->close();
     emit back_button();
 }
@@ -112,7 +104,7 @@ void accounts_window::load_accounts(int client_id_) {
     auto layout = std::make_unique<QVBoxLayout>(container.get());
 
     try {
-        auto accounts = account_service->get_all_by_client_id(client_id_);
+        auto accounts = get_accounts_by_bank_and_client_id(bank_id, client_id_);
         for (const auto& account : accounts) {
             auto account_widget_ = std::make_unique<account_widget>(this, account.get(), db_);
             account_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -125,15 +117,40 @@ void accounts_window::load_accounts(int client_id_) {
         }
     }
     catch (const CustomException& e) {
-        QMessageBox::warning(this, "Warning", "This client has no more accounts. Create account or this client will be deleted.");
+        QMessageBox::warning(this, "Empty", "This client has no accounts.");
     }
 
     container->setLayout(layout.release());
     ui->scrollArea->setWidget(container.release());
     ui->scrollArea->setWidgetResizable(true);
 }
-void accounts_window::set_client_id(int client_id_) {
+
+std::vector<std::unique_ptr<Account>> accounts_window::get_accounts_by_bank_and_client_id(int bank_id, int client_id) {
+    std::string sql = std::format(
+            "SELECT * FROM accounts "
+            "WHERE bank_id = {} AND client_id = {};",
+            std::to_string(bank_id), std::to_string(client_id));
+    sqlite3_stmt *stmt;
+    std::vector<std::unique_ptr<Account>> accounts;
+    if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        throw DatabaseException(sqlite3_errmsg(db_));
+    }
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        auto account = std::make_unique<Account>();
+        account->set_id(sqlite3_column_int(stmt, 0));
+        account->set_balance(sqlite3_column_int(stmt, 1));
+        account->set_client_id(sqlite3_column_int(stmt, 2));
+        account->set_bank_id(sqlite3_column_int(stmt, 3));
+        accounts.push_back(std::move(account));
+    }
+    sqlite3_finalize(stmt);
+    return accounts;
+}
+
+void accounts_window::set_client(int client_id_) {
     this->client_id = client_id_;
+    auto client = client_service->get_by_id(client_id);
+    this->is_admin = client->get_is_admin();
 }
 void accounts_window::set_bank_id(int bank_id_) {
     this->bank_id = bank_id_;

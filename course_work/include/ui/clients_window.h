@@ -32,7 +32,7 @@ public:
     void load_clients(int bank_id);
 
     void setBankId(int bank_id);
-    void add();
+//    void add();
     void update_client(int client_id);
     void delete_client(int client_id);
 signals:

@@ -157,6 +157,13 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="logout_button">
+        <property name="text">
+         <string>Logout</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer_4">
         <property name="orientation">
          <enum>Qt::Orientation::Vertical</enum>

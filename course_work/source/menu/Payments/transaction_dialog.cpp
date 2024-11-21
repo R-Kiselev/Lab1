@@ -4,12 +4,12 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_transaction_dialog.h" resolved
 
-#include "../../include/ui/transaction_dialog.h"
+#include "../../../include/ui/transaction_dialog.h"
 #include "ui_transaction_dialog.h"
 
 
-transaction_dialog::transaction_dialog(sqlite3* db) :
-        QDialog(nullptr), ui(new Ui::transaction_dialog), db_(db) {
+transaction_dialog::transaction_dialog(sqlite3* db, int user_id) :
+        QDialog(nullptr), ui(new Ui::transaction_dialog), db_(db), user_id_(user_id) {
     ui->setupUi(this);
 
     connect(ui->ok_button, &QPushButton::clicked, this, &transaction_dialog::perform_transaction);
@@ -149,6 +149,20 @@ void transaction_dialog::handle_card_to_account_transfer(std::string source_card
     }
     commit_transaction();
 }
+
+bool transaction_dialog::is_user_owner_of_account_or_card(int user_id, QString& source) {
+    bool is_source_integer;
+    int source_id = source.toInt(&is_source_integer);
+    if (is_source_integer) {
+        auto account = account_service->get_by_id(source_id);
+        return account->get_client_id() == user_id;
+    } else {
+        std::string source_number = source.toStdString();
+        auto card = card_service->get_by_number(source_number);
+        auto account = account_service->get_by_id(card->get_account_id());
+        return account->get_client_id() == user_id;
+    }
+}
 void transaction_dialog::perform_transaction() {
     sqlite3_exec(db_, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
     QString source = ui->source_field->text();
@@ -159,7 +173,16 @@ void transaction_dialog::perform_transaction() {
         QMessageBox::warning(this, "Input Error", "All fields must be filled out.");
         return;
     }
-
+    try{
+        if(!is_user_owner_of_account_or_card(user_id_, source)){
+            QMessageBox::warning(this, "Access Error", "You are not the owner of the source account/card.");
+            return;
+        }
+    }
+    catch (const CustomException& e) {
+        QMessageBox::critical(this, "Error", e.what());
+        return;
+    }
     if (transfer_type == 0) {
         handle_transfer_between_accounts(source.toInt(), target.toInt(), amount.toInt());
     } else if (transfer_type == 2) {

@@ -17,7 +17,7 @@ class payments_window : public QWidget {
 Q_OBJECT
 
 public:
-    explicit payments_window(sqlite3* db);
+    explicit payments_window(sqlite3* db = nullptr, int user_id = -1);
 
     ~payments_window() override;
 signals:
@@ -29,6 +29,8 @@ private:
     std::unique_ptr<Ui::payments_window> ui;
     std::unique_ptr<transaction_dialog> transaction_dialog_;
     sqlite3* db_;
+
+    int user_id_;
 };
 
 

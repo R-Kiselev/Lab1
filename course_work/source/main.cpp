@@ -16,6 +16,7 @@
 #include <QApplication>
 #include "../include/ui/mainwindow.h"
 #include "../include/ui/clients_window.h"
+#include "../include/ui/authorization.h"
 
 int main(int argc, char *argv[])
 {
@@ -38,10 +39,8 @@ int main(int argc, char *argv[])
 	create_accounts_table(DB);
 	create_cards_table(DB);
 
-    sqlite3_close(DB);
-
     QApplication a(argc, argv);
-    mainwindow w;
+    authorization w(nullptr, DB);
     w.show();
 
     return QApplication::exec();

@@ -4,11 +4,11 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_clients_window.h" resolved
 
-#include "../../include/ui/clients_window.h"
+#include "../../../include/ui/clients_window.h"
 #include "ui_clients_window.h"
 #include <QLabel>
 #include <QPushButton>
-#include "../../include/ui/accounts_window.h"
+#include "../../../include/ui/accounts_window.h"
 
 clients_window::clients_window(sqlite3* db)
         : QWidget(nullptr), ui(new Ui::clients_window), db_(db)
@@ -25,7 +25,6 @@ clients_window::clients_window(sqlite3* db)
     setMinimumSize(400, 300);
 
     connect(ui->back_button, &QPushButton::clicked, this, &clients_window::go_back);
-    connect(ui->add_button, &QPushButton::clicked, this, &clients_window::add);
     setup_services(db_);
 }
 
@@ -39,7 +38,7 @@ clients_window::~clients_window() {
 void clients_window::open_accounts_window(int client_id) {
     this->close();
     accounts_window_->set_bank_id(bank_id);
-    accounts_window_->set_client_id(client_id);
+    accounts_window_->set_client(client_id);
     accounts_window_->load_accounts(client_id);
     accounts_window_->show();
 }
@@ -61,25 +60,6 @@ void clients_window::setup_services(sqlite3* db){
 
     account_repository = std::make_unique<AccountRepository>(db);
     account_service = std::make_unique<AccountService>(account_repository.get(), client_service.get(), bank_service.get());
-}
-
-void clients_window::add() {
-    client_dialog dialog(social_status_service.get(), this);
-    if (dialog.exec() == QDialog::Accepted) {
-        QString client_name = dialog.get_name();
-        int social_status_id = dialog.get_social_status_id();
-
-        try{
-            auto client = std::make_unique<Client>(client_name.toStdString(), social_status_id);
-            client_service->add(client.get());
-            auto account = std::make_unique<Account>(client->get_id(), bank_id);
-            account_service->add(account.get());
-            load_clients(bank_id);
-        }
-        catch (const CustomException& e) {
-            QMessageBox::critical(this, "Error", e.what());
-        }
-    }
 }
 
 void clients_window::update_client(int client_id) {

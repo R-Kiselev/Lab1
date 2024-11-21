@@ -39,8 +39,11 @@ void create_clients_table(sqlite3* DB)
     std::string query =
         "CREATE TABLE IF NOT EXISTS clients ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "username TEXT NOT NULL UNIQUE,"
+        "password TEXT NOT NULL,"
         "name TEXT NOT NULL,"
         "social_status_id INTEGER,"
+        "is_admin INTEGER DEFAULT 0 NOT NULL,"
         "FOREIGN KEY (social_status_id) REFERENCES social_statuses(id) ON DELETE CASCADE);";
 
     create_table(DB, query);

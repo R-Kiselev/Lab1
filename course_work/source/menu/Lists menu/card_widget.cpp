@@ -4,9 +4,9 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_card_widget.h" resolved
 
-#include "../../include/ui/card_widget.h"
+#include "../../../include/ui/card_widget.h"
 #include "ui_card_widget.h"
-#include "../../include/Bank/BankRepository.h"
+#include "../../../include/Bank/BankRepository.h"
 #include <format>
 
 card_widget::card_widget(QWidget *parent, Card* card, sqlite3* db) :

@@ -23,7 +23,7 @@ class transaction_dialog : public QDialog {
 Q_OBJECT
 
 public:
-    explicit transaction_dialog(sqlite3* db);
+    explicit transaction_dialog(sqlite3* db, int user_id);
 
     ~transaction_dialog() override;
 
@@ -41,6 +41,7 @@ private:
     void commit_transaction();
     void rollback_transaction();
 
+    bool is_user_owner_of_account_or_card(int user_id, QString& source);
     Ui::transaction_dialog *ui;
     int transfer_type;
 
@@ -57,6 +58,8 @@ private:
 
     std::unique_ptr<TransactionService> transaction_service;
     sqlite3* db_;
+
+    int user_id_;
 };
 
 

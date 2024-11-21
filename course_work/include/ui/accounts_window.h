@@ -29,8 +29,9 @@ public:
     void add();
     void update_account(int account_id);
     void delete_account(int account_id);
+    std::vector<std::unique_ptr<Account>> get_accounts_by_bank_and_client_id(int bank_id, int client_id);
 
-    void set_client_id(int client_id_);
+    void set_client(int client_id_);
     void set_bank_id(int bank_id_);
 signals:
     void back_button();
@@ -55,6 +56,7 @@ private:
     std::unique_ptr<AccountService> account_service;
 
     int client_id;
+    bool is_admin;
     int bank_id;
 };
 

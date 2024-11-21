@@ -4,7 +4,7 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_cards_window.h" resolved
 
-#include "../../include/ui/cards_window.h"
+#include "../../../include/ui/cards_window.h"
 #include "ui_cards_window.h"
 
 cards_window::cards_window(sqlite3* db) :

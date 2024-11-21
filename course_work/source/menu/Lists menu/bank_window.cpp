@@ -4,30 +4,54 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_bank_window.h" resolved
 
-#include "../../include/ui/bank_window.h"
+#include "../../../include/ui/bank_window.h"
 #include "ui_bank_window.h"
 #include <QInputDialog>
 #include <QMessageBox>
 
-bank_window::bank_window(sqlite3* db) :
-        QWidget(nullptr), ui(new Ui::bank_window), db(db) {
+bank_window::bank_window(sqlite3* db, int user_id) :
+        QWidget(nullptr), ui(new Ui::bank_window), db_(db), user_id_(user_id) {
     ui->setupUi(this);
     setWindowTitle("Список банков");
 
-    clients_window_ = std::make_unique<clients_window>(db);
-    connect(clients_window_.get(), &clients_window::back_button, this, &bank_window::show);
-    connect(ui->back_button, &QPushButton::clicked, this, &bank_window::go_back);
+    is_admin_ = get_is_admin();
 
+    if (is_admin_){
+        clients_window_ = std::make_unique<clients_window>(db);
+        connect(clients_window_.get(), &clients_window::back_button, this, &bank_window::show);
+    }
+    else{
+        accounts_window_ = std::make_unique<accounts_window>(db);
+        connect(accounts_window_.get(), &accounts_window::back_button, this, &bank_window::show);
+        ui->add_button->hide();
+    }
+
+    connect(ui->back_button, &QPushButton::clicked, this, &bank_window::go_back);
     connect(ui->add_button, &QPushButton::clicked, this, &bank_window::add);
 
-    setup_services(db);
+    setup_services(db_);
 }
 
 bank_window::~bank_window() {
-    if (db) {
-        sqlite3_close(db);
-        db = nullptr;
+    if (db_) {
+        sqlite3_close(db_);
+        db_ = nullptr;
     }
+}
+
+bool bank_window::get_is_admin() const {
+    std::string sql = std::format("SELECT is_admin FROM clients WHERE id = {};", std::to_string(user_id_));
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        throw DatabaseException(sqlite3_errmsg(db_));
+    }
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        throw NotFoundException(std::format("Client with ID {} not found", std::to_string(user_id_)));
+    }
+    int is_admin = (sqlite3_column_int(stmt, 0) == 1);
+    sqlite3_finalize(stmt);
+    return is_admin;
 }
 
 void bank_window::go_back() {
@@ -35,11 +59,17 @@ void bank_window::go_back() {
     emit back_button();
 }
 
-void bank_window::setup_services(sqlite3* db) {
-    bank_repository = std::make_unique<BankRepository>(db);
+void bank_window::setup_services(sqlite3* db_) {
+    bank_repository = std::make_unique<BankRepository>(db_);
     bank_service = std::make_unique<BankService>(bank_repository.get());
 }
-
+void bank_window::open_accounts_window(int bank_id) {
+    this->close();
+    accounts_window_->set_bank_id(bank_id);
+    accounts_window_->set_client(user_id_);
+    accounts_window_->load_accounts(user_id_);
+    accounts_window_->show();
+}
 void bank_window::open_clients_window(int bank_id) {
     this->close();
     clients_window_->setBankId(bank_id);
@@ -98,13 +128,17 @@ void bank_window::load_banks() {
     try{
         auto banks = bank_service->get_all();
         for (const auto& bank : banks) {
-            auto bank_widget_ = std::make_unique<bank_widget>(bank.get());
+            auto bank_widget_ = std::make_unique<bank_widget>(bank.get(), this, is_admin_);
             bank_widget_->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
 
-            connect(bank_widget_.get(), &bank_widget::clicked, this, &bank_window::open_clients_window);
-            connect(bank_widget_.get(), &bank_widget::updateRequested, this, &bank_window::update);
-            connect(bank_widget_.get(), &bank_widget::deleteRequested, this, &bank_window::delete_bank);
-
+           if(is_admin_){
+               connect(bank_widget_.get(), &bank_widget::clicked, this, &bank_window::open_clients_window);
+               connect(bank_widget_.get(), &bank_widget::updateRequested, this, &bank_window::update);
+               connect(bank_widget_.get(), &bank_widget::deleteRequested, this, &bank_window::delete_bank);
+           }
+          else {
+               connect(bank_widget_.get(), &bank_widget::clicked, this, &bank_window::open_accounts_window);
+           }
             layout->addWidget(bank_widget_.release());
         }
     }

@@ -4,7 +4,7 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_client_dialog.h" resolved
 
-#include "../../include/ui/client_dialog.h"
+#include "../../../include/ui/client_dialog.h"
 #include "ui_client_dialog.h"
 
 client_dialog::client_dialog(SocialStatusService* social_status_service, QWidget *parent) :
@@ -13,11 +13,9 @@ client_dialog::client_dialog(SocialStatusService* social_status_service, QWidget
 {
     ui->setupUi(this);
 
-    // Подключаем кнопки к диалоговым слотам
     connect(ui->ok_button, &QPushButton::clicked, this, &QDialog::accept);
     connect(ui->cancel_button, &QPushButton::clicked, this, &QDialog::reject);
 
-    // Заполняем QComboBox списком социальных статусов
     auto statuses = social_status_service->get_all();
     for (const auto& status : statuses) {
         ui->social_status_combo->addItem(QString::fromStdString(status->get_name()), status->get_id());

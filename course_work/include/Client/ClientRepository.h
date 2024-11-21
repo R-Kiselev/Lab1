@@ -24,6 +24,7 @@ public:
 
     std::vector<std::unique_ptr<Client>> get_all_by_bank_id(const int bank_id);
     bool has_accounts(const int id) const;
+    std::unique_ptr<Client> get_by_username(const std::string& username);
 
     ClientRepository(const ClientRepository&) = delete;
     void operator=(const ClientRepository&) = delete;

@@ -4,7 +4,7 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_account_widget.h" resolved
 
-#include "../../include/ui/account_widget.h"
+#include "../../../include/ui/account_widget.h"
 #include "ui_account_widget.h"
 #include <QMouseEvent>
 

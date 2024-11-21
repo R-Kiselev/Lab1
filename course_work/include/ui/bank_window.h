@@ -13,6 +13,7 @@
 
 #include "bank_widget.h"
 #include "clients_window.h"
+#include "accounts_window.h"
 
 #include "../../sqlite/sqlite3.h"
 #include "../Bank/BankService.h"
@@ -28,16 +29,18 @@ class bank_window : public QWidget {
     Q_OBJECT
 
 public:
-    explicit bank_window(sqlite3* db);
+    explicit bank_window(sqlite3* db, int user_id);
     ~bank_window() override;
 
     void setup_services(sqlite3* db);
     void load_banks();
+    bool get_is_admin() const;
 signals:
     void back_button();
 private slots:
     void go_back();
     void open_clients_window(int bank_id);
+    void open_accounts_window(int bank_id);
     void add(int bank_id);
     void update(int bank_id);
     void delete_bank(int bank_id);
@@ -46,10 +49,14 @@ private:
     std::unique_ptr<Ui::bank_window>ui;
 
     std::unique_ptr<clients_window> clients_window_;
+    std::unique_ptr<accounts_window> accounts_window_;
 
-    sqlite3* db;
+    sqlite3* db_;
     std::unique_ptr<BankRepository> bank_repository;
     std::unique_ptr<BankService> bank_service;
+
+    int user_id_;
+    bool is_admin_;
 };
 
 

@@ -33,6 +33,7 @@ void ClientService::update(int id, Client* new_client) const
     auto client = client_repository_->get_by_id(id);
     client->set_name(new_client->get_name());
     client->set_social_status_id(new_client->get_social_status_id());
+    client->set_is_admin(new_client->get_is_admin());
     client_repository_->update(client.get());
 }
 std::unique_ptr<Client> ClientService::get_by_id(int id) const

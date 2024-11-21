@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>authorization</class>
+ <widget class="QWidget" name="authorization">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>450</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>authorization</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    background-color: rgb(242, 244, 255); /* Светлый фон */
+}
+
+QMessageBox {
+    background-color: rgb(242, 244, 255); /* Светлый фон */
+    color: rgb(3, 63, 99); /* Темно-синий цвет текста для контраста */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 8px; /* Закругленные углы */
+}
+QLabel {
+    color: rgb(3, 63, 99); /* Темный синий цвет текста */
+    font-size: 16px; /* Размер шрифта */
+}
+QMessageBox QLabel {
+    color: rgb(3, 63, 99); /* Темный цвет текста */
+    font-size: 14px; /* Размер шрифта */
+}
+QMessageBox QPushButton {
+    background-color: rgb(3, 63, 99); /* Синий фон кнопки */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px; /* Отступы для приятного вида */
+}
+QMessageBox QPushButton:hover {
+    background-color: rgb(40, 102, 110); /* Цвет при наведении */
+}
+QInputDialog {
+    background-color: rgb(242, 244, 255); /* Светлый фон */
+    color: rgb(3, 63, 99); /* Темно-синий цвет текста */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 8px; /* Закругленные углы */
+}
+
+QInputDialog QLabel {
+    color: rgb(3, 63, 99); /* Темный синий цвет текста */
+    font-size: 14px; /* Размер шрифта */
+}
+
+QInputDialog QLineEdit {
+    background-color: rgb(252, 247, 255); /* Светлый фон поля ввода */
+    color: rgb(3, 63, 99); /* Темный текст */
+    border: 1px solid rgb(124, 152, 133); /* Граница поля ввода */
+    border-radius: 5px; /* Закругленные углы поля ввода */
+    padding: 4px; /* Внутренние отступы */
+}
+
+QInputDialog QPushButton {
+    background-color: rgb(3, 63, 99); /* Синий фон кнопки */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px; /* Отступы для приятного вида */
+}
+
+QInputDialog QPushButton:hover {
+    background-color: rgb(40, 102, 110); /* Цвет при наведении */
+}
+QPushButton {
+    background-color: rgb(3, 63, 99); /* Тёмно-синий основной цвет */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 10px; /* Закруглённые края */
+    padding: 8px 16px; /* Отступы для приятного вида */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: bold; /* Жирный текст */
+}
+QPushButton:hover {
+    background-color: rgb(40, 102, 110); /* Цвет кнопки при наведении */
+    color: rgb(218, 223, 247); /* Голубой текст при наведении */
+}
+QPushButton:pressed {
+    background-color: rgb(124, 152, 133); /* Цвет при нажатии */
+}
+QScrollArea {
+    background-color: rgb(242, 244, 255); /* Светлый фон */
+    border: 1px solid rgb(169, 211, 255); /* Тонкая граница */
+    border-radius: 5px; /* Закругленные углы */
+}
+QScrollBar:vertical {
+    background-color: rgb(242, 244, 255); /* Цвет фона скроллбара */
+    width: 10px; /* Ширина скроллбара */
+}
+QScrollBar::handle:vertical {
+    background-color: rgb(3, 63, 99); /* Основной цвет ползунка */
+    border-radius: 5px;
+    min-height: 20px; /* Минимальная высота ползунка */
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    background: none; /* Без линий сверху и снизу */
+    height: 0px;
+}
+QLineEdit {
+    background-color: rgb(255, 255, 255); /* Белый фон для текстового поля */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 5px 10px; /* Отступы для удобства ввода */
+    font-size: 14px; /* Размер шрифта */
+    color: rgb(3, 63, 99); /* Цвет текста */
+}
+
+QLineEdit:focus {
+    border-color: rgb(3, 63, 99); /* Изменение цвета рамки при фокусе */
+}
+
+/* Стиль для QComboBox */
+QComboBox {
+    background-color: rgb(255, 255, 255); /* Белый фон для комбобокса */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 5px; /* Закругленные углы */
+    padding: 5px 10px; /* Отступы */
+    font-size: 14px; /* Размер шрифта */
+    color: rgb(3, 63, 99); /* Цвет текста */
+}
+
+QComboBox QAbstractItemView {
+    border: 2px solid rgb(40, 102, 110); /* Рамка для выпадающего списка */
+    background-color: rgb(255, 255, 255); /* Белый фон */
+    color: rgb(3, 63, 99); /* Цвет текста */
+}
+
+/* Стиль для QPushButton */
+QPushButton {
+    background-color: rgb(3, 63, 99); /* Тёмно-синий основной цвет */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 10px; /* Закруглённые края */
+    padding: 8px 16px; /* Отступы для приятного вида */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: bold; /* Жирный текст */
+}
+
+QPushButton:hover {
+    background-color: rgb(40, 102, 110); /* Цвет кнопки при наведении */
+    color: rgb(218, 223, 247); /* Голубой текст при наведении */
+}
+
+QPushButton:pressed {
+    background-color: rgb(124, 152, 133); /* Цвет при нажатии */
+}
+
+/* Выравнивание элементов внутри диалога */
+QDialog QLabel,
+QDialog QLineEdit,
+QDialog QComboBox,
+QDialog QPushButton {
+    margin-bottom: 10px; /* Отступы между элементами */
+}
+
+/* Чтобы скрыть рамку у элементов, если они внутри формы */
+QDialog QLineEdit:focus, QComboBox:focus {
+    outline: none;
+}
+
+QCheckBox {
+    color: rgb(3, 63, 99); /* Темный синий цвет текста */
+    font-size: 14px; /* Размер шрифта */
+}
+
+QCheckBox::indicator {
+    width: 15px; /* Ширина индикатора */
+    height: 15px; /* Высота индикатора */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 3px; /* Закругленные углы */
+    background-color: rgb(255, 255, 255); /* Белый фон для индикатора */
+}
+
+QCheckBox::indicator:checked {
+    background-color: rgb(3, 63, 99); /* Синий фон для отмеченного состояния */
+    border: 2px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+}
+
+QCheckBox::indicator:unchecked {
+    background-color: rgb(255, 255, 255); /* Белый фон для неотмеченного состояния */
+}
+
+QPushButton:disabled {
+    background-color: rgb(200, 200, 200); /* Светло-серый цвет для неактивной кнопки */
+    color: rgb(150, 150, 150); /* Светло-серый цвет текста */
+    border: 2px solid rgb(169, 211, 255); /* Более светлая обводка */
+}
+</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <spacer name="verticalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+    color: rgb(3, 63, 99); /* Темный синий цвет текста */
+    font-size: 20px; /* Размер шрифта */
+	border-bottom: 0;
+	font-weight:bold;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>Authorization</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Username: </string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::AutoText</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEditUsername">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>username</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Password:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEditPassword">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="echoMode">
+          <enum>QLineEdit::EchoMode::Password</enum>
+         </property>
+         <property name="placeholderText">
+          <string>password</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Policy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Policy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>85</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="im_not_Misha_check">
+         <property name="text">
+          <string>Я не Миша Кордубан</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QPushButton" name="sign_in_button">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Sign in</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="register_button">
+           <property name="text">
+            <string>Register</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

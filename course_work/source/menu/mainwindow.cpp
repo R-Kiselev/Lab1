@@ -10,16 +10,13 @@
 #include "../../include/ui/mainwindow.h"
 #include "ui_mainwindow.h"
 
-mainwindow::mainwindow(QWidget *parent)
-        : QMainWindow(parent), ui{new Ui::mainwindow}
+mainwindow::mainwindow(QWidget *parent, sqlite3* db, int user_id)
+        : QMainWindow(parent), ui{new Ui::mainwindow}, db_(db), user_id_(user_id)
 {
     ui->setupUi(this);
     setWindowTitle("Главное меню");
 
-    const std::string db_path = "D:\\Study\\2\\PHLL\\course_work\\bank.db";
-    db_ = open_database(db_path);
-
-    bank_window_ = std::make_unique<bank_window>(db_);
+    bank_window_ = std::make_unique<bank_window>(db_, user_id_);
     connect(bank_window_.get(), &bank_window::back_button, this, &mainwindow::show);
     connect(ui->banks_button, &QPushButton::clicked, this, [this](){
         this->close();
@@ -27,25 +24,19 @@ mainwindow::mainwindow(QWidget *parent)
         bank_window_->show();
     });
 
-    payments_window_ = std::make_unique<payments_window>(db_);
+    payments_window_ = std::make_unique<payments_window>(db_, user_id_);
     connect(payments_window_.get(), &payments_window::back_button, this, &mainwindow::show);
     connect(ui->payments_button, &QPushButton::clicked, this, [this](){
         this->close();
         payments_window_->show();
     });
 
-    connect(ui->exit_button, &QPushButton::clicked, this, &mainwindow::close);
-}
-sqlite3* mainwindow::open_database(const std::string& db_path) {
-    sqlite3* db = nullptr;
-    int rc = sqlite3_open(db_path.c_str(), &db);
+    connect(ui->logout_button, &QPushButton::clicked, this, [this](){
+        this->close();
+        emit logout();
+    });
 
-    if (rc != SQLITE_OK) {
-        std::cerr << "Error opening database: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_close(db);
-        return nullptr;
-    }
-    return db;
+    connect(ui->exit_button, &QPushButton::clicked, this, &mainwindow::close);
 }
 mainwindow::~mainwindow() {
     if(db_){
