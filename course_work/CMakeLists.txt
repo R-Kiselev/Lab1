@@ -8,6 +8,12 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_PREFIX_PATH "D:/Programming/QT/6.8.0/mingw_64")
 
+if (NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE "D:/Programming/vcpkg-master/vcpkg-master/scripts/buildsystems/vcpkg.cmake")
+endif ()
+set(nlohmann_json_DIR "D:/Programming/vcpkg-master/vcpkg-master/installed/x64-windows/share/nlohmann_json")
+find_package(nlohmann_json CONFIG REQUIRED)
+
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -97,16 +103,20 @@ add_executable(course_work
         include/ui/authorization.h
         "source/menu/Auth and registration/authorization.ui"
         source/menu/reports.cpp
-        source/menu/reports.h
+        include/ui/reports.h
         source/menu/reports.ui
         source/menu/clients_report.cpp
-        source/menu/clients_report.h
+        include/ui/clients_report.h
         source/menu/clients_report.ui
+        source/menu/accounts_and_cards_report.cpp
+        include/ui/accounts_and_cards_report.h
+        source/menu/accounts_and_cards_report.ui
 )
 target_link_libraries(course_work
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        nlohmann_json::nlohmann_json
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)

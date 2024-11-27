@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>383</height>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -153,6 +153,13 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
        <widget class="QPushButton" name="payments_button">
         <property name="text">
          <string>Payments</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_reports">
+        <property name="text">
+         <string>Reports</string>
         </property>
        </widget>
       </item>

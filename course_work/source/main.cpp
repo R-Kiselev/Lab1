@@ -1,25 +1,18 @@
 #include <iostream>
-#include <vector>
-#include <string>
-#include <string_view>
-#include <memory>
-#include <format>
 #include "../sqlite/sqlite3.h"
 #include "../include/Bank/BankService.h"
 #include "../include/SocialStatus/SocialStatusService.h"
 #include "../include/Client/ClientService.h"
-#include "../include/Account/AccountService.h"
-#include "../include/Card/CardService.h"
 
 #include "../include/database_tables.h"
 
 #include <QApplication>
 #include "../include/ui/mainwindow.h"
-#include "../include/ui/clients_window.h"
 #include "../include/ui/authorization.h"
 
 int main(int argc, char *argv[])
 {
+    
     system("chcp 1251");
 	sqlite3* DB;
 

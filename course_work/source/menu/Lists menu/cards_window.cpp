@@ -90,6 +90,7 @@ void cards_window::load_cards(int account_id) {
     auto container = std::make_unique<QWidget>(this);
     auto layout = std::make_unique<QVBoxLayout>(container.get());
 
+    bool ignore_exception = false;
     try{
         auto cards = card_service->get_all_by_account_id(account_id);
         for (const auto& card : cards) {
@@ -101,7 +102,7 @@ void cards_window::load_cards(int account_id) {
         }
     }
     catch (const CustomException& e) {
-        QMessageBox::information(this, "Information", "Cards was not found.");
+        ignore_exception = true;
     }
 
     container->setLayout(layout.release());

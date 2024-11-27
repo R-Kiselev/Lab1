@@ -3,24 +3,12 @@
 
 void CardRepository::add(Card* card) const
 {
-    std::string sql = "INSERT INTO cards (number, expire_date, balance, account_id) VALUES (?, ?, ?, ?);";
+    std::string sql = std::format("INSERT INTO cards (number, expire_date, balance, account_id) VALUES ('{}', '{}', {}, {});",
+            card->get_number(), card->get_expire_date(), card->get_balance(), card->get_account_id());
 
-    sqlite3_stmt *stmt = nullptr;
-    if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        throw DatabaseException("Failed to prepare SQL statement for adding card");
+    if (sqlite3_exec(db_, sql.c_str(), nullptr, nullptr, nullptr) != SQLITE_OK) {
+        throw DatabaseException("Failed to add card to database");
     }
-    sqlite3_bind_text(stmt, 1, card->get_number().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, card->get_expire_date().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 3, card->get_balance());
-    sqlite3_bind_int(stmt, 4, card->get_account_id());
-    if (sqlite3_step(stmt) != SQLITE_DONE) {
-        sqlite3_finalize(stmt);
-        throw DatabaseException("Failed to insert card into database");
-    }
-    // Delete?
-    int last_id = int(sqlite3_last_insert_rowid(db_));
-    card->set_id(last_id);
-    sqlite3_finalize(stmt);
 }
 void CardRepository::remove(const int id) {
     std::string sql = "DELETE FROM cards WHERE id = ?;";

@@ -16,6 +16,8 @@ mainwindow::mainwindow(QWidget *parent, sqlite3* db, int user_id)
     ui->setupUi(this);
     setWindowTitle("Главное меню");
 
+    is_admin_ = get_is_admin(user_id_);
+
     bank_window_ = std::make_unique<bank_window>(db_, user_id_);
     connect(bank_window_.get(), &bank_window::back_button, this, &mainwindow::show);
     connect(ui->banks_button, &QPushButton::clicked, this, [this](){
@@ -36,7 +38,34 @@ mainwindow::mainwindow(QWidget *parent, sqlite3* db, int user_id)
         emit logout();
     });
 
+    if (!is_admin_){
+        ui->pushButton_reports->hide();
+    }
+    else{
+        reports_window_ = std::make_unique<reports>(db_);
+        connect(reports_window_.get(), &reports::back_button_clicked, this, &mainwindow::show);
+        connect(ui->pushButton_reports, &QPushButton::clicked, this, [this](){
+            this->close();
+            reports_window_->show();
+        });
+    }
+
     connect(ui->exit_button, &QPushButton::clicked, this, &mainwindow::close);
+}
+bool mainwindow::get_is_admin(int user_id) const {
+    std::string sql = "SELECT is_admin FROM clients WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        throw DatabaseException("Failed to prepare SQL statement for getting client by ID");
+    }
+    sqlite3_bind_int(stmt, 1, user_id);
+    if(sqlite3_step(stmt) != SQLITE_ROW){
+        sqlite3_finalize(stmt);
+        throw NotFoundException(std::format("User with ID {} not found in database", std::to_string(user_id)));
+    }
+    bool is_admin = sqlite3_column_int(stmt, 0);
+    sqlite3_finalize(stmt);
+    return is_admin;
 }
 mainwindow::~mainwindow() {
     if(db_){

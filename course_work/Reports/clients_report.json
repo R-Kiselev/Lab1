@@ -1,0 +1,16 @@
+[
+    {
+        "id": 46,
+        "is_admin": false,
+        "name": "Misha",
+        "social_status_name": "Student",
+        "username": "MishaKorduban123"
+    },
+    {
+        "id": 48,
+        "is_admin": false,
+        "name": "Danila",
+        "social_status_name": "Student",
+        "username": "gotovkk"
+    }
+]

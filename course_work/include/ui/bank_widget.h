@@ -2,7 +2,6 @@
 
 #include <QWidget>
 #include "../Bank/Bank.h"
-#include "../session_info.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class bank_widget; }

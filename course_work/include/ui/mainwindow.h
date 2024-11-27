@@ -11,6 +11,7 @@
 #include "payments_window.h"
 #include "../../sqlite/sqlite3.h"
 #include <memory>
+#include "reports.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class mainwindow;
@@ -25,6 +26,7 @@ public:
     ~mainwindow() override;
 
     sqlite3* open_database(const std::string& db_path);
+    bool get_is_admin(int user_id) const;
 signals:
     void logout();
 private:
@@ -32,7 +34,9 @@ private:
     QVBoxLayout *layout;
     std::unique_ptr<payments_window> payments_window_;
     std::unique_ptr<bank_window> bank_window_;
+    std::unique_ptr<reports> reports_window_;
     sqlite3* db_;
 
     int user_id_;
+    bool is_admin_;
 };

@@ -25,6 +25,12 @@ QComboBox {
     font-size: 14px; /* Размер шрифта */
     color: rgb(3, 63, 99); /* Цвет текста */
 }
+
+QComboBox QAbstractItemView {
+    border: 2px solid rgb(40, 102, 110); /* Рамка для выпадающего списка */
+    background-color: rgb(255, 255, 255); /* Белый фон */
+    color: rgb(3, 63, 99); /* Цвет текста */
+}
 QLabel {
     color: rgb(3, 63, 99); /* Темный синий цвет текста */
     font-size: 18px; /* Размер шрифта */
@@ -159,7 +165,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
     </spacer>
    </item>
    <item row="4" column="1">
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="pushButton_open_accounts_and_cards_report">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -167,7 +173,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Cards</string>
+      <string>Accounts and cards</string>
      </property>
     </widget>
    </item>
@@ -205,14 +211,14 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
     </spacer>
    </item>
    <item row="6" column="1">
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="back_button">
      <property name="text">
       <string>Back</string>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="pushButton_open_clients_report">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -225,7 +231,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="bankComboBox">
      <property name="placeholderText">
       <string>Choose bank</string>
      </property>
