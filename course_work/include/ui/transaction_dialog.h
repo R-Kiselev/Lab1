@@ -32,16 +32,15 @@ public:
 public slots:
     void perform_transaction();
 private:
-    void handle_transfer_between_accounts(int source_id, int target_id, int amount);
+    void handle_transfer_between_accounts(std::string source_IBAN, std::string target_IBAN, int amount);
     void handle_transfer_between_cards(std::string source_number, std::string target_number, int amount);
-    void handle_account_to_card_transfer(int source_id, std::string target_card_number, int amount);
-    void handle_card_to_account_transfer(std::string source_card_number, int target_id, int amount);
+    void handle_account_to_card_transfer(std::string source_IBAN, std::string target_card_number, int amount);
+    void handle_card_to_account_transfer(std::string source_card_number, std::string target_IBAN, int amount);
 
     void begin_transaction();
     void commit_transaction();
     void rollback_transaction();
 
-    bool is_user_owner_of_account_or_card(int user_id, QString& source);
     Ui::transaction_dialog *ui;
     int transfer_type;
 
@@ -60,6 +59,7 @@ private:
     sqlite3* db_;
 
     int user_id_;
+    bool is_admin_;
 };
 
 

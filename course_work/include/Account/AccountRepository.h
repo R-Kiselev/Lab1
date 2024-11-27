@@ -21,7 +21,10 @@ public:
     void remove(const int id) override;
     bool exists(const int id) const override;
 
+    std::unique_ptr<Account> get_by_IBAN(const std::string& IBAN) const;
     std::vector<std::unique_ptr<Account>> get_all_by_client_id(int client_id) const;
+    std::vector<std::unique_ptr<Account>> get_all_by_bank_id(int bank_id) const;
+    bool exists(const std::string& IBAN) const;
 
     AccountRepository(const AccountRepository&) = delete;
     void operator=(const AccountRepository&) = delete;

@@ -24,6 +24,12 @@ void payments_window::go_back() {
 }
 
 void payments_window::open_transaction_dialog(int transfer_type) {
-    transaction_dialog_->set_transfer_type(transfer_type);
+    try{
+        transaction_dialog_->set_transfer_type(transfer_type);
+    }
+    catch (const CustomException& e) {
+        QMessageBox::critical(this, "Error", e.what());
+        return;
+    }
     transaction_dialog_->exec();
 }

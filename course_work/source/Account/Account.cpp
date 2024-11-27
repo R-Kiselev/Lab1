@@ -1,7 +1,7 @@
 #include "../../include/Account/Account.h"
 
-Account::Account(const int client_id, const int bank_id):
-    client_id_(client_id), bank_id_(bank_id)
+Account::Account(std::string& IBAN, const int client_id, const int bank_id)
+    : IBAN_(IBAN), client_id_(client_id), bank_id_(bank_id)
 {
 }
 void Account::set_id(const int id)
@@ -19,6 +19,14 @@ void Account::set_balance(const int account_balance)
 int Account::get_balance() const
 {
     return balance_;
+}
+void Account::set_IBAN(const std::string_view IBAN)
+{
+    IBAN_ = IBAN;
+}
+std::string Account::get_IBAN() const
+{
+    return IBAN_;
 }
 void Account::set_client_id(const int client_id) {
     client_id_ = client_id;

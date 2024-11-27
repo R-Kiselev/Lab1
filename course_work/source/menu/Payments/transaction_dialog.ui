@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>344</width>
-    <height>228</height>
+    <width>400</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@ QDialog {
 QLabel {
     background-color: rgb(220, 224, 235); /* Светлый фон */
     color: rgb(3, 63, 99); /* Темный синий цвет текста */
-    font-size: 14px; /* Размер шрифта */
+    font-size: 13px; /* Размер шрифта */
     margin-bottom: 8px; /* Отступ снизу, чтобы разделить текст с полем */
 }
 
@@ -100,18 +100,52 @@ QDialog QLineEdit:focus, QComboBox:focus {
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
       <widget class="QLabel" name="source_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>Source</string>
+        <string>Account IBAN or Card Number (Source):</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::TextFormat::RichText</enum>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLineEdit" name="source_field"/>
+      <widget class="QComboBox" name="source_selector">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="target_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100000</width>
+         <height>100000</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Target</string>
+        <string>Account IBAN or Card Number (Target):</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -120,6 +154,12 @@ QDialog QLineEdit:focus, QComboBox:focus {
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="amount_label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Amount</string>
        </property>

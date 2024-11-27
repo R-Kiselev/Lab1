@@ -19,7 +19,7 @@ accounts_window::accounts_window(sqlite3* db)
     cards_window_ = std::make_unique<cards_window>(db_);
     connect(cards_window_.get(), &cards_window::back_button, this, &accounts_window::show);
 
-    setWindowTitle("Список аккаунтов клиента");
+    setWindowTitle("Список аккаунтов");
     setMinimumSize(400, 300);
 
     connect(ui->back_button, &QPushButton::clicked, this, &accounts_window::on_back_button_clicked);
@@ -61,7 +61,9 @@ void accounts_window::setup_services(sqlite3* db){
 }
 void accounts_window::add(){
     try{
-        auto account = std::make_unique<Account>(client_id, bank_id);
+        auto account = std::make_unique<Account>();
+        account->set_bank_id(bank_id);
+        account->set_client_id(client_id);
         account_service->add(account.get());
         load_accounts(client_id);
     }
@@ -76,7 +78,9 @@ void accounts_window::update_account(int account_id){
                                                 tr("Enter new account balance:"), QLineEdit::Normal, "", &ok);
     if (ok) {
         try{
-            auto account = std::make_unique<Account>(client_id, bank_id);
+            auto account = std::make_unique<Account>();
+            account->set_bank_id(bank_id);
+            account->set_client_id(client_id);
             account->set_balance(new_balance.toInt());
             account_service->update(account_id, account.get());
             load_accounts(client_id);
@@ -103,8 +107,14 @@ void accounts_window::load_accounts(int client_id_) {
     auto container = std::make_unique<QWidget>(this);
     auto layout = std::make_unique<QVBoxLayout>(container.get());
 
+    std::vector<std::unique_ptr<Account>> accounts;
+    if (!is_admin) {
+        accounts = get_accounts_by_bank_and_client_id(bank_id, client_id_);
+    }
+    else{
+        accounts = account_service->get_all_by_bank_id(bank_id);
+    }
     try {
-        auto accounts = get_accounts_by_bank_and_client_id(bank_id, client_id_);
         for (const auto& account : accounts) {
             auto account_widget_ = std::make_unique<account_widget>(this, account.get(), db_);
             account_widget_->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -138,9 +148,10 @@ std::vector<std::unique_ptr<Account>> accounts_window::get_accounts_by_bank_and_
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         auto account = std::make_unique<Account>();
         account->set_id(sqlite3_column_int(stmt, 0));
-        account->set_balance(sqlite3_column_int(stmt, 1));
-        account->set_client_id(sqlite3_column_int(stmt, 2));
-        account->set_bank_id(sqlite3_column_int(stmt, 3));
+        account->set_IBAN(std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1))));
+        account->set_balance(sqlite3_column_int(stmt, 2));
+        account->set_client_id(sqlite3_column_int(stmt, 3));
+        account->set_bank_id(sqlite3_column_int(stmt, 4));
         accounts.push_back(std::move(account));
     }
     sqlite3_finalize(stmt);

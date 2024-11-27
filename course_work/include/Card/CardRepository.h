@@ -24,6 +24,7 @@ public:
     bool exists(const int id) const override;
 
     std::vector<std::unique_ptr<Card>> get_all_by_account_id(const int account_id) const;
+    std::vector<std::unique_ptr<Card>> get_all_by_client_id(int client_id) const;
     std::unique_ptr<Card> get_by_number(std::string& number_) const;
     bool exists(std::string number) const;
 

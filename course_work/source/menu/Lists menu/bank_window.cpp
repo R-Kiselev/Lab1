@@ -29,7 +29,7 @@ bank_window::bank_window(sqlite3* db, int user_id) :
     connect(ui->back_button, &QPushButton::clicked, this, &bank_window::go_back);
     connect(ui->add_button, &QPushButton::clicked, this, &bank_window::add);
 
-    setup_services(db_);
+    setup_services();
 }
 
 bank_window::~bank_window() {
@@ -59,7 +59,7 @@ void bank_window::go_back() {
     emit back_button();
 }
 
-void bank_window::setup_services(sqlite3* db_) {
+void bank_window::setup_services() {
     bank_repository = std::make_unique<BankRepository>(db_);
     bank_service = std::make_unique<BankService>(bank_repository.get());
 }
@@ -76,7 +76,7 @@ void bank_window::open_clients_window(int bank_id) {
     clients_window_->load_clients(bank_id);
     clients_window_->show();
 }
-void bank_window::add(int bank_id) {
+void bank_window::add() {
     bool ok;
     QString bank_name = QInputDialog::getText(this, tr("Add Bank"),
                                               tr("Enter bank name:"), QLineEdit::Normal, "", &ok);

@@ -6,6 +6,7 @@
 #include "../Bank/BankService.h"
 #include "../validation_utils.h"
 #include "../interfaces.h"
+#include <random>
 
 class AccountService : public IService<Account>
 {
@@ -28,7 +29,11 @@ public:
     bool exists(const int id) const override;
 
     void display_all() const;
-    [[nodiscard]] std::vector<std::unique_ptr<Account>> get_all_by_client_id(int client_id) const;
+    bool exists(const std::string& IBAN) const;
+    void update(std::string IBAN, int balance) const;
+    std::vector<std::unique_ptr<Account>> get_all_by_client_id(int client_id) const;
+    std::vector<std::unique_ptr<Account>> get_all_by_bank_id(int bank_id) const;
+    std::unique_ptr<Account> get_by_IBAN(const std::string& IBAN) const;
 
     AccountService(const AccountService&) = delete;
     void operator=(const AccountService&) = delete;

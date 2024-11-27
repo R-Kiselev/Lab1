@@ -68,6 +68,7 @@ void create_accounts_table(sqlite3* DB)
     std::string query =
         "CREATE TABLE IF NOT EXISTS accounts ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "IBAN TEXT NOT NULL UNIQUE,"
         "balance INTEGER DEFAULT 0 NOT NULL,"
         "client_id INTEGER NOT NULL,"
         "bank_id INTEGER NOT NULL,"

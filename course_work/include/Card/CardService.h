@@ -21,7 +21,9 @@ public:
     std::vector<std::unique_ptr<Card>> get_all() const override;
     bool exists (const int id) const override;
 
+    bool exists(std::string number) const;
     std::unique_ptr<Card> get_by_number(std::string& number) const;
+    std::vector<std::unique_ptr<Card>> get_all_by_client_id(const int client_id) const;
     std::vector<std::unique_ptr<Card>> get_all_by_account_id(const int account_id) const;
     void display_all_cards() const;
 

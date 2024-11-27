@@ -96,6 +96,12 @@ add_executable(course_work
         "source/menu/Auth and registration/authorization.cpp"
         include/ui/authorization.h
         "source/menu/Auth and registration/authorization.ui"
+        source/menu/reports.cpp
+        source/menu/reports.h
+        source/menu/reports.ui
+        source/menu/clients_report.cpp
+        source/menu/clients_report.h
+        source/menu/clients_report.ui
 )
 target_link_libraries(course_work
         Qt::Core

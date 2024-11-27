@@ -13,7 +13,6 @@ bank_widget::bank_widget(const Bank* bank, QWidget *parent, bool is_admin)
 {
     setBankId(bank->get_id());
     ui->setupUi(this);
-    ui->labelId->setText("Id: " + QString::number(bank->get_id()));
     ui->labelName->setText("Name: " + QString::fromStdString(bank->get_name()));
 
     if (is_admin == true){

@@ -135,7 +135,35 @@ std::vector<std::unique_ptr<Card>> CardRepository::get_all_by_account_id(const i
 
     return cards;
 }
+std::vector<std::unique_ptr<Card>> CardRepository::get_all_by_client_id(int client_id) const {
+    std::vector<std::unique_ptr<Card>> cards;
+    std::string sql = "SELECT c.id, c.number, c.expire_date, c.balance, c.account_id "
+                      "FROM cards c "
+                      "JOIN accounts a ON c.account_id = a.id "
+                      "WHERE a.client_id = ?;";
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        throw DatabaseException("Failed to prepare SQL statement for getting card by ID");
+    }
+    sqlite3_bind_int(stmt, 1, client_id);
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+        auto card = std::make_unique<Card>();
 
+        card->set_id(sqlite3_column_int(stmt, 0));
+        card->set_number(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+        card->set_expire_date(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+        card->set_balance(sqlite3_column_int(stmt, 3));
+        card->set_account_id(sqlite3_column_int(stmt, 4));
+
+        cards.push_back(std::move(card));
+    }
+    sqlite3_finalize(stmt);
+    if(cards.empty()){
+        throw NotFoundException("No cards found in database");
+    }
+
+    return cards;
+}
 void CardRepository::update(Card *card) const {
     std::string sql = "UPDATE cards SET balance = ?, account_id = ? WHERE id = ?;";
     sqlite3_stmt* stmt = nullptr;

@@ -19,7 +19,7 @@ class client_dialog : public QDialog {
 Q_OBJECT
 
 public:
-    explicit client_dialog(SocialStatusService* social_status_service, QWidget *parent = nullptr);
+    explicit client_dialog(const SocialStatusService* social_status_service, QWidget *parent = nullptr);
     ~client_dialog() override;
 
     QString get_name() const;

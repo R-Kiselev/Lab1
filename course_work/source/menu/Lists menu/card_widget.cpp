@@ -10,7 +10,7 @@
 #include <format>
 
 card_widget::card_widget(QWidget *parent, Card* card, sqlite3* db) :
-        QWidget(parent), ui(new Ui::card_widget), card(card), card_id (card ? card->get_id() : -1), db_(db) {
+        QWidget(parent), ui(new Ui::card_widget), card(card), db_(db), card_id (card ? card->get_id() : -1) {
     ui->setupUi(this);
     ui->labelNumber->setText("Number: " + QString::fromStdString(card->get_number()));
     ui->labelExpireDate->setText("Expire date: " + QString::fromStdString(card->get_expire_date()));

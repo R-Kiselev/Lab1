@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
+    <width>325</width>
     <height>196</height>
    </rect>
   </property>
@@ -49,7 +49,7 @@ QPushButton:pressed {
      <item row="0" column="0">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="labelId">
+        <widget class="QLabel" name="labelIBAN">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -57,7 +57,13 @@ QPushButton:pressed {
           </sizepolicy>
          </property>
          <property name="text">
-          <string>Id:</string>
+          <string>IBAN:</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
          </property>
         </widget>
        </item>

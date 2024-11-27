@@ -36,16 +36,49 @@ void transaction_dialog::setup_services() {
 }
 void transaction_dialog::set_transfer_type(int transferType) {
     transfer_type = transferType;
-
+    ui->source_selector->clear();
     if (transfer_type == 0) {
-        ui->source_label->setText("Account ID (Source):");
-        ui->target_label->setText("Account ID (Target):");
+        ui->source_label->setText("Account IBAN (Source):");
+        ui->target_label->setText("Account IBAN (Target):");
+        auto accounts = account_service->get_all_by_client_id(user_id_);
+        for (const auto& account : accounts) {
+            ui->source_selector->addItem(account->get_IBAN().c_str());
+        }
     } else if (transfer_type == 1) {
-        ui->source_label->setText("Account ID or Card Number (Source):");
-        ui->target_label->setText("Account ID or Card Number (Target):");
+        ui->source_label->setText("Account IBAN or Card Number (Source):");
+        ui->target_label->setText("Account IBAN or Card Number (Target):");
+        std::vector<std::unique_ptr<Account>> accounts;
+        std::vector<std::unique_ptr<Card>> cards;
+        bool has_accounts = true;
+        bool has_cards = true;
+        try {
+            accounts = account_service->get_all_by_client_id(user_id_);
+        } catch (const CustomException& e) {
+            has_accounts = false;
+        }
+        try {
+            cards = card_service->get_all_by_client_id(user_id_);
+        } catch (const CustomException& e) {
+            has_cards = false;
+        }
+        if (!has_accounts && !has_cards) {
+            throw CustomException("No accounts or cards found for this client.");
+        }
+        for (const auto& account : accounts) {
+            ui->source_selector->addItem(account->get_IBAN().c_str());
+        }
+        for (const auto& card : cards) {
+            ui->source_selector->addItem(card->get_number().c_str());
+        }
+        ui->source_label->setWordWrap(true);
+        ui->target_label->setWordWrap(true);
     } else if (transfer_type == 2) {
         ui->source_label->setText("Card Number (Source):");
         ui->target_label->setText("Card Number (Target):");
+        auto cards = card_service->get_all_by_client_id(user_id_);
+        for (const auto& card : cards) {
+            ui->source_selector->addItem(card->get_number().c_str());
+        }
     }
     ui->source_label->setWordWrap(true);
     ui->target_label->setWordWrap(true);
@@ -61,11 +94,11 @@ void transaction_dialog::commit_transaction() {
 void transaction_dialog::rollback_transaction() {
     sqlite3_exec(db_, "ROLLBACK", nullptr, nullptr, nullptr);
 }
-void transaction_dialog::handle_transfer_between_accounts(int source_id, int target_id, int amount) {
+void transaction_dialog::handle_transfer_between_accounts(std::string source_IBAN, std::string target_IBAN, int amount) {
     begin_transaction();
     try {
-        auto source_account = account_service->get_by_id(source_id);
-        auto target_account = account_service->get_by_id(target_id);
+        auto source_account = account_service->get_by_IBAN(source_IBAN);
+        auto target_account = account_service->get_by_IBAN(target_IBAN);
 
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
@@ -73,9 +106,8 @@ void transaction_dialog::handle_transfer_between_accounts(int source_id, int tar
         transaction_service = std::make_unique<TransactionService>();
         transaction_service->perform_transaction(source_account, target_account, amount);
 
-
-        account_service->update(source_id, source_account.get());
-        account_service->update(target_id, target_account.get());
+        account_service->update(source_IBAN, source_account->get_balance());
+        account_service->update(target_IBAN, target_account->get_balance());
 
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
@@ -106,11 +138,11 @@ void transaction_dialog::handle_transfer_between_cards(std::string source_number
     }
     commit_transaction();
 }
-void transaction_dialog::handle_account_to_card_transfer(int source_id, std::string target_card_number,
+void transaction_dialog::handle_account_to_card_transfer(std::string source_IBAN, std::string target_card_number,
                                                          int amount) {
     begin_transaction();
     try {
-        auto source_account = account_service->get_by_id(source_id);
+        auto source_account = account_service->get_by_IBAN(source_IBAN);
         auto target_card = card_service->get_by_number(target_card_number);
         QMessageBox::information(this, "Balances", "Source account balance: " + QString::number(source_account->get_balance()) +
                                                    "\nTarget card balance: " + QString::number(target_card->get_balance()));
@@ -128,11 +160,11 @@ void transaction_dialog::handle_account_to_card_transfer(int source_id, std::str
     }
     commit_transaction();
 }
-void transaction_dialog::handle_card_to_account_transfer(std::string source_card_number, int target_id, int amount) {
+void transaction_dialog::handle_card_to_account_transfer(std::string source_card_number, std::string target_IBAN, int amount) {
     begin_transaction();
     try{
         auto source_card = card_service->get_by_number(source_card_number);
-        auto target_account = account_service->get_by_id(target_id);
+        auto target_account = account_service->get_by_IBAN(target_IBAN);
         QMessageBox::information(this, "Balances", "Source card balance: " + QString::number(source_card->get_balance()) +
                                                    "\nTarget account balance: " + QString::number(target_account->get_balance()));
         transaction_service = std::make_unique<TransactionService>();
@@ -150,22 +182,9 @@ void transaction_dialog::handle_card_to_account_transfer(std::string source_card
     commit_transaction();
 }
 
-bool transaction_dialog::is_user_owner_of_account_or_card(int user_id, QString& source) {
-    bool is_source_integer;
-    int source_id = source.toInt(&is_source_integer);
-    if (is_source_integer) {
-        auto account = account_service->get_by_id(source_id);
-        return account->get_client_id() == user_id;
-    } else {
-        std::string source_number = source.toStdString();
-        auto card = card_service->get_by_number(source_number);
-        auto account = account_service->get_by_id(card->get_account_id());
-        return account->get_client_id() == user_id;
-    }
-}
 void transaction_dialog::perform_transaction() {
     sqlite3_exec(db_, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
-    QString source = ui->source_field->text();
+    QString source = ui->source_selector->currentText();
     QString target = ui->target_field->text();
     QString amount = ui->amount_field->text();
 
@@ -173,28 +192,18 @@ void transaction_dialog::perform_transaction() {
         QMessageBox::warning(this, "Input Error", "All fields must be filled out.");
         return;
     }
-    try{
-        if(!is_user_owner_of_account_or_card(user_id_, source)){
-            QMessageBox::warning(this, "Access Error", "You are not the owner of the source account/card.");
-            return;
-        }
-    }
-    catch (const CustomException& e) {
-        QMessageBox::critical(this, "Error", e.what());
-        return;
-    }
     if (transfer_type == 0) {
-        handle_transfer_between_accounts(source.toInt(), target.toInt(), amount.toInt());
+        handle_transfer_between_accounts(source.toStdString(), target.toStdString(), amount.toInt());
     } else if (transfer_type == 2) {
         handle_transfer_between_cards(source.toStdString(), target.toStdString(), amount.toInt());
     } else {
-        bool is_source_integer;
-        int source_id = source.toInt(&is_source_integer);
-        if (is_source_integer){
-            handle_account_to_card_transfer(source_id, target.toStdString(), amount.toInt());
-        }
-        else{
-            handle_card_to_account_transfer(source.toStdString(), target.toInt(), amount.toInt());
+        if(account_service->exists(source.toStdString())){
+            handle_account_to_card_transfer(source.toStdString(), target.toStdString(), amount.toInt());
+        } else if(card_service->exists(source.toStdString())){
+            handle_card_to_account_transfer(source.toStdString(), target.toStdString(), amount.toInt());
+        } else {
+            QMessageBox::critical(this, "Error", "Source account or card does not exist.");
+            return;
         }
     }
     QDialog::accept();

@@ -7,7 +7,7 @@
 #include "../../../include/ui/client_dialog.h"
 #include "ui_client_dialog.h"
 
-client_dialog::client_dialog(SocialStatusService* social_status_service, QWidget *parent) :
+client_dialog::client_dialog(const SocialStatusService* social_status_service, QWidget *parent) :
         QDialog(parent),
         ui(new Ui::client_dialog)
 {

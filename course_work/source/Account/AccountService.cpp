@@ -10,6 +10,64 @@ AccountService::AccountService(AccountRepository *account_repository,
     validation_service = std::make_unique<ValidationService>();
 }
 
+std::string generate_random_digits(int length) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, 9);
+
+    std::string result;
+    for (int i = 0; i < length; ++i) {
+        result += '0' + dist(gen);
+    }
+    return result;
+}
+
+std::string generate_bank_code() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> digit_dist(0, 9);
+    std::uniform_int_distribution<> letter_dist(0, 25);
+
+    std::string bank_code;
+    for (int i = 0; i < 2; ++i) {
+        bank_code += 'A' + letter_dist(gen);
+    }
+    for (int i = 0; i < 2; ++i) {
+        bank_code += '0' + digit_dist(gen);
+    }
+
+    return bank_code;
+}
+
+int calculate_check_digits(const std::string& country_code, const std::string& data) {
+    std::string transformed = data;
+    transformed += (country_code[0] - 'A' + 10);
+    transformed += (country_code[1] - 'A' + 10);
+    transformed += "00";
+    std::string numeric_representation;
+    for (char c : transformed) {
+        if (std::isdigit(c)) {
+            numeric_representation += c;
+        } else {
+            numeric_representation += std::to_string(c - 'A' + 10);
+        }
+    }
+    long long mod = 0;
+    for (char digit : numeric_representation) {
+        mod = (mod * 10 + (digit - '0')) % 97;
+    }
+    return 98 - mod;
+}
+
+std::string generate_iban_by() {
+    const std::string country_code = "BY";
+    std::string bank_code = generate_bank_code();
+    std::string account_number = generate_random_digits(20);
+    std::string iban_data = bank_code + account_number;
+    int check_digits = calculate_check_digits(country_code, iban_data);
+    std::string iban = country_code + (check_digits < 10 ? "0" : "") + std::to_string(check_digits) + bank_code + account_number;
+    return iban;
+}
 void AccountService::add(Account* account) const {
     validation_service->validate_id(account->get_client_id());
     validation_service->validate_id(account->get_bank_id());
@@ -19,6 +77,13 @@ void AccountService::add(Account* account) const {
     if(!bank_service_->exists(account->get_bank_id())){
         throw ValidationException("Bank does not exist");
     }
+
+    std::string iban = generate_iban_by();
+    while(account_repository_->exists(iban)){
+        iban = generate_iban_by();
+    }
+    account->set_IBAN(iban);
+
     account_repository_->add(account);
 }
 void AccountService::remove(int id) {
@@ -59,6 +124,14 @@ void AccountService::display_all() const {
         std::cout << std::endl;
     }
 }
+bool AccountService::exists(const std::string& IBAN) const {
+    return account_repository_->exists(IBAN);
+}
+void AccountService::update(std::string IBAN, int balance) const {
+    auto account = account_repository_->get_by_IBAN(IBAN);
+    account->set_balance(balance);
+    account_repository_->update(account.get());
+}
 bool AccountService::exists(const int id) const {
     validation_service->validate_id(id);
     return account_repository_->exists(id);
@@ -68,4 +141,13 @@ std::vector<std::unique_ptr<Account>> AccountService::get_all_by_client_id(int c
 {
     validation_service->validate_id(client_id);
     return account_repository_->get_all_by_client_id(client_id);
+}
+std::vector<std::unique_ptr<Account>> AccountService::get_all_by_bank_id(int bank_id) const
+{
+    validation_service->validate_id(bank_id);
+    return account_repository_->get_all_by_bank_id(bank_id);
+}
+std::unique_ptr<Account> AccountService::get_by_IBAN(const std::string& IBAN) const
+{
+    return account_repository_->get_by_IBAN(IBAN);
 }

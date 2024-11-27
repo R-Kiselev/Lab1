@@ -12,7 +12,7 @@ account_widget::account_widget(QWidget *parent, Account* account, sqlite3* db) :
         QWidget(parent), ui(new Ui::account_widget), account(account), db_(db) {
     set_account_id(account->get_id());
     ui->setupUi(this);
-    ui->labelId->setText("Id: " + QString::number(account->get_id()));
+    ui->labelIBAN->setText("IBAN: " + QString::fromStdString(account->get_IBAN()));
     ui->labelBalance->setText("Balance: " + QString::number(account->get_balance()));
 
     std::string client_name = get_client_name(account->get_client_id());

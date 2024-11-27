@@ -11,6 +11,7 @@ class Account : public IEntity, public IFinancial
 {
 private:
     int id_;
+    std::string IBAN_;
     int balance_ = 0;
     int client_id_;
     int bank_id_;
@@ -19,13 +20,16 @@ protected:
     friend class AccountService;
 
 public:
-    explicit Account(const int client_id = 0, const int bank_id = 0);
+    Account() = default;
+    explicit Account(std::string& IBAN, const int client_id = 0, const int bank_id = 0);
     ~Account() override = default;
 
     void set_id(const int id) override;
     int get_id() const override;
     void set_balance(const int balance) override;
     int get_balance() const override;
+    void set_IBAN(const std::string_view IBAN);
+    std::string get_IBAN() const;
     void set_client_id(const int id);
     int get_client_id() const;
     void set_bank_id(const int id);

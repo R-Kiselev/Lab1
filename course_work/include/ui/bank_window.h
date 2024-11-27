@@ -32,7 +32,7 @@ public:
     explicit bank_window(sqlite3* db, int user_id);
     ~bank_window() override;
 
-    void setup_services(sqlite3* db);
+    void setup_services();
     void load_banks();
     bool get_is_admin() const;
 signals:
@@ -41,7 +41,7 @@ private slots:
     void go_back();
     void open_clients_window(int bank_id);
     void open_accounts_window(int bank_id);
-    void add(int bank_id);
+    void add();
     void update(int bank_id);
     void delete_bank(int bank_id);
 
