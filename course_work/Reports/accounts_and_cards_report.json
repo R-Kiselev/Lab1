@@ -1,72 +1,92 @@
 [
     {
-        "IBAN": "BY23RZ6148473378108937615928",
-        "account_balance": 4800,
-        "card_balance": 600,
-        "card_number": "1797-5324-1543-9406",
-        "expire_date": "10/28"
-    },
-    {
-        "IBAN": "BY23RZ6148473378108937615928",
-        "account_balance": 4800,
-        "card_balance": 1801,
-        "card_number": "6308-9989-5136-5338",
-        "expire_date": "11/31"
-    },
-    {
-        "IBAN": "BY23RZ6148473378108937615928",
-        "account_balance": 4800,
-        "card_balance": 1200,
-        "card_number": "8993-8617-4274-5803",
-        "expire_date": "11/29"
-    },
-    {
-        "IBAN": "BY45QT3127248292223521421637",
-        "account_balance": 200,
-        "card_balance": 2300,
-        "card_number": "8706-8641-7643-9573",
-        "expire_date": "11/32"
-    },
-    {
-        "IBAN": "BY45QT3127248292223521421637",
-        "account_balance": 200,
-        "card_balance": 1450,
-        "card_number": "1032-1349-9897-7692",
-        "expire_date": "11/31"
+        "IBAN": "BY74PF2644341598706080105352",
+        "account_balance": 1000,
+        "cards": [
+            {
+                "card_balance": 5500,
+                "card_number": "1460-2913-7026-7589",
+                "expire_date": "11/31"
+            },
+            {
+                "card_balance": 360,
+                "card_number": "2618-0790-4551-7539",
+                "expire_date": "11/29"
+            }
+        ]
     },
     {
         "IBAN": "BY12PV9551107787241288676739",
         "account_balance": 0,
-        "card_balance": 3100,
-        "card_number": "2671-8396-1833-1687",
-        "expire_date": "11/28"
+        "cards": [
+            {
+                "card_balance": 3100,
+                "card_number": "2671-8396-1833-1687",
+                "expire_date": "11/28"
+            },
+            {
+                "card_balance": 4200,
+                "card_number": "6228-1884-5872-1934",
+                "expire_date": "11/31"
+            }
+        ]
     },
     {
-        "IBAN": "BY12PV9551107787241288676739",
-        "account_balance": 0,
-        "card_balance": 4200,
-        "card_number": "6228-1884-5872-1934",
-        "expire_date": "11/31"
+        "IBAN": "BY45QT3127248292223521421637",
+        "account_balance": 200,
+        "cards": [
+            {
+                "card_balance": 1450,
+                "card_number": "1032-1349-9897-7692",
+                "expire_date": "11/31"
+            },
+            {
+                "card_balance": 2300,
+                "card_number": "8706-8641-7643-9573",
+                "expire_date": "11/32"
+            }
+        ]
     },
     {
         "IBAN": "BY08RO7596120659499199610445",
         "account_balance": 500,
-        "card_balance": 8000,
-        "card_number": "5830-5706-0008-8221",
-        "expire_date": "11/27"
+        "cards": [
+            {
+                "card_balance": 8000,
+                "card_number": "5830-5706-0008-8221",
+                "expire_date": "11/27"
+            }
+        ]
     },
     {
-        "IBAN": "BY74PF2644341598706080105352",
-        "account_balance": 1000,
-        "card_balance": 360,
-        "card_number": "2618-0790-4551-7539",
-        "expire_date": "11/29"
+        "IBAN": "BY34TM4521661192541969560242",
+        "account_balance": 0,
+        "cards": []
     },
     {
-        "IBAN": "BY74PF2644341598706080105352",
-        "account_balance": 1000,
-        "card_balance": 5500,
-        "card_number": "1460-2913-7026-7589",
-        "expire_date": "11/31"
+        "IBAN": "BY42LU9547736814455140692708",
+        "account_balance": 100,
+        "cards": []
+    },
+    {
+        "IBAN": "BY23RZ6148473378108937615928",
+        "account_balance": 4800,
+        "cards": [
+            {
+                "card_balance": 600,
+                "card_number": "1797-5324-1543-9406",
+                "expire_date": "10/28"
+            },
+            {
+                "card_balance": 1801,
+                "card_number": "6308-9989-5136-5338",
+                "expire_date": "11/31"
+            },
+            {
+                "card_balance": 1200,
+                "card_number": "8993-8617-4274-5803",
+                "expire_date": "11/29"
+            }
+        ]
     }
 ]

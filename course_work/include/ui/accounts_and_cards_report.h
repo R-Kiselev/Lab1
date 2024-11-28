@@ -32,6 +32,7 @@ private:
     void generateReport();
     void saveReport();
     bool validateExpireDate(const QString& date);
+    bool isDateValid(const std::string& date, const std::string& minDate, const std::string& maxDate);
 };
 
 #endif //COURSE_WORK_ACCOUNTS_AND_CARDS_REPORT_H
