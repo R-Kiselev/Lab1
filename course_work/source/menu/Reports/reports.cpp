@@ -1,4 +1,4 @@
-#include "../../include/ui/reports.h"
+#include "../../../include/ui/reports.h"
 #include "ui_reports.h"
 #include <QMessageBox>
 

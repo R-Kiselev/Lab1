@@ -198,6 +198,9 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="placeholderText">
+          <string>ex. Irina</string>
+         </property>
         </widget>
        </item>
        <item row="1" column="0">
@@ -214,6 +217,9 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="placeholderText">
+          <string>ex. IrishBee</string>
          </property>
         </widget>
        </item>

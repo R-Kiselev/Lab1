@@ -1,4 +1,4 @@
-#include "../../include/ui/accounts_and_cards_report.h"
+#include "../../../include/ui/accounts_and_cards_report.h"
 #include "ui_accounts_and_cards_report.h"
 #include <QMessageBox>
 #include <QFileDialog>
@@ -42,7 +42,7 @@ void accounts_and_cards_report::setAccountBalanceRange() {
         }
         sqlite3_finalize(stmt);
     } else {
-        QMessageBox::critical(this, "Ошибка", "Не удалось загрузить диапазон балансов.");
+        QMessageBox::critical(this, "Error", "Failed to load balance range.");
     }
 }
 
@@ -69,19 +69,34 @@ void accounts_and_cards_report::setCardBalanceRange() {
         }
         sqlite3_finalize(stmt);
     } else {
-        QMessageBox::critical(this, "Ошибка", "Не удалось загрузить диапазон балансов карт.");
+        QMessageBox::critical(this, "Error", "Failed to load cards balance range.");
     }
+}
+bool accounts_and_cards_report::isDateFormatValid(const QString& date) {
+    if (date.length() != 5 || date[2] != '/') {
+        return false;
+    }
+
+    bool monthOk = false, yearOk = false;
+    int month = date.left(2).toInt(&monthOk);
+    int year = date.mid(3, 2).toInt(&yearOk);
+
+    if (!monthOk || !yearOk || month < 1 || month > 12) {
+        return false;
+    }
+
+    return true;
 }
 bool accounts_and_cards_report::isDateValid(const std::string& date, const std::string& minDate, const std::string& maxDate) {
     auto parse = [](const std::string& d) {
         int month = std::stoi(d.substr(0, 2));
         int year = std::stoi(d.substr(3, 2));
-        return year * 100 + month; // Формат YYYYMM
+        return year * 100 + month;
     };
 
     int parsedDate = parse(date);
-    int parsedMin = minDate.empty() ? 0 : parse(minDate); // Минимальная граница
-    int parsedMax = maxDate.empty() ? 999912 : parse(maxDate); // Максимальная граница
+    int parsedMin = minDate.empty() ? 0 : parse(minDate);
+    int parsedMax = maxDate.empty() ? 999912 : parse(maxDate);
 
     return parsedDate >= parsedMin && parsedDate <= parsedMax;
 }
@@ -94,6 +109,16 @@ void accounts_and_cards_report::generateReport() {
     int maxCardBalance = ui->spinBox_cardMaxBalance->value();
     QString minExpireDate = ui->lineEdit_minExpireDate->text();
     QString maxExpireDate = ui->lineEdit_maxExpireDate->text();
+
+    if (!minExpireDate.isEmpty() && !isDateFormatValid(minExpireDate)) {
+        QMessageBox::warning(this, "Invalid Date Format", "The minimum expiration date must be in the format 'mm/yy'.");
+        return;
+    }
+
+    if (!maxExpireDate.isEmpty() && !isDateFormatValid(maxExpireDate)) {
+        QMessageBox::warning(this, "Invalid Date Format", "The maximum expiration date must be in the format 'mm/yy'.");
+        return;
+    }
 
     std::string query = R"(
         SELECT accounts.IBAN, accounts.balance, cards.number, cards.expire_date, cards.balance
@@ -131,14 +156,11 @@ void accounts_and_cards_report::generateReport() {
             const char* expireDate = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
             int cardBalance = sqlite3_column_type(stmt, 4) != SQLITE_NULL ? sqlite3_column_int(stmt, 4) : 0;
 
-            // Фильтрация карт по дате истечения
             if (cardNumber && (!minExpireDate.isEmpty() || !maxExpireDate.isEmpty())) {
                 if (!isDateValid(expireDate, minExpireDate.toStdString(), maxExpireDate.toStdString())) {
-                    continue; // Пропустить карту, если она не попадает в диапазон
+                    continue;
                 }
             }
-
-            // Если аккаунт еще не добавлен, добавляем
             if (accounts.find(IBAN) == accounts.end()) {
                 accounts[IBAN] = {
                         {"IBAN", IBAN},
@@ -146,8 +168,6 @@ void accounts_and_cards_report::generateReport() {
                         {"cards", nlohmann::json::array()}
                 };
             }
-
-            // Добавляем информацию о карте
             if (cardNumber) {
                 accounts[IBAN]["cards"].push_back({
                                                           {"card_number", cardNumber},
@@ -157,22 +177,17 @@ void accounts_and_cards_report::generateReport() {
             }
         }
 
-        // Преобразуем результат в массив
         currentReport = nlohmann::json::array();
         for (const auto& [_, account] : accounts) {
             currentReport.push_back(account);
         }
 
         sqlite3_finalize(stmt);
-        QMessageBox::information(this, "Успех", "Отчет успешно сгенерирован.");
+        QMessageBox::information(this, "Success", "Report generated successfully.");
     } else {
-        QMessageBox::critical(this, "Ошибка", "Не удалось выполнить запрос.");
+        QMessageBox::critical(this, "Error", "Failed to generate the report.");
     }
 }
-
-
-
-
 void accounts_and_cards_report::saveReport() {
     if (currentReport.empty()) {
         QMessageBox::warning(this, "Error", "Report is empty.");

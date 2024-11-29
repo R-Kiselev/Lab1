@@ -339,7 +339,7 @@ QPushButton:disabled {
        <item>
         <widget class="QCheckBox" name="im_not_Misha_check">
          <property name="text">
-          <string>Я не Миша Кордубан</string>
+          <string>Я не Данила Готовчиц</string>
          </property>
         </widget>
        </item>

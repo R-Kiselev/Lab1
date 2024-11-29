@@ -102,15 +102,15 @@ add_executable(course_work
         "source/menu/Auth and registration/authorization.cpp"
         include/ui/authorization.h
         "source/menu/Auth and registration/authorization.ui"
-        source/menu/reports.cpp
+        source/menu/Reports/reports.cpp
         include/ui/reports.h
-        source/menu/reports.ui
-        source/menu/clients_report.cpp
+        source/menu/Reports/reports.ui
+        source/menu/Reports/clients_report.cpp
         include/ui/clients_report.h
-        source/menu/clients_report.ui
-        source/menu/accounts_and_cards_report.cpp
+        source/menu/Reports/clients_report.ui
+        source/menu/Reports/accounts_and_cards_report.cpp
         include/ui/accounts_and_cards_report.h
-        source/menu/accounts_and_cards_report.ui
+        source/menu/Reports/accounts_and_cards_report.ui
 )
 target_link_libraries(course_work
         Qt::Core

@@ -33,7 +33,7 @@
     },
     {
         "IBAN": "BY45QT3127248292223521421637",
-        "account_balance": 200,
+        "account_balance": 300,
         "cards": [
             {
                 "card_balance": 1450,
@@ -41,7 +41,7 @@
                 "expire_date": "11/31"
             },
             {
-                "card_balance": 2300,
+                "card_balance": 2500,
                 "card_number": "8706-8641-7643-9573",
                 "expire_date": "11/32"
             }
@@ -70,10 +70,10 @@
     },
     {
         "IBAN": "BY23RZ6148473378108937615928",
-        "account_balance": 4800,
+        "account_balance": 4600,
         "cards": [
             {
-                "card_balance": 600,
+                "card_balance": 500,
                 "card_number": "1797-5324-1543-9406",
                 "expire_date": "10/28"
             },

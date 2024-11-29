@@ -31,7 +31,7 @@ private:
     void setCardBalanceRange();
     void generateReport();
     void saveReport();
-    bool validateExpireDate(const QString& date);
+    bool isDateFormatValid(const QString& date);
     bool isDateValid(const std::string& date, const std::string& minDate, const std::string& maxDate);
 };
 
