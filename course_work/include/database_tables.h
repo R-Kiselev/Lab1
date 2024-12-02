@@ -48,7 +48,17 @@ void create_clients_table(sqlite3* DB)
 
     create_table(DB, query);
 }
+void create_transactions_history_table(sqlite3* DB)
+{
+    std::string query =
+        "CREATE TABLE IF NOT EXISTS transactions_history ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "sender TEXT NOT NULL,"
+        "receiver TEXT NOT NULL,"
+        "amount INTEGER);";
 
+    create_table(DB, query);
+}
 void create_cards_table(sqlite3* DB)
 {
     std::string query =

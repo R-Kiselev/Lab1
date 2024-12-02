@@ -56,9 +56,9 @@ std::unique_ptr<Client> ClientRepository::get_by_id(const int id) const
 
     return client;
 }
-std::vector<std::unique_ptr<Client>> ClientRepository::get_all() const
+list<std::unique_ptr<Client>> ClientRepository::get_all() const
 {
-    std::vector<std::unique_ptr<Client>> clients;
+    list<std::unique_ptr<Client>> clients;
     std::string sql = "SELECT id, name, social_status_id, username, password, is_admin FROM clients;";
     sqlite3_stmt *stmt;
     if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -75,7 +75,7 @@ std::vector<std::unique_ptr<Client>> ClientRepository::get_all() const
         client->set_is_admin(is_admin);
         client->set_id(client_id);
 
-        clients.push_back(std::move(client));
+        clients.add(std::move(client));
     }
     sqlite3_finalize(stmt);
     if (clients.empty()) {
@@ -120,7 +120,7 @@ bool ClientRepository::exists(const int id) const
     sqlite3_finalize(stmt);
     return exists;
 }
-std::vector<std::unique_ptr<Client>> ClientRepository::get_all_by_bank_id(const int bank_id)
+list<std::unique_ptr<Client>> ClientRepository::get_all_by_bank_id(const int bank_id)
 {
     std::string sql =
             "SELECT clients.id, clients.name, clients.social_status_id, clients.username, clients.is_admin "
@@ -134,7 +134,7 @@ std::vector<std::unique_ptr<Client>> ClientRepository::get_all_by_bank_id(const 
         throw DatabaseException("Failed to prepare SQL statement for getting all clients by bank ID");
     }
     sqlite3_bind_int(stmt, 1, bank_id);
-    std::vector<std::unique_ptr<Client>> clients;
+    list<std::unique_ptr<Client>> clients;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int client_id = sqlite3_column_int(stmt, 0);
         std::string name(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
@@ -146,7 +146,7 @@ std::vector<std::unique_ptr<Client>> ClientRepository::get_all_by_bank_id(const 
         }
         client->set_id(client_id);
 
-        clients.push_back(std::move(client));
+        clients.add(std::move(client));
     }
     sqlite3_finalize(stmt);
     if (clients.empty()) {

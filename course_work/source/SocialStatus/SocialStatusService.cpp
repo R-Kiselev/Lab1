@@ -27,7 +27,7 @@ std::unique_ptr<SocialStatus> SocialStatusService::get_by_id(const int id) const
     validation_service->validate_id(id);
     return social_status_repository_->get_by_id(id);
 }
-std::vector<std::unique_ptr<SocialStatus>> SocialStatusService::get_all() const
+list<std::unique_ptr<SocialStatus>> SocialStatusService::get_all() const
 {
     return social_status_repository_->get_all();
 }

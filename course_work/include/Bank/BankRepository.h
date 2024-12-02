@@ -8,7 +8,8 @@
 #include "../interfaces.h"
 #include <format>
 
-class BankRepository : public IRepository<Bank> {
+class BankRepository : public IRepository<Bank>
+{
 private:
     sqlite3* db_;
 public:
@@ -17,7 +18,7 @@ public:
     void add(Bank* bank) const override;
     void remove(const int id) override;
     std::unique_ptr<Bank> get_by_id(const int id) const override;
-    std::vector<std::unique_ptr<Bank>> get_all() const override;
+    list<std::unique_ptr<Bank>> get_all() const override;
     void update(Bank* bank) const override;
     bool exists(const int id) const override;
 

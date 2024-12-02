@@ -69,8 +69,8 @@ std::unique_ptr<Card> CardRepository::get_by_number(std::string& number_) const{
 
     return card;
 }
-std::vector<std::unique_ptr<Card>> CardRepository::get_all() const {
-    std::vector<std::unique_ptr<Card>> cards;
+list<std::unique_ptr<Card>> CardRepository::get_all() const {
+    list<std::unique_ptr<Card>> cards;
     std::string sql = "SELECT id, number, expire_date, balance, account_id FROM cards;";
     sqlite3_stmt *stmt = nullptr;
     if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -85,7 +85,7 @@ std::vector<std::unique_ptr<Card>> CardRepository::get_all() const {
         card->set_balance(sqlite3_column_int(stmt, 3));
         card->set_account_id(sqlite3_column_int(stmt, 4));
 
-        cards.push_back(std::move(card));
+        cards.add(std::move(card));
     }
     sqlite3_finalize(stmt);
     if(cards.empty()){
@@ -94,9 +94,9 @@ std::vector<std::unique_ptr<Card>> CardRepository::get_all() const {
 
     return cards;
 }
-std::vector<std::unique_ptr<Card>> CardRepository::get_all_by_account_id(const int account_id) const
+list<std::unique_ptr<Card>> CardRepository::get_all_by_account_id(const int account_id) const
 {
-    std::vector<std::unique_ptr<Card>> cards;
+    list<std::unique_ptr<Card>> cards;
     std::string sql = "SELECT id, number, expire_date, balance, account_id "
                       "FROM cards "
                       "WHERE account_id = ?;";
@@ -114,7 +114,7 @@ std::vector<std::unique_ptr<Card>> CardRepository::get_all_by_account_id(const i
         card->set_balance(sqlite3_column_int(stmt, 3));
         card->set_account_id(sqlite3_column_int(stmt, 4));
 
-        cards.push_back(std::move(card));
+        cards.add(std::move(card));
     }
     sqlite3_finalize(stmt);
     if(cards.empty()){

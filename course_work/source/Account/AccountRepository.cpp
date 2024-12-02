@@ -31,8 +31,8 @@ std::unique_ptr<Account> AccountRepository::get_by_id(const int id) const
 
     return account;
 }
-std::vector<std::unique_ptr<Account>> AccountRepository::get_all() const {
-    std::vector<std::unique_ptr<Account>> accounts;
+list<std::unique_ptr<Account>> AccountRepository::get_all() const {
+    list<std::unique_ptr<Account>> accounts;
     std::string sql = "SELECT id, IBAN, balance, client_id, bank_id FROM accounts;";
     sqlite3_stmt *stmt;
     if (sqlite3_prepare_v2(db_, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -47,7 +47,7 @@ std::vector<std::unique_ptr<Account>> AccountRepository::get_all() const {
         account->set_client_id(sqlite3_column_int(stmt, 3));
         account->set_bank_id(sqlite3_column_int(stmt, 4));
 
-        accounts.push_back(std::move(account));
+        accounts.add(std::move(account));
     }
     sqlite3_finalize(stmt);
     if (accounts.empty()) {

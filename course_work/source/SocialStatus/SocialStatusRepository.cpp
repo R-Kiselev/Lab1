@@ -44,8 +44,8 @@ std::unique_ptr<SocialStatus> SocialStatusRepository::get_by_id(int id) const {
     return social_status;
 }
 
-std::vector<std::unique_ptr<SocialStatus>> SocialStatusRepository::get_all() const {
-    std::vector<std::unique_ptr<SocialStatus>> social_statuses;
+list<std::unique_ptr<SocialStatus>> SocialStatusRepository::get_all() const {
+    list<std::unique_ptr<SocialStatus>> social_statuses;
     std::string sql = "SELECT id, name FROM social_statuses;";
     sqlite3_stmt* stmt;
 
@@ -57,7 +57,7 @@ std::vector<std::unique_ptr<SocialStatus>> SocialStatusRepository::get_all() con
         auto social_status = std::make_unique<SocialStatus>();
         social_status->set_id(sqlite3_column_int(stmt, 0));
         social_status->set_name(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
-        social_statuses.push_back(std::move(social_status));
+        social_statuses.add(std::move(social_status));
     }
 
     sqlite3_finalize(stmt);

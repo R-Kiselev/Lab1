@@ -41,7 +41,7 @@ std::unique_ptr<Client> ClientService::get_by_id(int id) const
     validation_service->validate_id(id);
     return client_repository_->get_by_id(id);
 }
-std::vector<std::unique_ptr<Client>> ClientService::get_all() const
+list<std::unique_ptr<Client>> ClientService::get_all() const
 {
     return client_repository_->get_all();
 }
@@ -65,7 +65,7 @@ bool ClientService::exists(const int id) const {
     validation_service->validate_id(id);
     return client_repository_->exists(id);
 }
-std::vector<std::unique_ptr<Client>> ClientService::get_all_by_bank_id(const int bank_id)
+list<std::unique_ptr<Client>> ClientService::get_all_by_bank_id(const int bank_id)
 {
     validation_service->validate_id(bank_id);
     return client_repository_->get_all_by_bank_id(bank_id);

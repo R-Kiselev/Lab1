@@ -44,8 +44,8 @@ std::unique_ptr<Bank> BankRepository::get_by_id(int id) const {
     return bank;
 }
 
-std::vector<std::unique_ptr<Bank>> BankRepository::get_all() const {
-    std::vector<std::unique_ptr<Bank>> banks;
+list<std::unique_ptr<Bank>> BankRepository::get_all() const {
+    list<std::unique_ptr<Bank>> banks;
     std::string sql = "SELECT id, name FROM banks;";
     sqlite3_stmt* stmt;
 
@@ -57,7 +57,7 @@ std::vector<std::unique_ptr<Bank>> BankRepository::get_all() const {
         auto bank = std::make_unique<Bank>();
         bank->set_id(sqlite3_column_int(stmt, 0));
         bank->set_name(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
-        banks.push_back(std::move(bank));
+        banks.add(std::move(bank));
     }
 
     sqlite3_finalize(stmt);

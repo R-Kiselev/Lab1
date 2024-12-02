@@ -19,7 +19,7 @@ public:
     void add(SocialStatus* SocialStatus) const override;
     void remove(const int id) override;
     std::unique_ptr<SocialStatus> get_by_id(const int id) const override;
-    std::vector<std::unique_ptr<SocialStatus>> get_all() const override;
+    list<std::unique_ptr<SocialStatus>> get_all() const override;
     void update(SocialStatus* SocialStatus) const override;
     bool exists(const int id) const override;
 

@@ -18,11 +18,11 @@ public:
     void add(Client* client) const override;
     void remove(const int id) override;
     std::unique_ptr<Client> get_by_id(const int id) const override;
-    std::vector<std::unique_ptr<Client>> get_all() const override;
+    list<std::unique_ptr<Client>> get_all() const override;
     void update(Client* client) const override;
     bool exists(const int id) const override;
 
-    std::vector<std::unique_ptr<Client>> get_all_by_bank_id(const int bank_id);
+    list<std::unique_ptr<Client>> get_all_by_bank_id(const int bank_id);
     bool has_accounts(const int id) const;
     std::unique_ptr<Client> get_by_username(const std::string& username);
 

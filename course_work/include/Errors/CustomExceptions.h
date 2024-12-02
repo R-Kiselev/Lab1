@@ -31,3 +31,9 @@ public:
     explicit TransactionException(const std::string& message)
             : CustomException("Transaction Error: " + message) {}
 };
+
+class ListException : public CustomException {
+public :
+    explicit ListException(const std::string& message)
+        : CustomException("List Error: " + message) {}
+};

@@ -12,7 +12,6 @@
 
 int main(int argc, char *argv[])
 {
-    
     system("chcp 1251");
 	sqlite3* DB;
 
@@ -29,6 +28,7 @@ int main(int argc, char *argv[])
     create_banks_table(DB);
     create_social_statuses_table(DB);
     create_clients_table(DB);
+    create_transactions_history_table(DB);
 	create_accounts_table(DB);
 	create_cards_table(DB);
 

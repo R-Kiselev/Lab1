@@ -105,7 +105,7 @@ std::unique_ptr<Account> AccountService::get_by_id(int id) const
     validation_service->validate_id(id);
     return account_repository_->get_by_id(id);
 }
-std::vector<std::unique_ptr<Account>> AccountService::get_all() const
+list<std::unique_ptr<Account>> AccountService::get_all() const
 {
     return account_repository_->get_all();
 }

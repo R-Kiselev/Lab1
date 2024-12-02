@@ -16,7 +16,7 @@ public:
 
     void add(Account* account) const override;
     std::unique_ptr<Account> get_by_id(const int id) const override;
-    std::vector<std::unique_ptr<Account>> get_all() const override;
+    list<std::unique_ptr<Account>> get_all() const override;
     void update(Account* account) const override;
     void remove(const int id) override;
     bool exists(const int id) const override;

@@ -25,7 +25,7 @@ public:
     void remove(int id) override;
     void update(int id, Account* account) const override;
     std::unique_ptr<Account> get_by_id(int id) const override;
-    std::vector<std::unique_ptr<Account>> get_all() const override;
+    list<std::unique_ptr<Account>> get_all() const override;
     bool exists(const int id) const override;
 
     void display_all() const;

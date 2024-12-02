@@ -27,7 +27,7 @@ std::unique_ptr<Bank> BankService::get_by_id(const int id) const
     validation_service->validate_id(id);
     return bank_repository_->get_by_id(id);
 }
-std::vector<std::unique_ptr<Bank>> BankService::get_all() const
+list<std::unique_ptr<Bank>> BankService::get_all() const
 {
     return bank_repository_->get_all();
 }
