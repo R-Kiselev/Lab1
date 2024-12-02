@@ -14,6 +14,7 @@ payments_window::payments_window(sqlite3* db, int user_id) :
     connect(ui->transfer_accounts_button, &QPushButton::clicked, [this]() { open_transaction_dialog(0); });
     connect(ui->transfer_account_card_button, &QPushButton::clicked, [this]() { open_transaction_dialog(1); });
     connect(ui->transfer_cards_button, &QPushButton::clicked, [this]() { open_transaction_dialog(2); });
+    connect(ui->transfer_card_account_button, &QPushButton::clicked, [this]() { open_transaction_dialog(3); }); // Новая кнопка
 }
 
 payments_window::~payments_window() = default;

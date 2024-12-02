@@ -160,6 +160,13 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="transfer_card_account_button">
+       <property name="text">
+        <string>Card and account</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="transfer_cards_button">
        <property name="text">
         <string>Cards</string>

@@ -45,36 +45,22 @@ void transaction_dialog::set_transfer_type(int transferType) {
             ui->source_selector->addItem(account->get_IBAN().c_str());
         }
     } else if (transfer_type == 1) {
-        ui->source_label->setText("Account IBAN or Card Number (Source):");
-        ui->target_label->setText("Account IBAN or Card Number (Target):");
-        std::vector<std::unique_ptr<Account>> accounts;
-        std::vector<std::unique_ptr<Card>> cards;
-        bool has_accounts = true;
-        bool has_cards = true;
-        try {
-            accounts = account_service->get_all_by_client_id(user_id_);
-        } catch (const CustomException& e) {
-            has_accounts = false;
-        }
-        try {
-            cards = card_service->get_all_by_client_id(user_id_);
-        } catch (const CustomException& e) {
-            has_cards = false;
-        }
-        if (!has_accounts && !has_cards) {
-            throw CustomException("No accounts or cards found for this client.");
-        }
+        ui->source_label->setText("Account IBAN (Source):");
+        ui->target_label->setText("Card Number (Target):");
+        auto accounts = account_service->get_all_by_client_id(user_id_);
         for (const auto& account : accounts) {
             ui->source_selector->addItem(account->get_IBAN().c_str());
         }
-        for (const auto& card : cards) {
-            ui->source_selector->addItem(card->get_number().c_str());
-        }
-        ui->source_label->setWordWrap(true);
-        ui->target_label->setWordWrap(true);
     } else if (transfer_type == 2) {
         ui->source_label->setText("Card Number (Source):");
         ui->target_label->setText("Card Number (Target):");
+        auto cards = card_service->get_all_by_client_id(user_id_);
+        for (const auto& card : cards) {
+            ui->source_selector->addItem(card->get_number().c_str());
+        }
+    } else if (transfer_type == 3) {
+        ui->source_label->setText("Card Number (Source):");
+        ui->target_label->setText("Account IBAN (Target):");
         auto cards = card_service->get_all_by_client_id(user_id_);
         for (const auto& card : cards) {
             ui->source_selector->addItem(card->get_number().c_str());
@@ -83,6 +69,7 @@ void transaction_dialog::set_transfer_type(int transferType) {
     ui->source_label->setWordWrap(true);
     ui->target_label->setWordWrap(true);
 }
+
 void transaction_dialog::begin_transaction() {
     sqlite3_exec(db_, "BEGIN TRANSACTION", nullptr, nullptr, nullptr);
 }
@@ -194,20 +181,16 @@ void transaction_dialog::perform_transaction() {
     }
     if (transfer_type == 0) {
         handle_transfer_between_accounts(source.toStdString(), target.toStdString(), amount.toInt());
+    } else if (transfer_type == 1) {
+        handle_account_to_card_transfer(source.toStdString(), target.toStdString(), amount.toInt());
     } else if (transfer_type == 2) {
         handle_transfer_between_cards(source.toStdString(), target.toStdString(), amount.toInt());
-    } else {
-        if(account_service->exists(source.toStdString())){
-            handle_account_to_card_transfer(source.toStdString(), target.toStdString(), amount.toInt());
-        } else if(card_service->exists(source.toStdString())){
-            handle_card_to_account_transfer(source.toStdString(), target.toStdString(), amount.toInt());
-        } else {
-            QMessageBox::critical(this, "Error", "Source account or card does not exist.");
-            return;
-        }
+    } else if (transfer_type == 3) {
+        handle_card_to_account_transfer(source.toStdString(), target.toStdString(), amount.toInt());
     }
     QDialog::accept();
 }
+
 transaction_dialog::~transaction_dialog() {
     if (db_) {
         sqlite3_close(db_);
