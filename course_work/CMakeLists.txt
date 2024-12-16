@@ -112,9 +112,6 @@ add_executable(course_work
         include/ui/accounts_and_cards_report.h
         source/menu/Reports/accounts_and_cards_report.ui
         include/list.h
-        include/TransactionHistory/TransactionHistory.h
-        include/TransactionHistory/TransactionHistoryRepository.h
-        source/TransactionHistory/TransactionHistoryRepository.cpp
 )
 target_link_libraries(course_work
         Qt::Core

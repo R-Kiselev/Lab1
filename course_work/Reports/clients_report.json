@@ -33,5 +33,12 @@
         "name": "Roman",
         "social_status_name": "Unemployed",
         "username": "waimale"
+    },
+    {
+        "id": 50,
+        "is_admin": false,
+        "name": "Daniil",
+        "social_status_name": "Worker",
+        "username": "Daniil"
     }
 ]

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>450</height>
+    <width>600</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -339,7 +339,7 @@ QPushButton:disabled {
        <item>
         <widget class="QCheckBox" name="im_not_Misha_check">
          <property name="text">
-          <string>Я не Данила Готовчиц</string>
+          <string>Я согласен(на) на обработку чужих персональных данных</string>
          </property>
         </widget>
        </item>
