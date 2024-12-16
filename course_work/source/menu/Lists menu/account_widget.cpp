@@ -18,11 +18,13 @@ account_widget::account_widget(QWidget *parent, Account* account, sqlite3* db) :
     std::string client_name = get_client_name(account->get_client_id());
     std::string bank_name = get_bank_name(account->get_bank_id());
 
-    ui->labelClientId->setText("Client name: " + QString::fromStdString(client_name));
-    ui->labelBankId->setText("Bank name: " + QString::fromStdString(bank_name));
+    ui->labelClientId->setText("Account owner: " + QString::fromStdString(client_name));
+    ui->labelBankId->setText("Bank: " + QString::fromStdString(bank_name));
 
     connect(ui->update_button, &QPushButton::clicked, this, &account_widget::onUpdateClicked);
     connect(ui->delete_button, &QPushButton::clicked, this, &account_widget::onDeleteClicked);
+
+    setToolTip("Click to go to cards");
 }
 std::string account_widget::get_client_name(int client_id) {
     std::string sql = std::format("SELECT name FROM clients WHERE id = {};", client_id);

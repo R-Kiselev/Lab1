@@ -15,11 +15,12 @@ bank_widget::bank_widget(const Bank* bank, QWidget *parent, bool is_admin)
     ui->setupUi(this);
     ui->labelName->setText("Name: " + QString::fromStdString(bank->get_name()));
 
-    if (is_admin == true){
+    if (is_admin_) {
+        setToolTip("Click to go to clients");
         connect(ui->update_button, &QPushButton::clicked, this, &bank_widget::onUpdateClicked);
         connect(ui->delete_button, &QPushButton::clicked, this, &bank_widget::onDeleteClicked);
-    }
-    else {
+    } else {
+        setToolTip("Click to go to accounts");
         ui->update_button->hide();
         ui->delete_button->hide();
     }

@@ -16,7 +16,7 @@ card_widget::card_widget(QWidget *parent, Card* card, sqlite3* db) :
     ui->labelExpireDate->setText("Expire date: " + QString::fromStdString(card->get_expire_date()));
     ui->labelBalance->setText("Balance: " + QString::number(card->get_balance()));
     std::string client_name = get_name_by_account_id(card->get_account_id());
-    ui->labelAccountId->setText("Client name: " + QString::fromStdString(client_name));
+    ui->labelAccountId->setText("Card owner: " + QString::fromStdString(client_name));
 
     ui->labelNumber->setTextInteractionFlags(Qt::TextSelectableByMouse);
     connect(ui->update_button, &QPushButton::clicked, this, &card_widget::onUpdateClicked);

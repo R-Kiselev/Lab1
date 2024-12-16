@@ -56,6 +56,8 @@ void registration_window::handle_add_client() {
             client_->set_social_status_id(social_status_id);
 
             client_service->add(client_.get());
+            QMessageBox::information(this, "Registration", "Registration successful");
+            handle_back();
         }
         catch (const CustomException& e) {
             QMessageBox::critical(this, "Error", e.what());
@@ -80,8 +82,4 @@ void registration_window::handle_registration() {
     client_->set_password(password);
 
     handle_add_client();
-
-    QMessageBox::information(this, "Registration", "Registration successful");
-
-    handle_back();
 }

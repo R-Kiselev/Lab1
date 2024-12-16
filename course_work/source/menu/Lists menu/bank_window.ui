@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>450</height>
+    <width>550</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,6 +16,16 @@
   <property name="styleSheet">
    <string notr="true">QWidget {
     background-color: rgb(242, 244, 255); /* Светлый фон */
+}
+QToolTip {
+    background-color: rgb(3, 63, 99); /* Тёмно-синий фон */
+    color: rgb(252, 247, 255); /* Белый цвет текста */
+    border: 1px solid rgb(40, 102, 110); /* Бирюзовая обводка */
+    border-radius: 5px; /* Закруглённые углы */
+    padding: 4px; /* Внутренние отступы */
+    font-size: 12px; /* Размер шрифта */
+    font-weight: bold; /* Жирный текст */
+    font-family: Arial, sans-serif; /* Шрифт */
 }
 
 QMessageBox {
@@ -126,8 +136,8 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>380</width>
-        <height>211</height>
+        <width>530</width>
+        <height>336</height>
        </rect>
       </property>
      </widget>

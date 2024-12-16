@@ -19,6 +19,8 @@ client_widget::client_widget(const Client* client, QWidget *parent, sqlite3* db)
 
     connect(ui->update_button, &QPushButton::clicked, this, &client_widget::onUpdateClicked);
     connect(ui->delete_button, &QPushButton::clicked, this, &client_widget::onDeleteClicked);
+
+    setToolTip("Click to go to accounts");
 }
 
 client_widget::~client_widget() = default;

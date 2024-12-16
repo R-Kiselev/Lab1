@@ -124,12 +124,13 @@ void bank_window::delete_bank(int bank_id) {
 void bank_window::load_banks() {
     auto container = std::make_unique<QWidget>(this);
     auto layout = std::make_unique<QVBoxLayout>(container.get());
-
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
     try{
         auto banks = bank_service->get_all();
         for (const auto& bank : banks) {
             auto bank_widget_ = std::make_unique<bank_widget>(bank.get(), this, is_admin_);
-            bank_widget_->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+            bank_widget_->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
 
            if(is_admin_){
                connect(bank_widget_.get(), &bank_widget::clicked, this, &bank_window::open_clients_window);

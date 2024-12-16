@@ -11,7 +11,6 @@
 authorization::authorization(QWidget *parent, sqlite3* db) :
         QWidget(parent), ui(new Ui::authorization), db_(db) {
     ui->setupUi(this);
-
     setup_services();
 
     connect(ui->sign_in_button, &QPushButton::clicked, this, &authorization::handle_sign_in);
